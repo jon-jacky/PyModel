@@ -1,0 +1,44 @@
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntSuccessFSM.svg TestIntSuccessFSM.dot 
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntWrongFSM.svg TestIntWrongFSM.dot 
+5 states, 4 transitions, 0 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntComposeLogoutFSM.svg TestIntComposeLogoutFSM.dot 
+4 states, 3 transitions, 0 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntComposeFSM.svg TestIntComposeFSM.dot 
+Generate FSM from TestIntSuccess, ReadInt returns correct value
+
+Generate dot
+
+Generate SVG
+
+Generate FSM from TestIntWrong, ReadInt returns wrong value
+
+Generate dot
+
+Generate SVG
+
+Generate FSM from composition, should not synchronize on different args
+
+Generate dot
+
+Generate SVG
+
+Generate FSM from composition, should not synchronize on different results
+
+Generate dot
+
+Generate SVG
+

@@ -1,0 +1,32 @@
+Send(0,)
+Ack(0,)
+Send(1,)
+Ack(1,)
+Send(0,)
+Ack(0,)
+  0. Finished at step 6, no more actions enabled, reached accepting state
+Send(0,)
+Ack(0,)
+Send(1,)
+Ack(1,)
+Send(1,)
+Ack(0,)
+  1. Finished at step 6, no more actions enabled, reached accepting state
+Test finished, completed 2 runs
+Send(0,)
+Ack(0,)
+Send(1,)
+Ack(1,)
+Send(0,)
+Ack(0,)
+  0. Finished at step 6, no more actions enabled, reached accepting state
+Send(0,)
+Ack(0,)
+Send(1,)
+Ack(1,)
+  1. Finished at step 4, no more actions enabled, ended in non-accepting state
+Test finished, completed 2 runs
+Scenarios module with two runs, by itself
+
+Scenarios module, compose with ABP FSM, last run not allowed
+

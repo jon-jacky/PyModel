@@ -1,0 +1,22 @@
+
+PyModel v. 0.85 release notes
+
+The initial public release, v 0.80, appeared in January 2010.  Version
+0.85 adds features that support "passive testing": automatically
+checking log files (or other traces collected from instrumented
+systems) against a model.  It also adds some improvements to the
+graphics and a few conveniences and bug fixes.  In detail:
+
+- pma, pmt: support observables attribute in model programs to
+identify observable actions, which get action their argument values
+from composed FSMs or test suites, not model program domains.
+- pma: generate graphs for all the runs in a test suite, not just the first.
+- pma, pmg: color terminal accepting states green and dead-end states yellow.
+- pmg: add -l --transitionlabels option to control clutter on graphs.
+- pmg: -o option now just identifies output file basename, pmg always adds .dot
+- pma, pmt: show action return values properly in graphs and other output.
+- samples: remove Mosaic sample, add/revise test cases in several samples.
+- notes/*.txt and www/*.html: bring up to date.
+
+March 2010
+

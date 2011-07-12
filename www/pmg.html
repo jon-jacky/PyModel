@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PyModel Graphics</title>
+</head>
+<body>
+
+<h2>PyModel Graphics</h2>
+
+<!--
+<p>
+<a href="http://staff.washington.edu/jon/">Jonathan Jacky</a>
+-->
+
+<p>
+<a href="index.html">PyModel</a> is an open-source model-based testing
+framework in Python.
+
+<hr>
+
+<p>
+Usage:
+</p>
+
+<pre>
+  pmg.py [options] fsm
+</pre>
+
+<p>
+The single argument fsm is one <a href="concepts.html">finite state
+machine</a> (FSM) module name (without the .py suffix).  The FSM is
+typically produced by the PyModel
+Analyzer, <a href="pma.html">pma</a>.  From the FSM, pmg generates a
+file of commands in the dot graph-drawing language.  This .dot file
+can then be processed by the dot program in the Graphviz package from
+www.graphviz.org.  Use the PyModel commands dotps, dotpdf, or dotsvg to run dot
+and produce PostScript, PDF, or SVG, respectively. SVG files can be viewed
+in a web browser.
+</p>
+
+<p>
+Control clutter in the graph with the <code>-l --transitionLabels</code> option:
+<code>-l action</code> shows the action name, arguments, and return value,
+<code>-l name</code> shows only the action name, and <code>-l none</code> shows no labels.
+</p>
+
+<p>
+In the generated graphics, the initial state is gray.  Accepting
+states have a double border.  Unexplored or incompletely explored
+states are orange (these may have outgoing transitions that are
+not shown).  Terminal states (with no outgoing transitions) that are
+accepting states are green.  Terminal states that are not accepting
+states are yellow; runs that end in these states are considered
+failures.
+</p>
+
+<p>
+In the browser, hover the pointer over a state to display a tooltip
+that shows the state variables and their values.  Place the point of
+the pointer over any pixel on a transition vector to display a tooltip
+that shows the transition.
+</p>
+
+<p>
+Options:
+</p>
+
+<pre>
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output=OUTPUT
+                        Output file name (not including .dot), default is &lt;fsm argument&gt;
+  -l TRANSITIONLABELS, --transitionLabels=TRANSITIONLABELS
+                        Transition labels: action, name, or none, default is action       
+  -x, --noStateTooltip  Omit tooltips from state bubbles (to work around dot svg problem)
+</pre>
+
+<hr>
+
+Revised July 2011
+
+</body>
+</html>

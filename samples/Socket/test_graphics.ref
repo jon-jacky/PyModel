@@ -1,0 +1,63 @@
+59 states, 100 transitions, 14 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o SocketFSM.svg SocketFSM.dot 
+47 states, 100 transitions, 16 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o SocketFSMA.svg SocketFSMA.dot 
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o NoBlockScenario.svg NoBlockScenario.dot 
+68 states, 100 transitions, 32 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o NoBlockComposeFSM.svg NoBlockComposeFSM.dot 
+14 states, 18 transitions, 9 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o NoBlockComposeFSMA.svg NoBlockComposeFSMA.dot 
+24 states, 32 transitions, 14 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Socket>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Socket>dot -v -Tsvg -o SendAllFSM.svg SendAllFSM.dot 
+Generate an FSM with 100 transitions from the model with default domains
+
+Generate graphics
+
+Generate an SVG file you can display in a browser
+
+Generate an FSM with from the model with more restricted domains
+
+Generate graphics
+
+Generate an SVG file you can display in a browser
+
+Generate graphics from non-blocking scenario
+
+Generate an SVG file
+
+Compose model with no-blocking scenario
+
+Generate graphics
+
+Generate an SVG file
+
+Compose model with no-blocking scenario, smaller domain
+
+Generate graphics
+
+Generate an SVG file
+
+Non-blocking, also rebind enabling conditions so entire message sent, received
+
+Generate graphics
+
+Generate an SVG file
+

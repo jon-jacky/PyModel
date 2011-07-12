@@ -1,0 +1,39 @@
+
+Using PyModel: miscellaneous tips and advice
+
+
+Workflow
+
+Here is a recommended workflow for building up models.
+
+1. Add just one or two actions at a time. 
+
+2. Using just the actions you have added so far, write down some
+sample traces by hand.  In addition to traces that should be allowed,
+write some erroneous traces that should be forbidden.
+
+3. In the model program, code just those actions, their enabling
+conditions, and any state variables needed to support them.
+
+3. Use pma to generate the FSM, then pmg then dotsvg to generate
+graphics, then display the .svg file in a browser.  Follow the action
+arrows around the graph to visualize traces.  Generate some traces
+with pmt.  If they aren't right, fix the model.
+
+4. Recall the traces you wrote in step 2.  Code them by hand as a test
+suite module (each trace becomes one run in the test suite).  Run the
+tester, pmt, with both the model program and the test suite as command
+arguments (so the model program is composed with each trace).  Each
+allowed trace should run to the end (reach an accepting state) and
+each orbidden trace should stop before the end (in a non-accepting
+state).  If not, fix the model.  You can also run the analyzer, pma.
+but it only shows the first trace in a test suite.  It should show all
+the steps in an allowed trace and reach the last state (an accepting
+state).
+
+Repeat steps 1 - 4 as you add more actions.
+
+There are examples of each step in the samples directories.
+
+
+Revised January 2010

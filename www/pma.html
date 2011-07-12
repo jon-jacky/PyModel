@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PyModel Analyzer</title>
+</head>
+<body>
+
+<h2>PyModel Analyzer</h2>
+
+<!--
+<p>
+<a href="http://staff.washington.edu/jon/">Jonathan Jacky</a>
+-->
+
+<p>
+<a href="index.html">PyModel</a> is an open-source model-based testing
+framework in Python.
+
+<hr>
+
+<p>
+Usage:
+</p>
+
+
+<pre>
+  pma.py [options] models  
+</pre>
+
+<p>
+models is a list of one or more module names (with no .py suffix).
+Each module named in models must contain
+a <a href="concepts.html">model</a>, that is: a model program, an FSM,
+or a test suite.  In addition, a module named in models can contain
+additional configuration information for a model program.  Multiple
+models (model programs including configuration, FSMs, and test suites)
+are composed into a product.  The analyzer generates a finite state
+machine from the product and writes an FSM module that includes the
+generated FSM, the explored states, and other results of the analysis.
+The FSM module contents can be displayed using the PyModel Graphics
+program, <a href="pmg.html">pmg</a>.
+</p>
+
+<p>
+Options:
+</p>
+<pre>
+  -h, --help            show this help message and exit
+  -a ACTION, --action=ACTION
+                        Action to include in generated FSM, as many as needed,
+                        if no -a include all actions
+  -e EXCLUDE, --exclude=EXCLUDE
+                        Action to exclude from generated FSM, as many as
+                        needed
+  -m MAXTRANSITIONS, --maxTransitions=MAXTRANSITIONS
+                        Maximum number of transitions to include in the
+                        generated FSM, default 100
+  -o OUTPUT, --output=OUTPUT
+                        Output module name (with no .py suffix), default is
+                        &lt;first argument&gt;FSM
+</pre>
+
+<hr>
+
+Revised March 2010
+
+</body>
+</html>

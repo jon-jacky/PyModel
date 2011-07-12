@@ -1,0 +1,1 @@
+dot -v -Tsvg -o $1.svg $1.dot

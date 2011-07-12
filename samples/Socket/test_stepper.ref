@@ -1,0 +1,104 @@
+
+Server listening on localhost port 8080 with RCVBUF 8192
+Client creates socket with SNDBUF 8192
+Client connecting to localhost port 8080
+Server accepted from  ('127.0.0.1', 53326)
+Try a test message, server got "Hello world!"
+
+recv_close()
+send_call('a',)
+send_return(1,)
+send_close()
+  0. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53327)
+recv_close()
+send_call('bb',)
+send_return(2,)
+send_close()
+  1. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53328)
+send_call('bb',)
+send_return(1,)
+  2. Failure at step 2, send returned 2, expected 1 
+Server accepted from  ('127.0.0.1', 53329)
+send_close()
+recv_close()
+  3. Success at step 2, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53330)
+recv_close()
+send_call('a',)
+send_return(1,)
+send_close()
+  4. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53331)
+send_call('bb',)
+send_return(2,)
+recv_call(4,)
+recv_return(2,) / 'bb'
+send_call('a',)
+send_return(1,)
+recv_call(4,)
+recv_return(1,) / 'a'
+send_call('bb',)
+send_return(1,)
+  5. Failure at step 10, send returned 2, expected 1 
+Test finished, completed 6 runs
+
+Server listening on localhost port 8080 with RCVBUF 8192
+Client creates socket with SNDBUF 8192
+Client connecting to localhost port 8080
+Server accepted from  ('127.0.0.1', 53332)
+Try a test message, server got "Hello world!"
+
+recv_close()
+send_call('a',)
+send_return(1,)
+send_close()
+  0. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53333)
+recv_close()
+send_call('bb',)
+send_return(2,)
+send_close()
+  1. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53334)
+send_call('bb',)
+send_return(2,)
+send_close()
+recv_close()
+  2. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53335)
+recv_close()
+send_call('a',)
+send_return(1,)
+send_close()
+  3. Success at step 4, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53336)
+send_call('bb',)
+send_return(2,)
+recv_call(4,)
+recv_return(2,) / 'bb'
+send_call('a',)
+send_return(1,)
+recv_call(4,)
+recv_return(1,) / 'a'
+send_call('bb',)
+send_return(2,)
+send_close()
+recv_call(4,)
+recv_return(2,) / 'bb'
+recv_close()
+  4. Success at step 14, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 53337)
+send_call('a',)
+send_return(1,)
+recv_call(4,)
+recv_return(1,) / 'a'
+send_close()
+recv_close()
+  5. Success at step 6, no more actions enabled, reached accepting state
+Test finished, completed 6 runs
+Synchronous: no blocking, next action after send_all is send_return, etc.
+
+Synchronous and deterministic: entire message is always sent, then received
+

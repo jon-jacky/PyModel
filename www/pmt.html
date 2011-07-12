@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PyModel Tester</title>
+</head>
+<body>
+
+<h2>PyModel Tester</h2>
+
+<!--
+<p>
+<a href="http://staff.washington.edu/jon/">Jonathan Jacky</a>
+-->
+
+<p>
+<a href="index.html">PyModel</a> is an open-source model-based testing
+framework in Python.
+
+<hr>
+
+<p>
+Usage:
+</p>
+
+<pre>
+  pmt.py [options] models
+</pre>
+
+<p>
+models is a list of one or more module names (with no .py suffix).
+Each module named in models must contain
+a <a href="concepts.html">model</a>, that is: a model program, an FSM,
+or a test suite.  In addition, a module named in models can contain
+additional configuration information for a model program.  Multiple
+models (model programs including configuration, FSMs, and test suites)
+are composed into a product.  The tester generates traces by executing
+the product, at random or guided by the strategy option.  To just view
+the traces, omit the implementation option.  To use pmt as an offline
+test generator, omit the implementation option and use the output
+option to save the traces in a test suite module.  To execute tests,
+provide the implementation option.  To execute tests generated
+offline, provide that test suite module as the single command
+argument.  To generate and execute tests on-the-fly, provide one or
+more model programs and/or scenario FSMs as command line arguments.
+To save on-the-fly tests so they can be reproduced later, use the
+output option to save them in a test suite module.
+</p>
+
+<p>
+Limitations: pmt can only execute traces consisting of controllable
+actions that the tester can call to make the implementation do
+something.  Future versions will also support observable actions:
+events that the tester can detect in the implementation.
+
+<p>
+Options:
+</p>
+
+<pre>
+  -h, --help            show this help message and exit
+  -a ACTION, --action=ACTION
+                        Action to execute, as many as needed, if no -a execute
+                        all actions
+  -c CLEANUPSTEPS, --cleanupSteps=CLEANUPSTEPS
+                        Maximum number of steps in the cleanup phase, default
+                        0 for no cleanup
+  -d, --debug           Run the main function in the debugger
+  -e EXCLUDE, --exclude=EXCLUDE
+                        Action to exclude from execution, as many as needed
+  -g STRATEGY, --strategy=STRATEGY
+                        Strategy (module name), omit to use random strategy
+  -i IUT, --iut=IUT     Implementation (stepper module name), omit to just run
+                        model
+  -n NSTEPS, --nsteps=NSTEPS
+                        Number of steps in a single test run before beginning
+                        cleanup phase, default 0 for no limit
+  -o OUTPUT, --output=OUTPUT
+                        Output test suite module name (with no .py suffix), no
+                        default (no output file if omitted)
+  -q, --quiet           Omit arguments and return value from progress messages
+                        (to suppress printing very large buffers etc.)
+  -r NRUNS, --nruns=NRUNS
+                        Number of test runs, default 1, 0 for no limit
+  -s SEED, --seed=SEED  Random seed, use any nonzero value to make runs
+                        reproducible
+</pre>
+
+<hr>
+
+Revised April 2011
+
+</body>
+</html>

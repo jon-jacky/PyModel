@@ -1,0 +1,10 @@
+
+PyModel release history 
+
+Nov 2009  Version epsilon, posted for colleagues but not announced
+Jan 2010  Version 0.8  For Northwest Python Day 2010
+Mar 2010  Version 0.85 Add observables, improve graphics. See release-0.85.txt
+  ? 2010  Version 0.9  Add safety analysis, add synchronous stepper for Socket
+  ? 2010  Version 1.0  Support observable actions, asynchronous steppers
+
+Revised March 2010

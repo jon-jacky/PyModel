@@ -1,0 +1,44 @@
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntSuccessFSM.svg TestIntSuccessFSM.dot 
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntWrongFSM.svg TestIntWrongFSM.dot 
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntSuccessComposeFSM.svg TestIntSuccessComposeFSM.dot 
+4 states, 3 transitions, 0 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntWrongComposeFSM.svg TestIntWrongComposeFSM.dot 
+Generate FSM from allowed TestIntSuccess, ReadInt returns correct value
+
+Generate dot
+
+Generate SVG
+
+Generate FSM from forbidden TestIntWrong, ReadInt returns wrong value
+
+Generate dot
+
+Generate SVG
+
+Compose model with allowed trace
+
+Generate dot
+
+Generate SVG
+
+Compose model with forbidden trace
+
+Generate dot
+
+Generate SVG
+

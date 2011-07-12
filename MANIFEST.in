@@ -1,0 +1,6 @@
+include *.txt *.html *.rst *.in
+recursive-include notes *.txt *.rst
+recursive-include talks *.txt *.rst *.pdf
+recursive-include www *.txt *.rst *.html 
+recursive-include pymodel *.txt *.rst *.py *.bat clogdiff dotpdf dotps dotsvg tpath
+recursive-include samples *.txt *.rst *.py *.ref *.bat 

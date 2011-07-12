@@ -1,0 +1,32 @@
+
+PyModel Samples
+
+There are some examples in the subdirectories under the pymodel samples
+directory: ABP, Marquee, PowerSwitch, Socket, Stack, WebApplication, etc.
+
+Each sample subdirectory contains some test script modules: test.py,
+test_scenarios.py, test_graphics.py etc.  Each of these test scripts
+contains commented command lines that demonstrate combinations of
+arguments and options.
+
+To prepare to execute test scripts, put the pymodel directory on
+your execution path.  Put the current directory (whatever it is) on
+the PYTHONPATH by executing the tpath command ("source tpath" in bash,
+just "tpath" in Windows).
+
+To execute all the commands in a test script, run it with trun.py:
+
+ trun.py test
+
+ trun.py test_scenarios 
+
+ (etc.)
+
+Or, you can type individual commands that you find in the test
+scripts, or try your own variations.
+
+The test_graphics scripts run the analyzer and graphics programs, and
+generate FSM modules and SVG files that can be displayed by a browser.
+
+
+Revised July 2011

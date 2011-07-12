@@ -1,0 +1,30 @@
+2 states, 2 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>dot -v -Tsvg -o PowerSwitchFSM.svg PowerSwitchFSM.dot 
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>dot -v -Tsvg -o SpeedControl.svg SpeedControl.dot 
+6 states, 12 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>dot -v -Tsvg -o PowerSpeed.svg PowerSpeed.dot 
+Generate FSM from PowerSwitch model program
+
+Generate dot graphics commands from generated PowerSwitchFSM
+
+Generate SVG file from dot commands
+
+Generate dot commands from SpeedControl FSM
+
+Generate SVG file from dot commands
+
+Generate FSM from composition of PowerSwitch and SpeedControl, show interleaving
+
+Generate dot commands from composed FSM
+
+Generate SVG from dot
+

@@ -1,0 +1,32 @@
+Strategy
+
+A strategy can be written to improve test coverage according to some
+chosen measure.  A strategy is (optionally) used by the tester, pmt,
+to pick the next enabled action in the model to execute.  If no
+strategy is provided, the tester picks an enabled action at random.
+
+A strategy is written in its own module.  To use a strategy, name that
+module on the pmt command line with the -g or --strategy option.
+
+PyModel already includes some strategies you can use (besides the
+default random strategy): ActionNameCoverage and StateCoverage (in the
+pymodel directory).
+
+A strategy module provides a function selectaction (or select_action
+or SelectAction) that takes a list of tuples: enabled actions,
+arguments, and their next states.  It returns one chosen enabled
+action with arguments.  Each strategy chooses this return value
+improve a particular coverage measure.
+
+Unlike models or steppers, you do not need to write a different
+strategy for each implementation.  Some strategy modules can be used
+with any model; the provided ActionNameCoverage and StateCoverage
+strategies are examples.  
+
+It is also possible to write a strategy that is adapted for a
+particular model.  For example, you might want a strategy that
+enforces an "operational profile" where each action appears in traces
+with a particular frequency.
+
+
+Revised July 2011

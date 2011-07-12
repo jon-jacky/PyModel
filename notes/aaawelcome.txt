@@ -1,0 +1,24 @@
+Welcome to PyModel
+
+PyModel is a model-based testing framework in Python.
+
+PyModel is still under development, but there is already enough here
+to create models, visualize their behavior, validate them against
+scenarios, generate tests, and (if you write a harness) run tests on
+an implementation.
+
+Read more:
+
+concepts.txt - concepts and vocabulary
+commands.txt - PyModel commands and how to use them
+samples.txt - where to find the samples and how to run them
+models.txt - how to write and use model programs, FSMs, and test suites
+composition.txt - how and why to use composition to combine models
+strategy.txt - how to select or write an optional strategy to guide test runs
+stepper.txt - how to write the test harness needed to test an implementation
+test.txt - how to script and run tests on the PyModel software itself
+advice.txt - miscellaneous tips and advice
+releases.txt - release history 
+release-0.85.txt - latest release notes
+
+Revised January 2010

@@ -1,0 +1,98 @@
+
+PyModel v 0.90 release notes
+
+PyModel is a model-based testing framework for Python.  The initial
+public release, Version 0.80, appeared in January 2010.  Version 0.85 in
+March 2010 added features that support passive testing: automatically
+checking log files (or other traces collected from instrumented
+systems) against a model.
+
+Version 0.9 adds some new functionality:
+ 
+- programmable domains (including state-dependent domains). 
+
+- wsgirunner, a simple standalone web server (with no dependencies
+  other than the Python standard libraries), to make it easy to test
+  web applications, including the WebApplication sample in this version.
+
+- dotpdf, a command to produce graphic output in PDF files, similar to
+  dotps (for PostScript) and dotsvg (for SVG).
+
+Version 0.9 adds two new samples:
+
+- populations, to demonstrate programmable domains.
+
+- tracemultiplexer, to demonstrate using pymodel as a simulator.
+
+Version 0.9 revises two other samples: 
+  
+- WebApplication, add webapp.py, a new web application in Python that
+  works with with WebModel and Stepper in this sample.  The webapp.py
+  application is a replacement for the PHP web application from
+  NModel, so testing this sample no longer requires PHP or NModel.
+  The webapp.py application has no dependencies other than the Python
+  standard libraries (it requires no other framework).  The webapp.py
+  application can be run by the new PyModel wsgirunner web server, or
+  any other WSGI-compliant server (for example Apache with mod_wsgi).
+  
+- Socket, add a working Stepper to run tests against actual sockets,
+  add several test suites and test scripts that demonstrate the model
+  and the stepper.
+  
+Version 0.9 also adds some conveniences: 
+
+- In test suites, when an action has no return value (the return value
+  is None), the final None can be omitted from action tuples (In the
+  WebApplication sample, compare TestIntSuccess.py to
+  TestIntSuccessNoNone.py).
+
+- In pmt, use the new -q --quiet option to suppress voluminous output
+  (in the Socket sample, see test_q.py)
+
+- In pmg, use the new -x --noStateTooltip option to suppress tooltips,
+  in order to work around occasional (rare) crashes in the dotsvg
+  graphics program.  (This problem has not been observed in any of the
+  samples in this version.)
+
+Version 0.9 makes some changes to be more consistent with recommended
+Python style and programming practices.
+
+- The subdirectory in the distribution that contains the core PyModel
+  Python code is now named pymodel, not src.  However, the pymodel
+  directory is still not a Python package (it contains no
+  __init__.py), and several shell scripts, and the programs intended
+  to be run from the command line (pma, pmg, and pmt) are still in the
+  pymodel directory, not a separate bin directory.  The samples and
+  their tests are still in subdirectories (not packages) under the samples
+  subdirectory.
+
+- New code and samples are coded in PEP-8 style. Only class names
+  include uppercase characters.
+
+- The PyModel tools now recognize alternatives for special PyModel
+  function and variable names that are coded in PEP-8 style, without
+  uppercase characters.  You can now use these identifers: accepting,
+  statefilter (or state_filter), reset, selectaction (or
+  select_action), testsuite (or test_suite), testaction (or
+  test_action) as alternatives to Accepting, StateFilter, Reset,
+  SelectAction, testSuite and TestAction
+
+Version 0.9 prepares for future functionality, in particular for
+observable actions and asynchronous steppers.
+
+- ProductModelProgram, ModelProgram, FSM, and TestSuite classes
+  include an ActionEnabled method, which will be used by a future
+  version of pmt to check whether an observable action returned by an
+  asynchronous stepper is enabled.
+
+- The src directory contains pmt_observables.py, an experimental
+  version of pmt that handles observable actions.  There are no
+  samples in this version that use this functionality.  (Future
+  versions of pmt may not be compatible with this experimental
+  version.)
+
+
+July 2011
+
+
+

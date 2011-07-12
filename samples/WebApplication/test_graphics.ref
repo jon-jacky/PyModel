@@ -1,0 +1,71 @@
+20 states, 50 transitions, 4 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o WebModelFSM.svg WebModelFSM.dot 
+7 states, 19 transitions, 4 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserDomainFSM.svg OneUserDomainFSM.dot 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserScenario.svg OneUserScenario.dot 
+7 states, 16 transitions, 4 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserScenarioFSM.svg OneUserScenarioFSM.dot 
+7 states, 25 transitions, 4 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserFilterFSM.svg OneUserFilterFSM.dot 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserNoIntScenario.svg OneUserNoIntScenario.dot 
+3 states, 3 transitions, 2 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserNoIntScenarioFSM.svg OneUserNoIntScenarioFSM.dot 
+Explore WebModel, limit exploration by -m
+
+Generate dot graphics commands
+
+Generate SVG file
+
+Explore Webmodel, limit exploration by domain OneUserDomain
+
+Generate dot graphics commands
+
+Generate SVG file
+
+Generate dot from scenario FSM
+
+Generate SVG
+
+Explore WebModel, limit exploration by scenario FSM OnUserScenario
+
+Generate dot
+
+Generate SVG
+
+Explore WebModel, limit exploration by state filter OneUserFilter
+
+Generate dot
+
+Generate SVG
+
+Generate dot from scenario FSM
+
+Generate SVG
+
+Explore WebModel, limit exploration by scenario FSM OnUserScenario
+
+Generate dot
+
+Generate SVG
+

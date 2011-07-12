@@ -1,0 +1,60 @@
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+  0. Finished at step 4, no more actions enabled, reached accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  1. Finished at step 3, no more actions enabled, reached accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOn()
+  2. Finished at step 4, no more actions enabled, reached accepting state
+PowerOff()
+PowerOff()
+PowerOn()
+PowerOff()
+  3. Finished at step 4, no more actions enabled, reached accepting state
+Test finished, completed 4 runs
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+  0. Finished at step 4, no more actions enabled, reached accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  1. Finished at step 3, no more actions enabled, ended in non-accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  2. Finished at step 3, no more actions enabled, ended in non-accepting state
+  3. Finished at step 0, no more actions enabled, ended in non-accepting state
+Test finished, completed 4 runs
+IncrementSpeed()
+IncrementSpeed()
+IncrementSpeed()
+  0. Finished at step 3, reached accepting state
+PowerOn()
+IncrementSpeed()
+PowerOff()
+IncrementSpeed()
+IncrementSpeed()
+PowerOn()
+PowerOff()
+IncrementSpeed()
+PowerOn()
+PowerOff()
+IncrementSpeed()
+IncrementSpeed()
+  0. Finished at step 12, reached accepting state
+Scenarios module with four runs, by itself
+
+Scenarios module, compose with PowerSwitch model, last two runs not allowed
+
+SpeedControl module, by itself
+
+PowerSwitch module, compose with SpeedControl, no shared actions
+

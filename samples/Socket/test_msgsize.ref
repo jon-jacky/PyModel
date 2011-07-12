@@ -1,0 +1,59 @@
+
+Server listening on localhost port 8080 with RCVBUF 87380
+Client creates socket with SNDBUF 16384
+Client connecting to localhost port 8080
+Server accepted from  ('127.0.0.1', 42501)
+Try a test message, server got "Hello world!"
+
+send_call
+send_return
+recv_call
+recv_return
+  0. Failure at step 4, recv returned aaaaaaaaaaaaaaaa (16), expected aaaaaaaaaaaaaaab (16)
+Server accepted from  ('127.0.0.1', 42502)
+send_call
+send_return
+recv_call
+recv_return
+  1. Failure at step 4, recv returned aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaaaa (8192), expected aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaaab (8192)
+Server accepted from  ('127.0.0.1', 42503)
+send_call
+send_return
+recv_call
+recv_return
+send_close
+recv_close
+  2. Success at step 6, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 42504)
+send_call
+send_return
+recv_call
+recv_return
+send_close
+recv_close
+  3. Success at step 6, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 42505)
+send_call
+send_return
+recv_call
+recv_return
+send_close
+recv_close
+  4. Success at step 6, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 42506)
+send_call
+send_return
+recv_call
+recv_return
+send_close
+recv_close
+  5. Success at step 6, no more actions enabled, reached accepting state
+Server accepted from  ('127.0.0.1', 42507)
+send_call
+send_return
+recv_call
+recv_return
+  6. Failure at step 4, recv returned aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaaaa (65536), expected aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaaaa (131072)
+Test finished, completed 7 runs
+Test several message sizes in one test suite
+

@@ -1,0 +1,35 @@
+  0. Finished at step 0, no more actions enabled, reached accepting state
+Push(1,)
+Push(2,)
+Pop(2,)
+Pop(1,)
+  0. Finished at step 4, no more actions enabled, reached accepting state
+Push(1,)
+Push(2,)
+  1. Finished at step 2, no more actions enabled, ended in non-accepting state
+Push(1,)
+Push(3,)
+  2. Finished at step 2, no more actions enabled, ended in non-accepting state
+  3. Finished at step 0, no more actions enabled, ended in non-accepting state
+Test finished, completed 4 runs
+Push(1,)
+Push(2,)
+Pop(2,)
+Pop(1,)
+  0. Finished at step 4, no more actions enabled, reached accepting state
+Push(1,)
+Push(2,)
+  1. Finished at step 2, no more actions enabled, ended in non-accepting state
+Push(1,)
+Push(3,)
+Pop(3,)
+Pop(1,)
+  2. Finished at step 4, no more actions enabled, reached accepting state
+  3. Finished at step 0, no more actions enabled, ended in non-accepting state
+Test finished, completed 4 runs
+Push is observable here so no actions are enabled in the initial state
+
+Accepts Push(3) but not Pop(3) because here Push is observable, Pop controllable
+
+Accepts both Push(3) and Pop(3) because here both are observable, still doesnt accept out-of-order Pop.
+

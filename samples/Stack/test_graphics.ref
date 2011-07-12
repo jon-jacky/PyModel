@@ -1,0 +1,30 @@
+10 states, 12 transitions, 10 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Stack>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Stack>dot -v -Tsvg -o StackFSM.svg StackFSM.dot 
+
+C:\Users\jon\Documents\mbt\samples\Stack>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Stack>dot -v -Tsvg -o StackOneScenario.svg StackOneScenario.dot 
+4 states, 6 transitions, 4 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Stack>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Stack>dot -v -Tsvg -o StackSynchronized.svg StackSynchronized.dot 
+Generate FSM with first 12 transitions
+
+Generate dot commands
+
+Generate SVG file
+
+Generate dot commands for scenario FSM
+
+Generate SVG
+
+Explore composition of model with scenario machine, show synchronization
+
+Generate dot
+
+Generate SVG
+

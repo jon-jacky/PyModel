@@ -1,0 +1,74 @@
+2 states, 2 transitions, 2 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o MarqueeFSM.svg MarqueeFSM.dot 
+7 states, 14 transitions, 7 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o DisplayFiveFSM.svg DisplayFiveFSM.dot 
+7 states, 14 transitions, 7 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o DisplayFiveFSM1.svg DisplayFiveFSM1.dot 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o LoadFirst.svg LoadFirst.dot 
+6 states, 6 transitions, 6 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o PeriodFiveFSM.svg PeriodFiveFSM.dot 
+6 states, 6 transitions, 6 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o PeriodFiveFSM1.svg PeriodFiveFSM1.dot 
+6 states, 6 transitions, 6 accepting states
+
+C:\Users\jon\Documents\mbt\samples\Marquee>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\Marquee>dot -v -Tsvg -o PeriodFiveFSM2.svg PeriodFiveFSM2.dot 
+Explore Marquee with default domains
+
+Generate graphics commands
+
+Generate graphics file
+
+Explore Marquee with modified domains, allow Load at any time
+
+Generate graphics commands
+
+Generate graphics file
+
+Same as above, but reverse argument order of module and configuration
+
+Generate graphics commands
+
+Generate graphics file
+
+Generate graphics commands from scenario FSM used for composition
+
+Generate graphics file
+
+Explore with modified domains, with scenario that allows initial Load only
+
+Generate graphics commands
+
+Generate graphics file
+
+Ditto, change argument order
+
+Generate graphics commands
+
+Generate graphics file
+
+Change argument order again
+
+Generate graphics commands
+
+Generate graphics file
+

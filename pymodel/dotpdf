@@ -1,0 +1,1 @@
+dot -v -Tpdf -o $1.pdf $1.dot

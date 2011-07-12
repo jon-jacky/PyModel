@@ -1,0 +1,47 @@
+add(13,) / (13,)
+add(76,) / (76, 13)
+remove(76,) / (13,)
+remove(13,) / ()
+add(9,) / (9,)
+add(83,) / (9, 83)
+add(76,) / (9, 83, 76)
+remove(76,) / (9, 83)
+add(22,) / (9, 83, 22)
+add(90,) / (9, 90, 83, 22)
+remove(90,) / (9, 83, 22)
+add(93,) / (9, 83, 93, 22)
+remove(22,) / (9, 83, 93)
+add(2,) / (9, 2, 83, 93)
+add(43,) / (9, 2, 83, 93, 43)
+remove(93,) / (9, 2, 83, 43)
+remove(9,) / (2, 83, 43)
+remove(83,) / (2, 43)
+remove(2,) / (43,)
+remove(43,) / ()
+  0. Finished at step 20, reached accepting state
+add(95,) / (95,)
+remove(95,) / ()
+add(83,) / (83,)
+add(66,) / (66, 83)
+remove(66,) / (83,)
+add(58,) / (58, 83)
+  0. Finished at step 6, ended in non-accepting state
+add(43,) / (43,)
+add(72,) / (72, 43)
+remove(72,) / (43,)
+remove(43,) / ()
+add(3,) / (3,)
+remove(3,) / ()
+  1. Finished at step 6, reached accepting state
+add(38,) / (38,)
+remove(38,) / ()
+add(23,) / (23,)
+add(32,) / (32, 23)
+add(51,) / (32, 51, 23)
+remove(32,) / (51, 23)
+  2. Finished at step 6, ended in non-accepting state
+Test finished, completed 3 runs
+pmt.py -s 1 -n 20 populations, use seed so same run each time
+
+pmt.py -s 2 -n 6 populations, use seed so same run each time
+

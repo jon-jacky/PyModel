@@ -1,0 +1,19 @@
+
+C:\Users\jon\Documents\mbt\samples\abp>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\abp>dot -v -Tsvg -o ABP.svg ABP.dot 
+5 states, 13 transitions, 3 accepting states
+
+C:\Users\jon\Documents\mbt\samples\abp>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\abp>dot -v -Tsvg -o ABPFSM.svg ABPFSM.dot 
+Run Pymodel Graphics to generate dot file from FSM model, no need use pma
+
+Generate SVG file from dot
+
+Run PyModel Analyzer to generate FSM from original FSM, should be the same
+
+Run PyModel Graphics to generate a file of graphics commands from new FSM
+
+Generate an svg file from the graphics commands
+

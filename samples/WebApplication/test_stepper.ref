@@ -1,0 +1,78 @@
+Initialize()
+Login('OleBrumm', 'Correct'), 'Success'
+Logout('OleBrumm',)
+Success at step 3, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+Login('OleBrumm', 'Correct'), 'Success'
+Failure at step 3, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',), 1
+Logout('VinniPuhh',)
+Success at step 5, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+UpdateInt('VinniPuhh', 1)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct'), 'Success'
+ReadInt('VinniPuhh',), 1
+Failure at step 6, found 0 in page, expected 1
+Initialize()
+Login('OleBrumm', 'Incorrect'), 'Failure'
+Login('OleBrumm', 'Incorrect'), 'Failure'
+Login('VinniPuhh', 'Incorrect'), 'Failure'
+Login('VinniPuhh', 'Incorrect'), 'Failure'
+Login('VinniPuhh', 'Incorrect'), 'Failure'
+Login('OleBrumm', 'Correct'), 'Success'
+Success at step 7, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+Login('OleBrumm', 'Incorrect'), 'Failure'
+UpdateInt('VinniPuhh', 2)
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',), 1
+UpdateInt('VinniPuhh', 1)
+Login('OleBrumm', 'Incorrect'), 'Failure'
+Login('OleBrumm', 'Correct'), 'Success'
+UpdateInt('OleBrumm', 2)
+Logout('OleBrumm',)
+ReadInt('VinniPuhh',), 1
+Login('OleBrumm', 'Incorrect'), 'Failure'
+Login('OleBrumm', 'Correct'), 'Success'
+UpdateInt('OleBrumm', 1)
+Logout('OleBrumm',)
+UpdateInt('VinniPuhh', 2)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct'), 'Success'
+Login('OleBrumm', 'Correct'), 'Success'
+Failure at step 20, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',), 1
+Logout('VinniPuhh',)
+Success at step 5, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct'), 'Success'
+UpdateInt('VinniPuhh', 1)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct'), 'Success'
+ReadInt('VinniPuhh',), 1
+Failure at step 6, found 0 in page, expected 1
+Test finished, completed 2 runs
+Test: WebModel on-the-fly ends in accepting state, should succeed
+
+Test: WebModel on-the-fly ends in non-accepting state, should fail
+
+Test: TestIntSuccess offline test suite, with Stepper, should succeed
+
+Test: TestIntFailure offline test suite, with Stepper, should fail
+
+Test: TestLoginFiveFailures offline test suite, with Stepper, should succeed
+
+Test: WebModel on-the-fly with all actions, with Stepper, should fail
+
+WebModel TestIntTwoRuns offline test suite with two runs
+

@@ -1,0 +1,119 @@
+Initialize()
+  0. Finished at step 1, no more actions enabled, reached accepting state
+Initialize()
+  0. Finished at step 1, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',) / 1
+Logout('VinniPuhh',)
+  0. Finished at step 5, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+Login('OleBrumm', 'Correct') / 'Success'
+UpdateInt('OleBrumm', 2)
+Logout('OleBrumm',)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+UpdateInt('VinniPuhh', 2)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+  0. Finished at step 10, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 2)
+ReadInt('VinniPuhh',) / 2
+Logout('VinniPuhh',)
+Login('OleBrumm', 'Correct') / 'Success'
+Logout('OleBrumm',)
+Login('VinniPuhh', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Correct') / 'Success'
+UpdateInt('OleBrumm', 1)
+  0. Finished at step 10, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+Login('OleBrumm', 'Correct') / 'Success'
+UpdateInt('OleBrumm', 2)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+UpdateInt('OleBrumm', 1)
+Logout('OleBrumm',)
+UpdateInt('VinniPuhh', 2)
+  0. Finished at step 10, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+Login('OleBrumm', 'Correct') / 'Success'
+UpdateInt('OleBrumm', 2)
+Logout('OleBrumm',)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+UpdateInt('VinniPuhh', 2)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+  0. Finished at step 10, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+Login('OleBrumm', 'Correct') / 'Success'
+UpdateInt('OleBrumm', 2)
+Logout('OleBrumm',)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+UpdateInt('VinniPuhh', 2)
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Logout('VinniPuhh',)
+  0. Finished at step 11, reached accepting state
+Initialize()
+Login('OleBrumm', 'Correct') / 'Success'
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+Logout('OleBrumm',)
+  0. Finished at step 5, ended in non-accepting state
+Initialize()
+Login('OleBrumm', 'Incorrect') / 'Failure'
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 2)
+UpdateInt('VinniPuhh', 2)
+  1. Finished at step 5, ended in non-accepting state
+Initialize()
+Login('VinniPuhh', 'Incorrect') / 'Failure'
+Login('VinniPuhh', 'Correct') / 'Success'
+ReadInt('VinniPuhh',) / 0
+UpdateInt('VinniPuhh', 1)
+  2. Finished at step 5, ended in non-accepting state
+Test finished, completed 3 runs
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',) / 1
+Logout('VinniPuhh',)
+  0. Finished at step 5, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+ReadInt('VinniPuhh',) / 1
+  1. Finished at step 6, no more actions enabled, reached accepting state
+Test finished, completed 2 runs
+WebModel -a option includes only Initialize Action
+
+WebModel -e option excludes Login, Logout actions
+
+WebModel TestIntSuccess offline test suite
+
+WebModel on-the-fly with all actions, default random strategy, shows repeated calls to same action
+
+WebModel on-the-fly with all actions, ActionNameCoverage strategy, shows the same (enabled) action is not repeated more than 2x
+
+WebModel on-the-fly with all actions, StateCoverage strategy, shows Login and UpdateInt actions repeat but with different arguments
+
+WebModel, no -c option, ends in non-accepting state with users logged in
+
+WebModel, with -c option for cleanup, logs off users to reach accepting state
+
+WebModel, with -r --runs option, in each run Initialize is enabled again
+
+WebModel TestIntTwoRuns offline test suite with two runs
+

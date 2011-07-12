@@ -1,0 +1,205 @@
+Notes on tests
+
+These notes explain how to script and run tests on the PyModel
+software itself.  It is not about using PyModel to test other
+programs.  (These notes describe our unit tests, along with our little
+homemade unit testing commands, which are distinct from PyModel.)
+
+Quick Start
+Summary
+Commands and modules
+Test scripts
+Checking test script output
+Testing multiple scripts
+Using other unit testing frameworks
+
+Quick Start
+
+Put the pymodel directory in your execution path.  
+In the pymodel directory, type this command:
+
+ tpath
+
+Then, in each subdirectory of samples, type:
+
+ clogdiff trun.py test
+
+if there are more test*.py files besides test.py, you can run them too:
+
+ clogdiff trun.py test_scenarios
+
+etc.  If messages indicate differences were found, there may be a problem.
+
+
+Summary
+
+commands
+  tpath (or source tpath) - put current directory on PYTHONPATH, needed by trun
+  trun.py test          - execute test script module, output to cmd window
+  clogdiff trun.py test - execute test script, compare output to reference log
+
+pymodel contents 
+  trun.py - executes test script module given as argument
+  tpath.bat - puts . on PYTHONPATH, needed by trun (batch script for Windows)
+  tpath  - ditto, shell script for Unix-like systems
+  clogdiff.bat - compares output to saved reference output, use with trun
+  clogdiff - ditto, shell script for Unix-like
+  
+each model directory: samples\PowerSwitch,  samples\WebApplication\Model, etc.
+  test.py - test script module, executed by trun.py
+  test.log - most recent output from test.py, saved by clogdiff 
+  test.ref - reference output from test.py, saved by hand, used by clogdiff
+  test_scenarios.py - another test script module
+  ...  - etc.
+
+Commands and modules
+
+In these notes, "the foo module" means the Python module in the file
+foo.py.  The "the bar command" means the bar shell script on Unix-like
+systems, and the bar.bat batch command file on Windows.  Both are
+provided; simply invoking "bar" invokes the right command on either
+kind of system.  In general we use Python modules to perform
+operations that can easily be coded in a system-independent way, and
+shell scripts (or batch commands) for operations that require
+particular system commands.
+
+
+Test scripts
+
+The pymodel directory contains a trun module for running test
+scripts.
+
+A test script for trun is another module that MUST contain an
+attribute named cases: the list of test cases, represented by pairs of
+strings.  In each pair, the first string is a description of the test
+case and the second string is the command line that invokes the test
+case.  
+
+Here are the contents of the script in samples\WebApplication\Model\test.py:
+
+cases = [
+ ('Test: -a option includes only Initialize Action',
+  'pct.py -n 10 -a Initialize WebModel'),
+
+ ('Test: -e option excludes all Login, Logout actions',
+  'pct.py -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
+]
+
+The trun module takes one argument, the module name of the script (NOT
+the file name, there is no path prefix or .py suffix).  The trun
+module imports the script, then iterates over the cases list, printing
+each description and invoking each command.
+
+It is typical to put a script named test in each source directory that
+contains modules to test.  This command executes it:
+
+ > trun.py test
+
+For this command to work, the pymodel directory must be on the
+execution PATH.  The current directory must be on the PYTHONPATH.
+This is necessary to enable PyModel tools (such as pmt) in the pymodel
+directory to import modules in the current directory.  The tpath
+command in the pymodel directory assigns the current directory to the
+PYTHONPATH (use 'source tpath' in bash).  It is NOT necessary to
+repeat the tpath command after a change directory command (cd).
+
+
+Checking test script output
+
+Executing a test script typically produces a lot of output.  For
+regression testing, use the clogdiff command in the pymodel directory.
+clogdiff runs a command, collects the output in a log file and
+compares it to a reference log file.  To use it, make a reference log
+file first:
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>trun.py test > test.ref
+
+Then invoke clogdiff:
+
+C:\Users\jon\Documents\mbt\samples\PowerSwitch>clogdiff trun.py test
+Comparing files test.log and TEST.REF
+FC: no differences encountered
+
+The line "no differences encountered" only appears on Windows systems
+(from clogdiff.bat).  On Unix-like systems (including Linux and Mac OS
+X), clogdiff is silent when there are no differences, and only prints
+out any differences that it finds.
+
+Be warned that "clogdiff trun.py test_graphics" writes a lot of output
+to the screen, but on Windows systems the line "FC: no differences
+encountered" should appear at the end. (On Unix-like systems, nothing
+more should appear.)
+
+Be warned that if you use .ref files generated on one system and
+execute clogdiff on another system, differences may be reported even
+when the programs work correctly, in cases where PyModel randomly
+selects actions and action arguments (as it does in many scripts).
+Apparently, the functions from the random module that PyModel uses
+behave differently on different systems, even when started with the
+same seed (the pmt -s option, which is supposed to make the random
+selections repeatable).  In particular, some of the .ref files
+included in the PyModel distribution may cause clogdiff to report
+differences on your system.
+
+If clogdiff reports differences, examine the output (in the .log file)
+to determine whether the differences indicate errors, or are merely
+due to different randomly selected choices on your system.  In the latter
+case, you can recreate the .ref file for your system by copying the
+latest .log file over the .ref file.
+
+In some of the test scripts, the random seed (given in the pmt -s
+option) was chosen (found by trial and error) that results in
+interesting test behavior.  That same seed value might not result in
+such interesting behavior on your system, so you may wish to edit the
+test script to experiment with different seed values.  In some samples
+there are variant test scripts with different seed values.  For
+example in samples/Socket there is test.py, test_windows.py, and
+test_linux.py, along with the corresponding .ref files.
+
+Under Windows, in the .log and .ref files created in this way, the
+output from all the test cases (that is generated by the programs
+under test) appears first in the file, then all the test descriptions
+printed by trun appear after, at the end of the file.  This seems
+weird but doesn't create a problem for the comparison, since both
+files are weird in the same way.
+
+If a test case crashes (raises an unhandled exception) on Windows, the
+traceback goes to the screen, not the log file.  I can't find anything
+in Windows like Unix >& to redirect error output also.
+
+
+Using other unit testing frameworks
+
+Our trun and clogdiff commands, along with our test scripts, comprise
+a very simple homemade unit testing framework, an alternative to the
+popular Python unit test frameworks such as unittest or nose.
+
+We chose to create our own (very simple) unit test framework for this
+project for two reasons:
+
+1. The units we want to test are not function calls or method calls,
+but entire program invocations including command line arguments.
+
+2. The results we want our tests to check are not function or method
+return values, but the entire output from a program run.
+
+The popular unit test frameworks are not so well-suited for this kind
+of test.  However, you can use one of the popular frameworks if you
+prefer, as an alterative to our trun command and our test scripts.
+There is an example in the samples/populations directory.  The module
+test_populations.py there works with unittest to run the same tests
+as in tests.py.  That is, instead of
+
+ trun.py tests  # test with our homemade framework
+
+You can do 
+
+ python test_populations.py -v   # test with unittest
+
+You can see that test_populations.py is more verbose than test.py, and
+the test output is also more verbose (the -v option here just commands
+unittest to print the docstring for each test case).  The
+test_populations.py module merely executes the tests, it does not
+check the results (it uses no assertions).  To check the results, you
+could capture and check the output using our clogdiff command, just as
+you would do with with test.py.

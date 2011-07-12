@@ -1,0 +1,43 @@
+Login('VinniPuhh', 'Correct') / 'Success'
+Logout('VinniPuhh',)
+  0. Finished at step 2, no more actions enabled, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+Logout('VinniPuhh',)
+  0. Finished at step 3, no more actions enabled, reached accepting state
+Login('VinniPuhh', 'Correct') / 'Success'
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+Logout('VinniPuhh',)
+  0. Finished at step 6, reached accepting state
+Initialize()
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 2)
+UpdateInt('VinniPuhh', 2)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+ReadInt('VinniPuhh',) / 2
+UpdateInt('VinniPuhh', 1)
+UpdateInt('VinniPuhh', 1)
+UpdateInt('VinniPuhh', 1)
+UpdateInt('VinniPuhh', 1)
+UpdateInt('VinniPuhh', 2)
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',) / 1
+UpdateInt('VinniPuhh', 1)
+Logout('VinniPuhh',)
+Login('VinniPuhh', 'Correct') / 'Success'
+UpdateInt('VinniPuhh', 1)
+ReadInt('VinniPuhh',) / 1
+ReadInt('VinniPuhh',) / 1
+  0. Finished at step 20, ended in non-accepting state
+ScenarioLogin module by itself
+
+ScenarioLogin composed with WebModel, no -n necessary
+
+OneUserScenario, by itself, -n is necessary but not -s
+
+OneUserScenario composed with WebModel with -n and -s
+

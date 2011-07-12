@@ -1,0 +1,59 @@
+recv_close()
+send_call('bb',)
+send_return(2,)
+send_call('bb',)
+send_return(2,)
+send_call('a',)
+send_return(1,)
+send_call('a',)
+send_return(1,)
+send_close()
+  0. Finished at step 10, no more actions enabled, reached accepting state
+send_call('bb',)
+send_return(2,)
+recv_close()
+send_close()
+  0. Finished at step 4, no more actions enabled, reached accepting state
+recv_close()
+send_call('bb',)
+send_return(2,)
+send_close()
+  0. Finished at step 4, no more actions enabled, reached accepting state
+recv_close()
+send_call('bb',)
+send_return(2,)
+send_close()
+  1. Finished at step 4, no more actions enabled, reached accepting state
+send_call('a',)
+send_return(1,)
+recv_call(4,)
+recv_return(1,) / 'a'
+send_call('bb',)
+send_return(2,)
+recv_close()
+send_close()
+  2. Finished at step 8, no more actions enabled, reached accepting state
+recv_close()
+send_call('a',)
+send_return(1,)
+send_close()
+  3. Finished at step 4, no more actions enabled, reached accepting state
+send_close()
+recv_close()
+  4. Finished at step 2, no more actions enabled, reached accepting state
+send_call('bb',)
+send_return(2,)
+recv_call(4,)
+recv_return(2,) / 'bb'
+send_call('a',)
+send_return(1,)
+send_close()
+recv_close()
+  5. Finished at step 8, no more actions enabled, reached accepting state
+Test finished, completed 6 runs
+Model only, shows interleaving between _call and _return
+
+Compose model with non-blocking scenario that ensures _call then _return
+
+Compose model with scenario, config to make behavior synchronous, deterministic
+

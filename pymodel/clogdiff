@@ -1,0 +1,3 @@
+#!/bin/bash
+$1 $2 > $2.log
+diff -b $2.log $2.ref

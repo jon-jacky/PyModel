@@ -1,0 +1,1 @@
+dot -v -Tps -o $1.ps $1.dot

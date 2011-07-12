@@ -1,0 +1,50 @@
+PyModel Test Harness, or Stepper
+
+To actually execute tests on the implemention, from offline test
+suites or on-the-fly, you must write a test harness in Python that
+couples your implementation to the model through test runner, pmt.
+In PyModel, the test harness is called a "stepper" because it steps
+the implementation one action at a time.
+
+A stepper is written in its own module.  To use that stepper, name that
+module on the pmt command line with the -i or --iut option.
+
+The WebApplication and Socket samples each include a stepper, both
+called Stepper.py.
+
+Each stepper must provide a testAction (or test_action or TestAction)
+method, which is called by the test runner like this:
+
+ failMessage = stepper.testaction(aname, args, modelresult) 
+
+The testaction method takes three arguments: the model's action name
+string, the model's action arguments tuple, and the value returned by
+the model (when executing that action with those arguments), which
+might be None.  The testaction method calls the corresponding
+implementation action with the corresponding implementation arguments.
+The testaction method returns None if the test was successful (the
+implementation executed the action correctly) and returns a (nonempty)
+error message string if the test failed.  So, the stepper must
+translate from the model action to an implementation action (or
+several) and from the model arguments to the implementation arguments.
+Finally, the stepper determines whether the implementation succeeded
+or failed, usually by comparing the model return value to the
+implemenation return value.  The stepper must also handle exceptions
+raised by the implementation (these are often interpreted as failures,
+but need not be).
+
+Each stepper must also provide a Reset (or reset) function (with no
+arguments) that resets the implementation, to support multiple test
+runs in a single pmt session.
+
+There is an important limitation. The current version of the tester is
+synchronous.  That means pmt can only execute traces consisting of
+controllable actions that the tester can call to make the
+implementation do something.
+
+Future versions of the tester will also support observable actions:
+events that the tester can detect in the implementation.
+
+
+Revised May 2011
+

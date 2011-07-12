@@ -1,0 +1,81 @@
+Send(1,)
+Send(1,)
+Ack(1,)
+Send(0,)
+Ack(1,)
+Ack(0,)
+Ack(0,)
+Send(1,)
+Send(1,)
+Send(1,)
+  0. Finished at step 10, ended in non-accepting state
+Send(1,)
+Ack(1,)
+Ack(1,)
+Send(0,)
+Ack(1,)
+Send(0,)
+Send(0,)
+Ack(1,)
+Ack(0,)
+Send(1,)
+  0. Finished at step 10, ended in non-accepting state
+Send(1,)
+Ack(1,)
+Ack(1,)
+Send(0,)
+Ack(1,)
+Send(0,)
+Send(0,)
+Ack(1,)
+Ack(0,)
+Send(1,)
+Ack(1,)
+  0. Finished at step 11, reached accepting state
+Ack(1,)
+Send(1,)
+Send(1,)
+Ack(1,)
+Ack(1,)
+Send(1,)
+Send(0,)
+Ack(0,)
+Ack(0,)
+Send(1,)
+Ack(0,)
+Ack(1,)
+  0. Finished at step 12, reached accepting state
+Ack(1,)
+Send(0,)
+Send(0,)
+Ack(1,)
+Ack(0,)
+  0. Finished at step 5, reached accepting state
+Send(1,)
+Send(0,)
+Ack(1,)
+Ack(1,)
+Send(0,)
+Ack(1,)
+Ack(0,)
+  1. Finished at step 7, reached accepting state
+Send(1,)
+Send(0,)
+Ack(1,)
+Send(0,)
+Send(0,)
+Ack(1,)
+Ack(1,)
+Ack(0,)
+  2. Finished at step 8, reached accepting state
+Test finished, completed 3 runs
+Execute ABP FSM, default RandomStrategy, initial action repeats, subsequent actions can repeat more than 2x
+
+Execute ABP FSM, ActionNameCoverage strategy, initial action does not repeat, subsequent actions do not repeat more than 2x
+
+Same as above, except add -c for cleanup to end in accepting state
+
+Execute ABP FSM, ActionNameCoverage strategy, initial action does not repeat, subsequent actions do not repeat more than 2x
+
+Use -r option for multiple runs, notice each run starts from initial state
+

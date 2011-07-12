@@ -1,0 +1,33 @@
+6 states, 5 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o TestIntSuccessFSM.svg TestIntSuccessFSM.dot 
+2 states, 2 transitions, 1 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserScenarioFSM.svg OneUserScenarioFSM.dot 
+10 states, 20 transitions, 2 accepting states
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
+
+C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o WebModelFSM.svg WebModelFSM.dot 
+TestSuite: generate FSM from scenario
+
+Generate dot
+
+Generate SVG
+
+FSM: Generate FSM from scenario FSM
+
+Generate dot
+
+Generate SVG
+
+Model Program: Generate FSM by exploring WebModel
+
+Generate dot graphics commands
+
+Generate SVG file
+
