@@ -33,7 +33,7 @@ setup(
     description = 'Model-based testing in Python',
     long_description = open('README.rst').read(),
     download_url = 'http://staff.washington.edu/jon/pymodel/www/',
-    license = 'GNU General Public License (GPL)',
+    license = 'BSD License',
 
     keywords = 'model-based testing python model on-the-fly offline composition finite state machine harness stepper automated test run suite oracle nondeterminism synchronizing interleaving strategy coverage protocol trace scenario',
 
@@ -42,7 +42,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Operating System :: Microsoft :: Windows',
