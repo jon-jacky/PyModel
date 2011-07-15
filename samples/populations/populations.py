@@ -27,6 +27,8 @@ def add(ident):
 # so ident can't be drawn from a predefined domain
 
 def remove_enabled(ident):
+    print 'remove_enabled, population: id %s, value %s' % \
+               (id(population), population) #DEBUG
     return ident in population
 
 def remove(ident):

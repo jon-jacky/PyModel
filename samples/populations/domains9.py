@@ -17,3 +17,9 @@ def current_population():
 
 populations.domains = { populations.add: { 'ident': random9 }, # singleton
                         populations.remove: { 'ident': current_population } }
+
+
+# DEBUG
+print 'domains9, remove["ident"]: id %s, value %s' % \
+    (id(populations.domains[populations.remove]['ident']), 
+     populations.domains[populations.remove]['ident'])

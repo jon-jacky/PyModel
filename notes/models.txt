@@ -26,7 +26,7 @@ arguments belong to types that can take on an "infinite" number of
 values, such as numbers, strings, or collections.)
 
 Examples: Marquee/Marquee.py, PowerSwitch/PowerSwitch.py, Stack/Stack.py,
-WebApplication/WebModel.py, Socket/Socket.py
+WebApplication/WebModel.py, Socket/Socket.py, populations/populations.py
 
 Summary: Describes a collection state variables, action functions that
 may update the state variables, and enabling conditions that describe
@@ -73,13 +73,16 @@ cleanup actions
 
 domains: dictionary, associates each action function with a dictionary
 that associates each action argument name (string) with a list of
-argument values.  This list may appear explicitly the in domain, or the
-argument name may be associated with a callable (for example a lambda
-expression or a function) that is evaluated at run time (each time the
-action is used) to return a list of argument values.  This function
-can use the model state, so the arguments can depend on the state.
-The default is the empty dictionary with empty domains.  This is an
-error if actions have arguments.
+argument values.  The default is the empty dictionary with empty
+domains.  This is an error if actions have arguments.
+
+The list of action argument values may appear explicitly the in
+domain, or the argument name may be associated with a callable (for
+example a lambda expression or a function) that is evaluated at run
+time (each time the action is used) to return a collection of argument
+values.  This function can use the model state, so the arguments can
+depend on the state.  See populations/populations.py and
+populations/test/domains9.py for examples of state-dependent domains.
 
 combinations: dictionary, associates each action function with 'all'
 (to form argument lists from the Cartesian product of all the domains)
@@ -233,5 +236,4 @@ list) because it must be hashable (so each action argument must also
 be hashable).
 
 
-Revised May 2011
-
+Revised July 2011
