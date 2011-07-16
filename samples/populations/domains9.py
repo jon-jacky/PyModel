@@ -1,5 +1,5 @@
 """
-PyModel configuration -- functions in domains
+PyModel configuration -- state-dependent domains using functions
 """
 
 import random
@@ -14,12 +14,8 @@ def current_population():
     return populations.population
 
 # each domain must be a collection, or a callable that returns a collection
+# functions here ensure re-evaluation each time domain is needed
+# lambda expressions would also work
 
 populations.domains = { populations.add: { 'ident': random9 }, # singleton
                         populations.remove: { 'ident': current_population } }
-
-
-# DEBUG
-print 'domains9, remove["ident"]: id %s, value %s' % \
-    (id(populations.domains[populations.remove]['ident']), 
-     populations.domains[populations.remove]['ident'])

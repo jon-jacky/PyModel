@@ -27,8 +27,6 @@ def add(ident):
 # so ident can't be drawn from a predefined domain
 
 def remove_enabled(ident):
-    print 'remove_enabled, population: id %s, value %s' % \
-               (id(population), population) #DEBUG
     return ident in population
 
 def remove(ident):
@@ -44,13 +42,10 @@ actions = (add, remove)
 enablers = { add:(add_enabled,), remove:(remove_enabled,)}
 
 # domain must be a collection, or a callable that returns a collection
+# use lambda to ensure that domain is re-evaluated each time it is needed
 
 domains = { add: { 'ident': (lambda: [ random.randint(0,99) ]) }, # singleton
             remove: { 'ident': (lambda: population) } }
-
-# remove domain ensures we only try to remove elements that are in the set
-# in remove, just using { 'ident' : population } doesn't work here, 
-# because population is empty now, when the dictionary is built
 
 def accepting():
     return not population # empty

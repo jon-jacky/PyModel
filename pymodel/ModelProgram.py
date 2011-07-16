@@ -58,11 +58,6 @@ class ModelProgram(object):
                 if callable(self.module.domains[a][arg]) 
                 else self.module.domains[a][arg] # look up static domain
                 for arg in args if a in self.module.domains ]
-
-    # DEBUG
-    print 'make_argslist, a %s, args %s, domains[a][arg]: id %s, value %s' % \
-        (a, args, id(self.module.domains[a][arg]), self.module.domains[a][arg])
-
     combination = self.module.combinations.get(a, 'all')  # default is 'all'
     if combination == 'cases': # as many args as items in smallest domain
       argslists = zip(*domains)
