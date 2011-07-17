@@ -39,7 +39,7 @@ def quote_string(x): # also appears in Analyzer
 def rlabel(result):
     return '/%s' % quote_string(result) if result != None else ''
 
-def transition(t, style):
+def transition(t, style, noTransitionTooltip):
     current, (a, args, result), next = t
     action = '%s%s%s' % (a.__name__, args, rlabel(result))
     if style == 'name':
@@ -48,10 +48,14 @@ def transition(t, style):
         label = '' 
     else: # 'action'
         label = action
-    return '%s -> %s [ label="%s", tooltip="%s" ]' % \
-        (current, next, label, action)
+    if noTransitionTooltip:
+        return '%s -> %s [ label="%s" ]' % \
+            (current, next, label)
+    else:
+        return '%s -> %s [ label="%s", tooltip="%s" ]' % \
+            (current, next, label, action)
 
-def dotfile(fname, fsm, style, noStateTooltip):
+def dotfile(fname, fsm, style, noStateTooltip, noTransitionTooltip):
     f = open(fname, 'w')
     f.write('digraph %s {\n' % os.path.basename(fname).partition('.')[0])
     f.write('\n  // Nodes\n')
@@ -62,6 +66,7 @@ def dotfile(fname, fsm, style, noStateTooltip):
                     + [next for (current,trans,next) in fsm.graph])
         f.writelines([ '  %s ]\n' % node(n,fsm) for n in nodes ])    
     f.write('\n  // Transitions\n')
-    f.writelines([ '  %s\n' % transition(t, style) for t in fsm.graph ])
+    f.writelines([ '  %s\n' % transition(t, style,noTransitionTooltip) 
+                   for t in fsm.graph ])
     f.write('}\n')
     f.close()

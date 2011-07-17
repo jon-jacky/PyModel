@@ -43,6 +43,8 @@ def parse_args():
                       help = 'Transition labels: action, name, or none, default is action')
     parser.add_option('-x', '--noStateTooltip', action="store_true", dest="noStateTooltip", 
                     help = 'Omit tooltips from state bubbles (to work around dot svg problem)')
+    parser.add_option('-y', '--noTransitionTooltip', action="store_true", dest="noTransitionTooltip", 
+                    help = 'Omit tooltips from transition arrows')
     return parser.parse_args()
 
 def print_help():

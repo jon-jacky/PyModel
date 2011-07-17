@@ -15,7 +15,8 @@ def main():
         fsm = __import__(args[0])
         fbasename = options.output if options.output else args[0]
         fname = '%s.dot' % fbasename
-        dotfile(fname, fsm, options.transitionLabels, options.noStateTooltip)
+        dotfile(fname, fsm, options.transitionLabels, options.noStateTooltip,
+                options.noTransitionTooltip)
 
 if __name__ == '__main__':
     main ()

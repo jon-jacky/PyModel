@@ -84,4 +84,16 @@ testsuite = [
     (send_close, ()),
     (recv_close, ()),
   ],
+
+  # Intended success on 128K-char message 
+  # where recv only gets 64K - this can really happen,
+  # should be permitted by model
+  [
+    (send_call, ('a'*2**17,)),
+    (send_return, (2**17,)),
+    (recv_call, (2**17,)),
+    (recv_return, (2**16,), 'a'*2**16),
+    (send_close, ()),
+    (recv_close, ()),
+  ],
 ]
