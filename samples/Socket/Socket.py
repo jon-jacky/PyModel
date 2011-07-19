@@ -89,6 +89,7 @@ def recv_return(msg):
     # n is number of bytes actually read, param. gen. assigns nondetermistically
     global recv_arg, buffers
     recv_arg = 0
+    n = len(msg)
     buffers = buffers[n:]
 
 def recv_close_enabled():

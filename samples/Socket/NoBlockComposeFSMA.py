@@ -55,10 +55,10 @@ graph = (
   (6, (recv_call, (4,), None), 8),
   (6, (send_close, (), None), 9),
   (7, (send_close, (), None), 10),
-  (8, (recv_return, (1,), 'a'), 0),
+  (8, (recv_return, ('a',), None), 0),
   (9, (recv_close, (), None), 10),
   (9, (recv_call, (4,), None), 11),
-  (11, (recv_return, (0,), ''), 12),
-  (11, (recv_return, (1,), 'a'), 2),
+  (11, (recv_return, ('',), None), 12),
+  (11, (recv_return, ('a',), None), 2),
   (12, (recv_close, (), None), 13),
 )
