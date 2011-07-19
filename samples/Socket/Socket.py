@@ -78,18 +78,18 @@ def recv_call(bufsize):
     global recv_arg
     recv_arg = bufsize
 
-def recv_return_enabled(n):
-    return recv_arg and \
-        ((0 < n <= recv_arg and n <= len(buffers)) or (n == 0 and send_closed))
+def recv_return_enabled(msg):
+    n = len(msg)
+    return (recv_arg and 
+            (n <= len(buffers) and msg == buffers[:n] and 0 < n <= recv_arg)
+            or (n == 0 and send_closed))
 
-def recv_return(n):
+def recv_return(msg):
     # msg is the received data, the return value of socket.recv
     # n is number of bytes actually read, param. gen. assigns nondetermistically
     global recv_arg, buffers
     recv_arg = 0
-    msg = buffers[:n]
     buffers = buffers[n:]
-    return msg
 
 def recv_close_enabled():
     return not recv_closed and not recv_arg # no recv is in progress
@@ -117,7 +117,7 @@ enablers = {send_call:(send_call_enabled,),send_return:(send_return_enabled,),
 
 domains = { send_call: {'msg':('a','bb')}, send_return: {'n':(1,2)},
             send_exception: {'exc':'connection aborted'},
-            recv_call: {'bufsize':(4,)}, recv_return: {'n':(0,1,2,3,4)} }
+            recv_call: {'bufsize':(4,)}, recv_return: {'msg':('','a','b','bb')}}
 
 # Restore initial state, needed by test runner for multiple runs
 
