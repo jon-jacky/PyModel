@@ -43,52 +43,94 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     f.write('  [\n')
   isteps = 0  
   failMessage = None # no failMessage indicates success
+  observableAction = None
   infoMessage = ''
   cleanup = False
   maxsteps = options.nsteps
   while options.nsteps == 0 or isteps < maxsteps:
+
     # print 'Current state: %s' % mp.Current() # DEBUG
     # execute test run steps.
     # actions identified by aname (string) at this level, for composition
-    # EnabledTranstions returns: [(aname,args,result,next,properties),...]
-    enabled = mp.EnabledTransitions(cleanup) 
-    (aname, args) = strategy.SelectAction(enabled)
-    # exit conditions
-    if not aname: 
-      if not cleanup:
-        infoMessage = 'no more actions enabled'
-      break   
-    elif cleanup and mp.Accepting():
-      break
-    # execute a step
-    else:
-      isteps = isteps + 1
-      modelResult = mp.DoAction(aname, args) # Execute in model, get result
-      qResult = quote(modelResult)
-      if modelResult != None:
-        print aname if options.quiet else '%s%s / %s' % (aname, args, qResult)
+
+    # observable action
+    if observableAction:
+      (aname, args) = observableAction
+      # print '< test runner gets', observableAction #DEBUG
+      if not mp.ActionEnabled(aname, args):
+        # args here is return value captured from implementation
+        # message should also show *expected* return value in trace
+        failMessage = '%s%s, action not enabled' % (aname, args)
+        break
       else:
-        print aname if options.quiet else '%s%s' % (aname, args)
+        pass # go on, execute observable action in model BUT NOT stepper!
+      # don't forget to reset observableAction
+      
+    # controllable action
+    else: 
+      # EnabledTranstions returns: [(aname,args,result,next,properties),...]
+      enabled = mp.EnabledTransitions(cleanup) 
+      (aname, args) = strategy.SelectAction(enabled)
+      # exit conditions
+      if not aname: 
+        if not cleanup:
+          infoMessage = 'no more actions enabled'
+        break   
+      elif cleanup and mp.Accepting():
+        break
+      else:
+        pass # go on, execute controllable action in model and maybe stepper
+
+    # execute the action in the model and print progress message
+    # any if ...: guard needed here that isn't already handled by breaks above?
+    isteps = isteps + 1
+    modelResult = mp.DoAction(aname, args) # Execute in model, get result
+    qResult = quote(modelResult)
+    if modelResult != None:
+      print aname if options.quiet else '%s%s / %s' % (aname, args, qResult)
+    else:
+      print aname if options.quiet else '%s%s' % (aname, args)
       if options.output:
         if qResult != None:
           f.write('    (%s, %s, %s),\n' % (aname, args, qResult))
         else:
           f.write('    (%s, %s),\n' % (aname, args)) # optional missing result
-      if stepper:
-        # FIXME could add timeout here
+
+    # execute controllable action in the stepper if present
+    if stepper and not observableAction:
+        # Could add timeout here
         try:
           # Execute action in stepper.
-          # Check conformance. If test succeeds, stepper returns None
-          failMessage = stepper.TestAction(aname, args, modelResult) 
-          # Ignore conformance check if model returned None -- ?
-          # failMessage = failMessage if modelResult != None else None
+          result = stepper.TestAction(aname, args, modelResult)
+          # stepper returns None to indicate success
+          if result == None: 
+            failMessage = None
+            observableAction = None # must assign in every branch
+          # stepper returns string to indicate failure
+          elif isinstance(result, str):  
+            failMessage = result
+            observableAction = None
+          # stepper returns tuple (aname, args) to indicate observable action
+          elif (result and isinstance(result, tuple) # tuple could be empty
+	        and result[0] in mp.observables):    # result[0] is aname
+            failMessage = None
+            observableAction = result
+          # anything else indicates an error in the stepper
+          else:
+            failMessage = 'stepper returned unintelligible result: %s' % result
+            observableAction = None
         except BaseException as e:
           traceback.print_exc() # looks just like unhandled exception
           failMessage = 'stepper raised exception: %s, %s' % \
               (e.__class__.__name__, e)
-      if failMessage:
-        break 
+          observableAction = None # make sure this is assigned on all branches
+        if failMessage:
+          break 
+    # not stepper or observable action
+    else:
+      observableAction = None # must reset
       # end executing a step
+
     # begin cleanup phase
     if isteps == options.nsteps:
       cleanup = True

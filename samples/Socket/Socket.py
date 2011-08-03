@@ -81,8 +81,8 @@ def recv_call(bufsize):
 def recv_return_enabled(msg):
     n = len(msg)
     return (recv_arg and 
-            (n <= len(buffers) and msg == buffers[:n] and 0 < n <= recv_arg)
-            or (n == 0 and send_closed))
+            ((n <= len(buffers) and msg == buffers[:n] and 0 < n <= recv_arg)
+             or (n == 0 and send_closed)))
 
 def recv_return(msg):
     # msg is the received data, the return value of socket.recv

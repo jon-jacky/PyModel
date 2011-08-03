@@ -11,7 +11,7 @@ testSuite = [
     (send_call, ('a'*16,), None),
     (send_return, (16,), None),
     (recv_call, (16,), None),
-    (recv_return, (16,), 'a'*15 + 'b'), # failure expected, wrong char at end
+    (recv_return, ('a'*15 + 'b',), None), # failure expected, wrong char at end
     (send_close, (), None),
     (recv_close, (), None),
   ],

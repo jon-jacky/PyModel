@@ -102,18 +102,18 @@ def testaction(aname, args, modelResult):
     (bufsize,) = args
 
   elif aname == 'recv_return':
-    (n,) = args
+    (msg,) = args 
     data = server.recv(bufsize)
-    if data != modelResult:
+    if data != msg: # now msg is like old modelresult
       # wrapped failMessage should fit on two 80 char lines, 
       # failMessage prefix from pmt is 20 char, fixed text here is > 32 char
       maxlen = 40 # max number of chars from msg to print in failMessage
       nd = len(data)
-      nm = len(modelResult)
+      nm = len(msg)
       sdata =  data if nd <= maxlen \
           else data[:maxlen/2] + '...' + data[-maxlen/2:]
-      smodel =  modelResult if nm <= maxlen \
-          else modelResult[:maxlen/2] + '...' + modelResult[-maxlen/2:]
+      smodel =  msg if nm <= maxlen \
+          else msg[:maxlen/2] + '...' + msg[-maxlen/2:]
       return 'recv returned %s (%s), expected %s (%s)' % (sdata, nd, smodel, nm)
 
   elif aname == 'recv_close':
