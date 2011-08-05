@@ -47,11 +47,13 @@ def RunTest(options, mp, stepper, strategy, f, krun):
   infoMessage = ''
   cleanup = False
   maxsteps = options.nsteps
+
+  # execute test run steps
   while options.nsteps == 0 or isteps < maxsteps:
 
-    # print 'Current state: %s' % mp.Current() # DEBUG
-    # execute test run steps.
+    # execute one test run step.
     # actions identified by aname (string) at this level, for composition
+    # print 'Current state: %s' % mp.Current() # DEBUG
 
     # observable action
     if observableAction:
@@ -59,12 +61,12 @@ def RunTest(options, mp, stepper, strategy, f, krun):
       # print '< test runner gets', observableAction #DEBUG
       if not mp.ActionEnabled(aname, args):
         # args here is return value captured from implementation
-        # message should also show *expected* return value in trace
+        # might be more helpful to also show expected return value here
         failMessage = '%s%s, action not enabled' % (aname, args)
         break
       else:
         pass # go on, execute observable action in model BUT NOT stepper!
-      # don't forget to reset observableAction
+      # don't forget to reset observableAction at the bottom of while body
       
     # controllable action
     else: 
@@ -82,7 +84,6 @@ def RunTest(options, mp, stepper, strategy, f, krun):
         pass # go on, execute controllable action in model and maybe stepper
 
     # execute the action in the model and print progress message
-    # any if ...: guard needed here that isn't already handled by breaks above?
     isteps = isteps + 1
     modelResult = mp.DoAction(aname, args) # Execute in model, get result
     qResult = quote(modelResult)
@@ -98,44 +99,41 @@ def RunTest(options, mp, stepper, strategy, f, krun):
 
     # execute controllable action in the stepper if present
     if stepper and not observableAction:
-        # Could add timeout here
+        failMessage = None
+        observableAction = None
         try:
-          # Execute action in stepper.
+          # Execute action in stepper.  Would like to add timeout here.
           result = stepper.TestAction(aname, args, modelResult)
           # stepper returns None to indicate success
           if result == None: 
-            failMessage = None
-            observableAction = None # must assign in every branch
+            pass # success, go on to next step
           # stepper returns string to indicate failure
           elif isinstance(result, str):  
-            failMessage = result
-            observableAction = None
+            failMessage = result # failure, prepare to print message
           # stepper returns tuple (aname, args) to indicate observable action
           elif (result and isinstance(result, tuple) # tuple could be empty
 	        and result[0] in mp.observables):    # result[0] is aname
-            failMessage = None
-            observableAction = result
-          # anything else indicates an error in the stepper
+            observableAction = result # stepper returned observable action
+          # any other kind of result indicates an error in the stepper
           else:
             failMessage = 'stepper returned unintelligible result: %s' % result
-            observableAction = None
         except BaseException as e:
           traceback.print_exc() # looks just like unhandled exception
           failMessage = 'stepper raised exception: %s, %s' % \
               (e.__class__.__name__, e)
-          observableAction = None # make sure this is assigned on all branches
         if failMessage:
           break 
     # not stepper or observable action
     else:
-      observableAction = None # must reset
-      # end executing a step
+      observableAction = None # must reset in all paths through while body
 
     # begin cleanup phase
     if isteps == options.nsteps:
       cleanup = True
       maxsteps += options.cleanupSteps
-    # end while executing test run steps
+
+    # end one test run step      
+  # end while executing test run steps
 
   # Print test run outcome, including explanation and accepting state status
   acceptMsg = 'reached accepting state' if mp.Accepting() else \
