@@ -43,9 +43,10 @@ class FSM(object):
     """
     action a with args is enabled in the current state
     """
-    graph = CleanupGraph(cleanup)
+    # no cleanup check here
     return any([(a == action and args == arguments)
-                for (current,(action, arguments, result),next) in graph
+                for (current,(action, arguments, result),next) 
+                in self.module.graph
                 if current == self.current ])
 
   def EnabledTransitions(self, cleanup=False):
