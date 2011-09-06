@@ -102,7 +102,7 @@ def RunTest(options, mp, stepper, strategy, f, krun):
         failMessage = None
         observableAction = None
         try:
-          # Execute action in stepper.  Would like to add timeout here.
+          # Execute action in stepper.  Would like to add timeout here, later
           result = stepper.TestAction(aname, args, modelResult)
           # stepper returns None to indicate success
           if result == None: 
