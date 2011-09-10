@@ -116,7 +116,7 @@ def RunTest(options, mp, stepper, strategy, f, krun):
             observableAction = result # stepper returned observable action
           # any other kind of result indicates an error in the stepper
           else:
-            failMessage = 'stepper returned unintelligible result:', result
+            failMessage = 'stepper returned unhandled result: %s' % (result,)
         except BaseException as e:
           traceback.print_exc() # looks just like unhandled exception
           failMessage = 'stepper raised exception: %s, %s' % \
