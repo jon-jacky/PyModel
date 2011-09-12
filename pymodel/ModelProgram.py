@@ -109,9 +109,20 @@ class ModelProgram(object):
     """
     action a with args is enabled in the current state
     """
-    return (a not in self.module.enablers 
-            or self.module.enablers[a][0](*args))
-            # Assumes enablers[a] has only one item, always true in this version
+    if a not in self.module.enablers:
+      return True
+    else:
+      # Assumes enablers[a] has only one item, always true in this version
+      a_enabled = self.module.enablers[a][0]
+      nparams = len(inspect.getargspec(a_enabled)[0])
+      nargs = len(args)
+      if nparams != nargs:
+        print 'Error: %s needs %s arguments, got %s.  Check parameter generator.' %\
+            (a_enabled.__name__, nparams, nargs)
+        sys.exit(1) # Don't return, just exit with error status
+      else:
+        return a_enabled(*args)
+
 
   def Transitions(self, actions, argslists): 
     """
