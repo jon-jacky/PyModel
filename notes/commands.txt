@@ -25,6 +25,9 @@ PyModel also provides these programs and scripts:
  dotps: converts dot file output from pmg.py to PostScript file that can be 
          printed or displayed in PostScript viewer.
 
+ dotpdf: converts dot file output from pmg.py to PDF file that can be 
+         printed or displayed in a PDF viewer.
+
  trun.py: runs sample demonstrations and scripts that test PyModel itself.
 
  clogdiff: works with trun.py to execute and check regression tests on PyModel.
@@ -90,12 +93,12 @@ Control clutter in the graph with the -l --transitionLabels option.
 -l name shows only the action name, and -l none shows no labels.
 
 In the generated graphics, the initial state is gray.  Accepting
-states have a double border.  Unexplored or incompletely explored
-states are orange (these may have outgoing transitions that are not
-shown).  Terminal states (with no outgoing transitions) that are
-accepting states are green.  Terminal states that are not accepting
-states are yellow; runs that end in these states are considered
-failures.
+states have a double border.  Unsafe states are red.  Unexplored or
+incompletely explored states are orange (these may have outgoing
+transitions that are not shown).  Terminal states (with no outgoing
+transitions) that are accepting states are green.  Terminal states
+that are not accepting states are yellow; runs that end in these
+states are considered failures.
 
 In the browser, hover the pointer over a state to display a tooltip
 that shows the state variables and their values.  Place the point of
@@ -167,4 +170,4 @@ Options:
                         reproducible
 
 
-Revised July 2011
+Revised May 2012
