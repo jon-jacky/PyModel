@@ -2,7 +2,7 @@
 Microwave oven - UNSAFE version
 Safety requirement: the power should only be on when the door is closed 
 Using implication operator => :  power == 'On' => door == 'Closed'
-Use p => q  ==  (not p) or q: power == 'Off' or door == 'Closed'
+No built-in => operator, use equivalent: power == 'Off' or door == 'Closed'
 """
 
 ### Model
@@ -56,9 +56,12 @@ actions = { on, off, open, close }
 enablers = { on:(on_enabled,), off:(off_enabled,),
              open:(open_enabled,), close:(close_enabled,)}
 
-def StateInvariant():
+def state_invariant():
     """
-    power == 'On' => door == 'Closed'
+    Safety requirement: power == 'On' => door == 'Closed'
     """
     # p => q can be expressed:  not p or q
-    power == 'Off' or door == 'Closed'
+    return power == 'Off' or door == 'Closed'
+
+def accepting():
+    return power == 'Off' and door == 'Closed'

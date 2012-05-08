@@ -24,6 +24,10 @@ class ModelProgram(object):
       self.module.StateFilter = self.module.statefilter
     if hasattr(self.module, 'state_filter'):
       self.module.StateFilter = self.module.state_filter
+    if hasattr(self.module, 'stateinvariant'):
+      self.module.StateInvariant = self.module.stateinvariant
+    if hasattr(self.module, 'state_invariant'):
+      self.module.StateInvariant = self.module.state_invariant
     if hasattr(self.module, 'reset'):
       self.module.Reset = self.module.reset
 
@@ -40,6 +44,8 @@ class ModelProgram(object):
       self.module.Accepting = self.TrueDefault
     if not hasattr(self.module, 'StateFilter'):
       self.module.StateFilter = self.TrueDefault
+    if not hasattr(self.module, 'StateInvariant'):
+      self.module.StateInvariant = self.TrueDefault
     if not hasattr(self.module, 'observables'):
       self.module.observables = tuple() # no observable actions
 
@@ -96,7 +102,8 @@ class ModelProgram(object):
 
   def Properties(self):
     return  { 'accepting': self.module.Accepting(),
-              'statefilter': self.module.StateFilter() }
+              'statefilter': self.module.StateFilter(),
+              'stateinvariant': self.module.StateInvariant() }
 
   def Reset(self):
     try:

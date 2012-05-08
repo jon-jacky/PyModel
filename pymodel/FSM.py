@@ -19,7 +19,8 @@ class FSM(object):
                        self.module.graph]))
 
   def make_properties(self, state):
-    return { 'accepting': state in self.module.accepting, 'statefilter': True }
+    return { 'accepting': state in self.module.accepting, 'statefilter': True,
+             'stateinvariant': True }
 
   def Properties(self):
     return self.make_properties(self.current)

@@ -19,13 +19,14 @@ frontier = list() # unexplored states in graph, may add more transitions
 finished = list() # terminal states that are accepting states
 deadend = list() # terminal states that are not accepting states
 runstarts = list() # initial states of test runs after the first, if any
+unsafe = list()
 
 graph = list() # a set (no dups) but we want a sequence to see them in order
 
 def explore(mp, maxTransitions):
     # some globals may not be needed; code only mutates collection *contents*, 
     # as in finished, deadend
-    global anames, states, graph, accepting, frontier
+    global anames, states, graph, accepting, frontier, unsafe
     anames = mp.anames
     explored = list() 
     fsm = list() # list of transitions with mp states not state numbers
@@ -38,6 +39,8 @@ def explore(mp, maxTransitions):
       runstarts.append(iInitial)
       if mp.Accepting(): # initial state might be accepting even if no trans'ns
         accepting.append(iInitial)
+      if not mp.StateInvariant():
+        unsafe.append(iInitial)
       while frontier:
         if len(graph) == maxTransitions:
             break
@@ -74,9 +77,13 @@ def explore(mp, maxTransitions):
                     graph.append((icurrent, (aname,args,result), inext)) #tuple
                     if mp.Accepting() and icurrent not in accepting:
                         accepting.append(icurrent)
+                    if not mp.StateInvariant() and icurrent not in unsafe:
+                        unsafe.append(icurrent)
                     if next_properties['accepting'] and inext not in accepting:
                         accepting.append(inext)
-                    # TK likewise unsafe states, dead states
+                    if not next_properties['stateinvariant'] and inext not in unsafe:
+                        unsafe.append(inext)
+                    # TK likewise dead states ... ?
             else: # found transition that will not be included in graph
                 frontier.insert(0,current) # not completely explored after all
                 # explored.remove(current) # not necessary
@@ -102,7 +109,6 @@ def actiondef(aname):
 def state(i, state):
     return '%s : %s,' % (i, state)
 
-
 def initial_state(): # all FSMs
     return 'initial = %s' % initial
 
@@ -121,6 +127,9 @@ def finished_states():
 def deadend_states():
     return 'deadend = %s' % deadend
 
+def unsafe_states():
+    return 'unsafe = %s' % unsafe
+
 def quote_string(x): # also appears in Dot
     if isinstance(x,tuple):
         return str(x)
@@ -137,8 +146,8 @@ def save(name):
     f = open("%s.py" % name, 'w')
     f.write('\n# %s' % os.path.basename(sys.argv[0])) # echo command line ...
     f.write(' %s\n' % ' '.join(['%s' % arg for arg in sys.argv[1:]])) # ...etc.
-    f.write('# %s states, %s transitions, %s accepting states, %s finished and %s deadend states\n' % \
-            (len(states),len(graph),len(accepting),len(finished),len(deadend)))
+    f.write('# %s states, %s transitions, %s accepting states, %s unsafe states, %s finished and %s deadend states\n' % \
+            (len(states),len(graph),len(accepting),len(unsafe),len(finished),len(deadend)))
     f.write('\n# actions here are just labels, but must be symbols with __name__ attribute\n\n')
     f.writelines([ actiondef(aname)+'\n' for aname in anames ])
     f.write('\n# states, key of each state here is its number in graph etc. below\n\n')
@@ -146,9 +155,10 @@ def save(name):
     for i,s in enumerate(states):
         f.write('  %s\n' % state(i,s))
     f.write('}\n')
-    f.write('\n# initial state, accepting states, frontier states, deadend states\n\n')
+    f.write('\n# initial state, accepting states, unsafe states, frontier states, deadend states\n\n')
     f.write('%s\n' % initial_state())
     f.write('%s\n' % accepting_states())
+    f.write('%s\n' % unsafe_states())
     f.write('%s\n' % frontier_states())
     f.write('%s\n' % finished_states())
     f.write('%s\n' % deadend_states())

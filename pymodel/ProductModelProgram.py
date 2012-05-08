@@ -214,6 +214,9 @@ class ProductModelProgram(object):
   
   def Accepting(self):
     return self.Properties()['accepting']
+  
+  def StateInvariant(self):
+    return self.Properties()['stateinvariant']
 
   # lots of nearly-repeated code in next two methods, can we streamline ... ?
 
@@ -225,7 +228,9 @@ class ProductModelProgram(object):
              # all mp in the current state are in their accepting states
              all([ m.Properties()['accepting'] for m in self.mp.values() ]),
              'statefilter': 
-             all([ m.Properties()['statefilter'] for m in self.mp.values() ])
+             all([ m.Properties()['statefilter'] for m in self.mp.values() ]),
+             'stateinvariant': 
+             all([ m.Properties()['stateinvariant'] for m in self.mp.values() ])
              } 
   
   def NextProperties(self, next_properties):
@@ -236,7 +241,9 @@ class ProductModelProgram(object):
              # all mp in the next state are in their accepting states
              all([ next_properties[m]['accepting'] for m in next_properties]),
              'statefilter': 
-             all([ next_properties[m]['statefilter'] for m in next_properties])
+             all([ next_properties[m]['statefilter'] for m in next_properties]),
+             'stateinvariant': 
+             all([ next_properties[m]['stateinvariant'] for m in next_properties])
              }
 
   def DoAction(self, aname, args):

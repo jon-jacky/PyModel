@@ -35,7 +35,8 @@ class TestSuite(object):
     return (self.pc == length)
 
   def make_properties(self, accepting):
-    return  { 'accepting': accepting, 'statefilter': True }
+    return  { 'accepting': accepting, 'statefilter': True,
+              'stateinvariant': True }
 
   def Properties(self):
     return self.make_properties(self.Accepting())

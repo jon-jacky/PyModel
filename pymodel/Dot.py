@@ -6,17 +6,20 @@ import os.path
 
 def node(n, fsm):
     try: # FSM modules written by PyModel Analyzer have frontier attribute etc.
+        unsafe = fsm.unsafe
         frontier = fsm.frontier
         finished = fsm.finished
         deadend = fsm.deadend
         runstarts = fsm.runstarts
     except AttributeError: # FSM modules written by hand may not have these
+        unsafe = list()
         frontier = list()
         finished = list()
         deadend = list()
         runstarts = list()
     return '%s [ style=filled, shape=ellipse, peripheries=%s, fillcolor=%s' % \
         (n, 2 if n in fsm.accepting else 1, # peripheries
+         'red' if n in unsafe else 
          'orange' if n in frontier else # high priority, analysis inconclusive
          'yellow' if n in deadend else
          'lightgreen' if n in finished else
