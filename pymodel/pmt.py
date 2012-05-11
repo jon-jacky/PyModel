@@ -109,6 +109,8 @@ def RunTest(options, mp, stepper, strategy, f, krun):
         observableAction = None
         try:
           if options.timeout:
+            # docs.python.org/library/signal says Availability: Unix
+            # tested on Mac OS X, might not work on Windows
             signal.alarm(options.timeout) # schedule timeout
           # Execute action in stepper
           result = stepper.TestAction(aname, args, modelResult)
@@ -206,7 +208,7 @@ def main():
 
   if options.timeout:
     signal.signal(signal.SIGALRM, timeout_handler)
-    print 'SIGALRM handler is now %s' % signal.getsignal(signal.SIGALRM)
+    #print 'SIGALRM handler is now %s' % signal.getsignal(signal.SIGALRM)
 
   k = 0
   while k < options.nruns or options.nruns == 0 or mp.TestSuite:
