@@ -8,11 +8,17 @@ import sys
 import imp
 import pdb # can optionally run in debugger, see main
 import random
+import signal
 import traceback
 import TesterOptions
 
 from ProductModelProgram import ProductModelProgram
 
+class TimeoutException(Exception): 
+  pass 
+
+def timeout_handler(signum, frame):
+  raise TimeoutException()
 
 def SelectAction(enabled):
   """
@@ -102,8 +108,11 @@ def RunTest(options, mp, stepper, strategy, f, krun):
         failMessage = None
         observableAction = None
         try:
-          # Execute action in stepper.  Would like to add timeout here, later
+          if options.timeout:
+            signal.alarm(options.timeout) # schedule timeout
+          # Execute action in stepper
           result = stepper.TestAction(aname, args, modelResult)
+          signal.alarm(0) # cancel timeout
           # stepper returns None to indicate success
           if result == None: 
             pass # success, go on to next step
@@ -194,6 +203,10 @@ def main():
     f.write('\n# action symbols\n')
     f.write('actions = (%s)\n' % ', '.join([ aname for aname in mp.anames]))
     f.write('\ntestSuite = [\n')
+
+  if options.timeout:
+    signal.signal(signal.SIGALRM, timeout_handler)
+    print 'SIGALRM handler is now %s' % signal.getsignal(signal.SIGALRM)
 
   k = 0
   while k < options.nruns or options.nruns == 0 or mp.TestSuite:

@@ -8,9 +8,8 @@ actions = (sleep,)
 
 testSuite = [
     [
-        (sleep, (2,), None),
-        (sleep, (5,), None),
-        (sleep, (10,), None),
-        (sleep, (20,), None)
+        (sleep, (2,)),
+        (sleep, (5,)),
+        (sleep, (10,))
      ]
 ]

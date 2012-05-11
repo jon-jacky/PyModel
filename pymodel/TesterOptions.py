@@ -49,9 +49,9 @@ def parse_args():
                   help = 'Number of test runs, default 1, 0 for no limit')
   parser.add_option('-s', '--seed', type="int", default=0, 
                   help = 'Random seed, use any nonzero value to make runs reproducible')
-  # timeout not yet working, comment out for now
-  # parser.add_option('-t', '--timeout', type="int", default=0, 
-  #              help = 'Number of seconds to wait for stepper to return from action before timing out and failing test, default 0 (no timeout, wait forever)')
+
+  parser.add_option('-t', '--timeout', type="int", default=0, 
+                  help = 'Number of seconds to wait for stepper to return from action before timing out and failing test, default 0 (no timeout, wait forever)')
   return parser.parse_args()
 
 def print_help():
