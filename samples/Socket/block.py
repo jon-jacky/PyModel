@@ -1,8 +1,8 @@
 """
 Test runs with sequences of blocking calls represented by split actions.
-Should be permitted by model, but can't be executed by synchronous stepper.
+Blocking occurs whenever _call is not immediately followed by its _return
 
-These runs use domains defined in send_aa
+These runs use domains defined in send_aa.py configuration file
 """
 
 from Socket import *
@@ -35,11 +35,27 @@ testsuite = [
         (send_return, (n2,)),
         (send_call, (aa,)),
         # sender blocks here
+
         (recv_call, (n1,)),
         (recv_return, (a,)),
         (recv_call, (n1,)),
         (recv_return, (a,)),
         (send_return, (n2,)),
+        # sender unblocks here
+
+        (recv_call, (n1,)),
+        (recv_return, (a,)),
+        (recv_call, (n1,)),
+        (recv_return, (a,)),
+        (recv_call, (n1,)),
+        # receiver blocks here
+
+        
+        (send_call, (aa,)),
+        (send_return, (n2,)),
+        (recv_return, (a,)),
+        # receive unblocks here
+
         (send_close, ()),
         (recv_close, ()),
         ]
