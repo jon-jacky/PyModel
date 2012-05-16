@@ -7,12 +7,12 @@ These runs use domains defined in send_aa
 
 from Socket import *
 
-n1 = 1
-n2 = 2
+#n1 = 1
+#n2 = 2
 
 # large enough to block on send
-#n1 = 2**18
-#n2 = 2*n1
+n1 = 2**18
+n2 = 2*n1
 
 a = 'a'*n1
 aa = 'a'*n2
