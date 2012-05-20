@@ -70,8 +70,8 @@ class ProductModelProgram(object):
     # observables obtain arg values from the environment, not parameter gen.
     self.observables = set().union(*[set([a.__name__ 
                                           for a in mp.module.observables])
-                                     for mp in self.mp.values()
-                                     if isinstance(mp, ModelProgram)])    
+                                     for mp in self.mp.values()])
+                                     # FSM and TestSuite must have .observables
     # print 'observables %s' % self.observables # DEBUG
 
     # dict from aname to set of all m where aname is in vocabulary

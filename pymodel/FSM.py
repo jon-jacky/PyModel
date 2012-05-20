@@ -7,12 +7,15 @@ class FSM(object):
   def __init__(self, module):
     self.module = module
     self.current = self.module.initial # raise exception if module is not FSM
+    # assign defaults to optional attributes
     if not hasattr(self.module, 'actions'):
       self.actions = self.actions_in_graph() # default
     else:
       self.actions = self.module.actions # not a copy, no include/exclude
     if not hasattr(self.module, 'cleanup'):
       self.module.cleanup = tuple() # else just use the ones already there
+    if not hasattr(self.module, 'observables'):
+      self.module.observables = tuple() # no observable actions
 
   def actions_in_graph(self):
     return tuple(set([ action for (current, (action,args,result), next) in 

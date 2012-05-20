@@ -17,6 +17,8 @@ n2 = 2*n1
 a = 'a'*n1
 aa = 'a'*n2
 
+observables = (send_return, recv_return)
+
 testsuite = [
 
     # Based on session in two windows where both ends occassionally block

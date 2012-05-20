@@ -9,4 +9,7 @@ cases = [
 
     ('Test suite with model',
      'pmt.py -q block send_aa Socket'),
+
+    ('Test suite with model and stepper_o, should block then time out',
+     'pmt.py block send_aa observables -i stepper_o -q -t 5')
 ]

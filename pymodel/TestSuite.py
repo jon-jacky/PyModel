@@ -15,6 +15,10 @@ class TestSuite(object):
     if hasattr(self.module, 'test_suite'):
       self.module.testSuite = self.module.test_suite
 
+    # assign defaults to optional attributes
+    if not hasattr(self.module, 'observables'):
+      self.module.observables = tuple() # no observable actions
+
     self.testSuite = self.module.testSuite # exception if module not TestSuite
     self.irun = 0 # index of current test run in test suite
     self.pc = 0 # program counter
@@ -22,6 +26,7 @@ class TestSuite(object):
       self.actions = self.module.actions # not a copy, no include/exclude
     else:
       self.actions = self.actions_in_suite() # default
+
 
   def actions_in_suite(self):
     # there might be two or three items in action_tuple
