@@ -11,6 +11,7 @@ import random
 import signal
 import traceback
 import TesterOptions
+from observation_queue import observation_queue
 
 from ProductModelProgram import ProductModelProgram
 
@@ -49,7 +50,7 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     f.write('  [\n')
   isteps = 0  
   failMessage = None # no failMessage indicates success
-  observableAction = None
+  observable_action = False
   infoMessage = ''
   cleanup = False
   maxsteps = options.nsteps
@@ -62,9 +63,10 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     # print 'Current state: %s' % mp.Current() # DEBUG
 
     # observable action
-    if observableAction:
-      (aname, args) = observableAction
-      # print '< test runner gets', observableAction #DEBUG
+    if observation_queue: # if queue not empty
+      (aname, args) = observation_queue.popleft()
+      observable_action = True
+      # print '< test runner gets', (aname, args)
       if not mp.ActionEnabled(aname, args):
         # args here is return value captured from implementation
         # might be more helpful to also show expected return value here
@@ -72,7 +74,7 @@ def RunTest(options, mp, stepper, strategy, f, krun):
         break
       else:
         pass # go on, execute observable action in model BUT NOT stepper!
-      # don't forget to reset observableAction at the bottom of while body
+      # don't forget to reset observable_action at the bottom of while body
       
     # controllable action
     else: 
@@ -104,9 +106,8 @@ def RunTest(options, mp, stepper, strategy, f, krun):
           f.write('    (%s, %s),\n' % (aname, args)) # optional missing result
 
     # execute controllable action in the stepper if present
-    if stepper and not observableAction:
+    if stepper and not observable_action:
         failMessage = None
-        observableAction = None
         try:
           if options.timeout:
             # docs.python.org/library/signal says Availability: Unix
@@ -121,11 +122,8 @@ def RunTest(options, mp, stepper, strategy, f, krun):
           # stepper returns string to indicate failure
           elif isinstance(result, str):  
             failMessage = result # failure, prepare to print message
-          # stepper returns tuple (aname, args) to indicate observable action
-          elif (result and isinstance(result, tuple) # tuple could be empty
-	        and result[0] in mp.observables):    # result[0] is aname
-            observableAction = result # stepper returned observable action
-          # any other kind of result indicates an error in the stepper
+          # stepper may append observable action to observation_queue
+          #  if so, will be detected by if observation_queue: at top of loop
           else:
             failMessage = 'stepper returned unhandled result: %s' % (result,)
         except BaseException as e:
@@ -134,9 +132,10 @@ def RunTest(options, mp, stepper, strategy, f, krun):
               (e.__class__.__name__, e)
         if failMessage:
           break 
-    # not stepper or observable action
+    # not stepper or observable_action
     else:
-      observableAction = None # must reset in all paths through while body
+      observable_action = False # must reset in all paths through while body
+
 
     # begin cleanup phase
     if isteps == options.nsteps:

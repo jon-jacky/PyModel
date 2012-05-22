@@ -21,6 +21,7 @@ Example: pmt.py -i stepper_o Socket SendAll NoBlockScenario
 """
 
 import socket
+from observation_queue import observation_queue
 
 # Default configuration, may rebind below
 
@@ -80,8 +81,9 @@ def test_action(aname, args, modelResult):
   if aname == 'send_call':
     (msg,) = args # extract msg from args tuple, like msg = args[0]
     nchars = client.send(msg)
-    # construct and return send_return action with nchars arg
-    return ('send_return', (nchars,)) # pmt has (aname, args) = obsv_action
+    # append result to observation queue
+    observation_queue.append(('send_return', (nchars,)))
+    return None # pmt will check observation_queue
 
   elif aname == 'send_close':
     client.close()
@@ -91,7 +93,8 @@ def test_action(aname, args, modelResult):
   elif aname == 'recv_call':
     (bufsize,) = args
     data = server.recv(bufsize)
-    return ('recv_return', (data,))
+    observation_queue.append(('recv_return', (data,)))
+    return None
 
   elif aname == 'recv_close':
     server.close()
@@ -107,6 +110,7 @@ def reset():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   client.connect(('localhost', port))
   server, addr = listener.accept()
+  observation_queue.clear()
   print 'Server accepted from ', addr
 
 
