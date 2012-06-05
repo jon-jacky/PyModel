@@ -6,16 +6,19 @@ In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
 
 In the test_action branch for each controllable action, the code for
-the _call action constructs and returns the observed _return action,
-which may include nondeterministic return values.
+the _call action constructs the observed _return action, which may
+include nondeterministic return values.  It appends the _return action
+to the observation queue.
 
-Then pmt calls the model to determine whether the observed _return
-action is enabled.  So pmt + model determines whether the test passed
-or failed.  This simplifies the stepper (compare test_action branch
-for recv_call/return here to Stepper.py).
+Then pmt pops the _return action from the observation queue, then
+calls the model to determine whether the observed _return action is
+enabled.  So pmt + model determines whether the test passed or failed.
+This simplifies the stepper (compare test_action branch for
+recv_call/return here to Stepper.py).
 
-This stepper is still synchronous - each _call action must be followed
-by its _return action, other behavior is a test failure.
+This stepper is still synchronous - each _call action must be
+immediately followed by its _return action, otherwise the call to
+test_action will block.
 
 Example: pmt.py -i stepper_o Socket SendAll NoBlockScenario
 """
