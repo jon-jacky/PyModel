@@ -115,7 +115,8 @@ def RunTest(options, mp, stepper, strategy, f, krun):
             signal.alarm(options.timeout) # schedule timeout
           # Execute action in stepper
           result = stepper.TestAction(aname, args, modelResult)
-          signal.alarm(0) # cancel timeout
+          if options.timeout:
+            signal.alarm(0) # cancel timeout
           # stepper returns None to indicate success
           if result == None: 
             pass # success, go on to next step
