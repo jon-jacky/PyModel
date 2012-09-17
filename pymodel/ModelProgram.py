@@ -123,13 +123,16 @@ class ModelProgram(object):
       a_enabled = self.module.enablers[a][0]
       nparams = len(inspect.getargspec(a_enabled)[0])
       nargs = len(args)
-      if nparams != nargs:
+      # nparams == 0 means match any args
+      if nparams > 0 and nparams != nargs:
         print 'Error: %s needs %s arguments, got %s.  Check parameter generator.' %\
             (a_enabled.__name__, nparams, nargs)
         sys.exit(1) # Don't return, just exit with error status
       else:
-        return a_enabled(*args)
-
+        if nparams > 0:
+          return a_enabled(*args)
+        else:
+          return a_enabled() # nparams == 0 means match any args
 
   def Transitions(self, actions, argslists): 
     """

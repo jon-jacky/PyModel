@@ -90,8 +90,9 @@ class ProductModelProgram(object):
     True if action aname with args is enabled in the current state
     """
     return all([m.ActionEnabled(getattr(m.module, aname), args)
-                # empty argument list in model matches any arguments
-                or m.ActionEnabled(getattr(m.module, aname), ())
+                # NOT! empty argument list in model matches any arguments
+                # NOT! or m.ActionEnabled(getattr(m.module, aname), ())
+                # handle zero-args/match-all inside m.ActionEnabled
                for m in self.mp.values()
                # aname might be an unshared action, not present in all mp
                if aname in [ a.__name__ for a in m.actions ]])
