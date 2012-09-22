@@ -1,0 +1,27 @@
+
+PyModel bugs and limitations
+
+ 9 Sep 2012
+
+In Socket/len_buffers_two.py, a pymodel config file, state_filter has
+no effect.  Workaround: StateFilter has the intended effect.
+
+
+16 Sep 2012
+
+The -e option doesn't have an effect on FSMs or TestStuites. For
+example in Socket try
+
+ pmt.py -e send_close -e recv_close -n  10 NoBlockScenario
+
+in Stack try 
+
+ pmt.py -e Pop Scenarios
+
+When an FSM is composed with a model program and both contain (say)
+action A, the effect of -e A on the product is that action A
+interleaves with other actions; it behaves like an unshared action.
+
+Workaround: write a different FSM or TestSuite without the actions you
+wish to exclude.
+
