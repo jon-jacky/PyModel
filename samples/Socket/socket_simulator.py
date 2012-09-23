@@ -8,7 +8,14 @@ steppers: Stepper, stepper_o, stepper_a.
 To use this simulator, just put it in the same directory with your
 PyModel socket steppers and rename it (or symlink it) to socket.py.
 The steppers will load this simulator instead of the standard library
-module.
+module.  
+
+BUT on systems like Mac that don't distinguish case in filenames, this
+won't work because you can't put model Socket.py and simulated
+implementation socket.py in the same directory.  Instead you must put
+socket.py in a different directory and put that directory on
+PYTHONPATH.   That works.
+
 """
 
 # needed by steppers, there they are dummies
@@ -21,28 +28,30 @@ SO_REUSEADDR = 0
 SO_RCVBUF = 0
 SO_SNDBUF = 0
 
+"""
+buffers represents client's send buffer, server's receive buffer,
+and all the storage in the network between.
+
+All sockets share the *same* buffer - intended to have just one 
+client socket and one server socket at a time -
+"""
+buffers = ''
+
 class connection(object):
-    """
-    Basic data and methods for both client and server sockets
-    This is a separate class because the server socket makes
-    one of these for each accept call.
-    """
-    def __init__(self, *args):
-        """
-        buffers represents client's send buffer, server's receive buffer,
-         and all the storage in the network between
-        """
-        self.buffers = ''
+    def __init__(self, *args): pass
 
     def send(self, msg):
+        global buffers
         # FIXME send everything for now
-        self.buffers += msg
+        buffers += msg
         return len(msg)
 
     def recv(self, nmax):
+        global buffers
         # FIXME receive nmax chars for now
-        msg = self.buffers[:nmax]
-        self.buffers = self.buffers[nmax:]
+        msg = buffers[:nmax]
+        buffers = buffers[nmax:]
+        return msg
 
     def close(self): pass
 
