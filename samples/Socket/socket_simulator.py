@@ -9,63 +9,63 @@ To use this simulator, just put it in the same directory with your
 PyModel socket steppers and rename it (or symlink it) to socket.py.
 The steppers will load this simulator instead of the standard library
 module.
-
-This socket simulator exhibits nondeterministic behavior that sockets
-can exhibit, but which are difficult to demo on demand.  This
-simulator is configurable, so you can select its nondeterministic
-behaviors.
-
-The nondeterminism is discussed in the Socket Programming HOWTO at
-
-  http://docs.python.org/howto/sockets.html
-
-"... Now we come to the major stumbling block of sockets - send and
-recv operate on the network buffers. They do not necessarily handle
-all the bytes you hand them (or expect from them), because their major
-focus is handling the network buffers. In general, they return when
-the associated network buffers have been filled (send) or emptied
-(recv). They then tell you how many bytes they handled. It is your
-responsibility to call them again until your message has been
-completely dealt with. ... you may wait on a recv forever, because the
-socket will not tell you that there’s nothing more to read (for now).
-... if your conversational protocol allows multiple messages to be
-sent back to back (without some kind of reply), and you pass recv an
-arbitrary chunk size, you may end up reading the start of a following
-message. ..."
-
-Actual network buffers are usually quite large (for example 32kb) so
-it is not very convenient to demonstrate these effects with PyModel.
-This simulator allows you to choose any buffer size, even 1, so you
-can demonstrate them on small messages.
-
 """
 
-class socket(object):
+# needed by steppers, there they are dummies
+AF_INET = 0
+SOCK_STREAM = 0
+SOL_SOCKET = 0
+SO_REUSEADDR = 0
 
-    def __init__(self):
-        self.buffers = list()
+# maybe we could use these to set simulated buffer sizes
+SO_RCVBUF = 0
+SO_SNDBUF = 0
 
+class connection(object):
+    """
+    Basic data and methods for both client and server sockets
+    This is a separate class because the server socket makes
+    one of these for each accept call.
+    """
+    def __init__(self, *args):
+        """
+        buffers represents client's send buffer, server's receive buffer,
+         and all the storage in the network between
+        """
+        self.buffers = ''
+
+    def send(self, msg):
+        # FIXME send everything for now
+        self.buffers += msg
+        return len(msg)
+
+    def recv(self, nmax):
+        # FIXME receive nmax chars for now
+        msg = self.buffers[:nmax]
+        self.buffers = self.buffers[nmax:]
+
+    def close(self): pass
+
+
+class socket(connection):
+
+    def __init__(self, *args): 
+        connection.__init__(self, *args)
+
+    # client and server can both use these
     def getsockopt(self, *args): return None
 
     def setsockopt(self, *args): pass
+        
+    # only client uses this
+    def connect(self, *args): pass
 
+    # only server users these
     def bind(self, *args): pass
 
     def listen(self, *args): pass
 
-    def connect(self, *args): pass
-
-    # this does real work
-
     def accept(self, *args):
-        return simulated_socket(), 'nowhere.simulator.org'
+        c = connection(*args)
+        return c, 'nowhere.simulator.org'
 
-    def send(msg):
-        # FIXME send everything for now
-        self.buffers.append(list(msg))
-        return len(msg)
-
-    def recv(nmax):
-        # FIXME receive nmax chars for now
-        msg = str(self.buffers[:nmax])
-        buffers = buffers[nmax:]
