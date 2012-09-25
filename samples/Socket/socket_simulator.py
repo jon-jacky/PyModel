@@ -16,6 +16,7 @@ PYTHONPATH.
 """
 
 import random    # for nondeterministic behavior
+import threading # for blocking on send/full or recv/empty 
 
 """
 Configure nondeterminism and blocking 
@@ -29,6 +30,7 @@ client socket and one server socket at a time -
 buffers = ''
 nondet = True # False to send/recv entire msg every time
 bufsize = 3   # send blocks when buffer full, recv blocks when empty
+e = threading.Event() # initially false, e.wait() to block
 
 # used by steppers, here they are all dummies
 AF_INET = 0
@@ -46,7 +48,9 @@ class connection(object):
         free = bufsize - len(buffers)
         # send blocks if buffer full
         if free <= 0:
-            while True: pass # FIXME - can't we block without spinning?
+            # type ^C to escape from this wait loop
+            while True:
+                e.wait(1) # 1 second timeout, block without spinning
         # nondeterministically choose prefix of msg to send
         msglen = min(len(msg),free)
         msglen = random.randint(1,msglen) if nondet else msglen
@@ -57,7 +61,8 @@ class connection(object):
         global buffers
         # recv blocks if buffer empty
         if len(buffers) <= 0:
-            while True: pass # FIXME - ditto
+            while True: 
+                e.wait(1)
         # nondeterministically choose suffix of buffers to recv
         msglen = min(nmax,len(buffers))
         msglen = random.randint(1,msglen) if nondet else msglen
