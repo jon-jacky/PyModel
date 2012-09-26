@@ -59,8 +59,7 @@ print 'Server accepted from ', addr
 # Now server can read by repeating data=server.recv(n) until EOF
 # Then should server.close()
 
-# DOESN'T ALWAYS WORK WITH socket_simulator.py WHEN 
-#  len(buffers) < len('Hello world!')
+# Omit - can leave stuff in buffers that confuses test runs
 # Test the connection
 #client.send('Hello world!')
 #data = server.recv(line_length)

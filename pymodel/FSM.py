@@ -48,7 +48,8 @@ class FSM(object):
     action a with args is enabled in the current state
     """
     # no cleanup check here
-    return any([(a == action and args == arguments)
+    # any args matches empty arguments in FSM
+    return any([(a == action and (not arguments or args == arguments))
                 for (current,(action, arguments, result),next) 
                 in self.module.graph
                 if current == self.current ])

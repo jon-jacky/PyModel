@@ -64,10 +64,11 @@ print 'Server accepted from ', addr
 # Now server can read by repeating data=server.recv(n) until EOF
 # Then should server.close()
 
+# Omit - can leave stuff in buffers that confuses test runs
 # Test the connection
-client.send('Hello world!')
-data = server.recv(line_length)
-print 'Try a test message, server got "%s"\n' % data
+#client.send('Hello world!')
+#data = server.recv(line_length)
+#print 'Try a test message, server got "%s"\n' % data
 
 def test_action(aname, args, modelResult):
   """
