@@ -1,17 +1,28 @@
 #!/usr/bin/env python
 """
-PyModel Viewer - call pma, pmg, dot.  Handle all the command line options
+PyModel Viewer - call pma, pmg, dot.
+Collect all the command line options and redistribute them to each program
 """
 
 import os
 import ViewerOptions
 
-pma_keys = [ 'action', 'exclude', 'maxTransitions', 'output' ]
-pmg_keys = [ 'transitionLabels', 'noStateTooltip', 'noTransitionTooltip' ]
+# an option in a singleton tuple means there might be a list of such options
+# use tuples not lists here so they can be keys in dict
+pma_keys = ( ('action'), ('exclude'), 'maxTransitions', 'output' )
+pmg_keys = ( 'transitionLabels', 'noStateTooltip', 'noTransitionTooltip' )
 
 def make_opts(keys, options):
-    return ' '.join([('--%s %s' % (k,options.__dict__[k])) 
-                     for k in keys if options.__dict__[k]])
+    """
+    Turn options object back into a string of command line options
+    """
+    return ' '.join([(('--%s %s' % (k,options.__dict__[k]))
+                      if not isinstance(k,tuple) else
+                      ' '.join([('--%s %s' % (k, v))
+                                 for v in options.__dict__[k]]))
+                     for k in keys 
+                     if options.__dict__[k if not isinstance(k,tuple) 
+                                         else k[0]]])
 
 def command(cmd):
     print cmd # DEBUG
