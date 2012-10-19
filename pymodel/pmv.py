@@ -15,7 +15,7 @@ pmg_keys = ( 'transitionLabels', 'noStateTooltip', 'noTransitionTooltip' )
 def make_opts(keys, options):
     """
     Turn options object back into a string of command line options
-o    """
+    """
     return ' '.join([(('--%s %s' % (k,options.__dict__[k]))
                       if not isinstance(k,tuple) else
                       ' '.join([('--%s %s' % (k[0], v))
