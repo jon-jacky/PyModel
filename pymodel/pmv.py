@@ -9,17 +9,17 @@ import ViewerOptions
 
 # an option in a singleton tuple means there might be a list of such options
 # use tuples not lists here so they can be keys in dict
-pma_keys = ( ('action'), ('exclude'), 'maxTransitions', 'output' )
+pma_keys = ( ('action',), ('exclude',), 'maxTransitions', 'output' )
 pmg_keys = ( 'transitionLabels', 'noStateTooltip', 'noTransitionTooltip' )
 
 def make_opts(keys, options):
     """
     Turn options object back into a string of command line options
-    """
+o    """
     return ' '.join([(('--%s %s' % (k,options.__dict__[k]))
                       if not isinstance(k,tuple) else
-                      ' '.join([('--%s %s' % (k, v))
-                                 for v in options.__dict__[k]]))
+                      ' '.join([('--%s %s' % (k[0], v))
+                                 for v in options.__dict__[k[0]]]))
                      for k in keys 
                      if options.__dict__[k if not isinstance(k,tuple) 
                                          else k[0]]])
