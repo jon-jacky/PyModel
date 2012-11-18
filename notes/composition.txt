@@ -35,8 +35,9 @@ enabled in all of the composed models.  This has the effect of
 synchronizing the models on that action -- whenever that action
 occurs, all of the models execute the action together.  Therefore,
 compositing models with shared actions often has the effect of
-restricting behavior, which makes it good for scenario control.  An
-*unshared action* is an action whose action name occurs in only one
+restricting behavior, which makes it good for scenario control.  
+
+An *unshared action* is an action whose action name occurs in only one
 model.  An unshared action can execute whenever it is enabled in that
 one model.  This has the effect of interleaving --- each model
 executes its unshared actions on its own schedule, unaffected by the
@@ -173,4 +174,5 @@ Passive testing does not require a test harness.  All that is required
 is to express the log files or traces as PyModel TestSuites.
 
 
-Revised March 2010
+Revised Nov 2012
+

@@ -2,8 +2,26 @@ Notes on tests
 
 These notes explain how to script and run tests on the PyModel
 software itself.  It is not about using PyModel to test other
-programs.  (These notes describe our unit tests, along with our little
-homemade unit testing commands, which are distinct from PyModel.)
+programs.  These notes describe our unit tests, along with our little
+homemade unit testing commands, which are distinct from PyModel.  We
+use these (instead of a conventional unit test framework like unittest
+or nose) because:
+
+ - The units we test here are not function calls or method calls,
+ but entire program invocations including command line arguments.
+
+ - The results that our tests check are not function or method return
+ values, but the entire output from a program run.
+
+The last section (below) explains how to achieve something similar
+using the unittest module from the Python standard library.
+
+These directions apply to both Windows and Unix-like systems
+(including Linux and Mac OS X).  The directions assume that Python is
+already installed and your environment is configured so you can run
+it (if not, see http://docs.python.org/2/using/).  It also assumes 
+that PyModel is installed and its pymodel directory (containing trun.py, 
+pmt.py etc.) is on your execution path. 
 
 Quick Start
 Summary
@@ -15,12 +33,9 @@ Using other unit testing frameworks
 
 Quick Start
 
-Put the pymodel directory in your execution path.  
-In the pymodel directory, type this command:
-
- tpath
-
-Then, in each subdirectory of samples, type:
+In each subdirectory of samples, put the current directory
+(whatever it is) on the PYTHONPATH by executing the tpath command
+("source tpath" in bash, just "tpath" in Windows).  Then, type:
 
  clogdiff trun.py test
 
@@ -30,6 +45,9 @@ if there are more test*.py files besides test.py, you can run them too:
 
 etc.  If messages indicate differences were found, there may be a problem.
 
+Notice that we only show the command you type, we do not show the
+command prompt, for example usually ...> for the Windows cmd prompt
+and ... $ for the Unix (Linux, OSX) bash prompt.
 
 Summary
 
@@ -38,14 +56,14 @@ commands
   trun.py test          - execute test script module, output to cmd window
   clogdiff trun.py test - execute test script, compare output to reference log
 
-pymodel contents 
+Programs and scripts in the pymodel directory
   trun.py - executes test script module given as argument
-  tpath.bat - puts . on PYTHONPATH, needed by trun (batch script for Windows)
-  tpath  - ditto, shell script for Unix-like systems
-  clogdiff.bat - compares output to saved reference output, use with trun
-  clogdiff - ditto, shell script for Unix-like
+  tpath - puts . on PYTHONPATH, needed by trun
+  tpath.bat  - ditto, batch script for Windows
+  clogdiff - compares output to saved reference output, use with trun
+  clogdiff.bat - ditto, batch script for Windows
   
-each model directory: samples\PowerSwitch,  samples\WebApplication\Model, etc.
+In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
   test.py - test script module, executed by trun.py
   test.log - most recent output from test.py, saved by clogdiff 
   test.ref - reference output from test.py, saved by hand, used by clogdiff
@@ -75,14 +93,14 @@ strings.  In each pair, the first string is a description of the test
 case and the second string is the command line that invokes the test
 case.  
 
-Here are the contents of the script in samples\WebApplication\Model\test.py:
+Here are the contents of the script in samples/WebApplication/Model/test.py:
 
 cases = [
  ('Test: -a option includes only Initialize Action',
-  'pct.py -n 10 -a Initialize WebModel'),
+  'pmt.py -n 10 -a Initialize WebModel'),
 
  ('Test: -e option excludes all Login, Logout actions',
-  'pct.py -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
+  'pmt.py -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
 ]
 
 The trun module takes one argument, the module name of the script (NOT
@@ -93,7 +111,7 @@ each description and invoking each command.
 It is typical to put a script named test in each source directory that
 contains modules to test.  This command executes it:
 
- > trun.py test
+ trun.py test
 
 For this command to work, the pymodel directory must be on the
 execution PATH.  The current directory must be on the PYTHONPATH.
@@ -112,23 +130,26 @@ clogdiff runs a command, collects the output in a log file and
 compares it to a reference log file.  To use it, make a reference log
 file first:
 
-C:\Users\jon\Documents\mbt\samples\PowerSwitch>trun.py test > test.ref
+ trun.py test > test.ref
 
 Then invoke clogdiff:
 
-C:\Users\jon\Documents\mbt\samples\PowerSwitch>clogdiff trun.py test
-Comparing files test.log and TEST.REF
-FC: no differences encountered
+ clogdiff trun.py test
 
-The line "no differences encountered" only appears on Windows systems
-(from clogdiff.bat).  On Unix-like systems (including Linux and Mac OS
-X), clogdiff is silent when there are no differences, and only prints
-out any differences that it finds.
+On Unix-like systems (including Linux and Mac OS X), clogdiff prints
+no output when there are no differences, and only prints out any
+differences that it finds.  On Windows systems, clogdiff.bat prints
+
+ Comparing files test.log and TEST.REF
+ FC: no differences encountered
+
+when there are no differences.
 
 Be warned that "clogdiff trun.py test_graphics" writes a lot of output
 to the screen, but on Windows systems the line "FC: no differences
 encountered" should appear at the end. (On Unix-like systems, nothing
-more should appear.)
+more should appear.)  Apparently all this output is stderr output from
+the graphviz dot program, which is not captured or checked by clogdiff.
 
 Be warned that if you use .ref files generated on one system and
 execute clogdiff on another system, differences may be reported even
@@ -141,27 +162,31 @@ selections repeatable).  In particular, some of the .ref files
 included in the PyModel distribution may cause clogdiff to report
 differences on your system.
 
+Differences may also be reported because command prompts or file paths
+appear in the output, and these were different when the .ref file was
+generated.
+
 If clogdiff reports differences, examine the output (in the .log file)
 to determine whether the differences indicate errors, or are merely
-due to different randomly selected choices on your system.  In the latter
-case, you can recreate the .ref file for your system by copying the
-latest .log file over the .ref file.
+due to different randomly selected choices on your system, or to
+environmental differnences like command prompts or file paths.  In the
+latter case, you can create a new .ref file for your system by copying
+the latest .log file over the .ref file.
 
 In some of the test scripts, the random seed (given in the pmt -s
 option) was chosen (found by trial and error) that results in
-interesting test behavior.  That same seed value might not result in
-such interesting behavior on your system, so you may wish to edit the
-test script to experiment with different seed values.  In some samples
-there are variant test scripts with different seed values.  For
-example in samples/Socket there is test.py, test_windows.py, and
-test_linux.py, along with the corresponding .ref files.
+interesting test behavior (a long run with many different actions).
+That same seed value might not result in such interesting behavior on
+your system, so you may wish to edit the test script to experiment
+with different seed values.  In some samples there are variant test
+scripts with different seed values.  For example in samples/Socket
+there is test.py, test_windows.py, and test_linux.py, along with the
+corresponding .ref files.
 
-Under Windows, in the .log and .ref files created in this way, the
-output from all the test cases (that is generated by the programs
-under test) appears first in the file, then all the test descriptions
-printed by trun appear after, at the end of the file.  This seems
-weird but doesn't create a problem for the comparison, since both
-files are weird in the same way.
+In the .log and .ref files, the output from all the test cases (that
+is generated by the programs under test) appears first in the file,
+then all the test descriptions from the test script that are printed
+by trun appear after all the test case output, at the end of the file.
 
 If a test case crashes (raises an unhandled exception) on Windows, the
 traceback goes to the screen, not the log file.  I can't find anything
@@ -203,3 +228,5 @@ test_populations.py module merely executes the tests, it does not
 check the results (it uses no assertions).  To check the results, you
 could capture and check the output using our clogdiff command, just as
 you would do with with test.py.
+
+Revised Nov 2012

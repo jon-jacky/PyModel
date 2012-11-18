@@ -9,9 +9,10 @@ test_scenarios.py, test_graphics.py etc.  Each of these test scripts
 contains commented command lines that demonstrate combinations of
 arguments and options.
 
-To prepare to execute test scripts, put the pymodel directory on
-your execution path.  Put the current directory (whatever it is) on
-the PYTHONPATH by executing the tpath command ("source tpath" in bash,
+To prepare to execute test scripts, put the pymodel directory (that
+contains trun.py, pma.py etc.) on your execution path.  Then in each
+samples directory, put the current directory (whatever it is) on the
+PYTHONPATH by executing the tpath command ("source tpath" in bash,
 just "tpath" in Windows).
 
 To execute all the commands in a test script, run it with trun.py:
@@ -28,5 +29,9 @@ scripts, or try your own variations.
 The test_graphics scripts run the analyzer and graphics programs, and
 generate FSM modules and SVG files that can be displayed by a browser.
 
+If you are using a Unix-like system (including Linux or Mac OS X), you
+can just type trun ... instead of trun.py ..., and likewise for all
+PyModel commands: pmt ... instead of pmt.py ... etc.  To make that
+work, you must execute the symlink command in the pymodel directory
 
-Revised July 2011
+Revised Nov 2012
