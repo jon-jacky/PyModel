@@ -1,6 +1,8 @@
-# make symlinks so we can invoke pmt ... etc. not pmt.py etc.
-# alternatively, could create script pmt containing python pmt.py ...
-# on Windows might get same effect by defining pmt.bat containing python pmt.py
+# Make symlinks so we can just invoke pmt ... etc. not pmt.py ... etc.
+# Invoke this script just once in each PyModel installation pymodel directory
+# For Unix-like systems because pmt.py etc. all begin with this "shebang line":
+#!/usr/bin/env python
+# We keep the .py on program names so they are easy to run in Windows
 ln -s pma.py pma
 ln -s pmg.py pmg
 ln -s pmt.py pmt
