@@ -38,18 +38,17 @@ IncrementSpeed()
 IncrementSpeed()
   0. Finished at step 3, reached accepting state
 PowerOn()
-IncrementSpeed()
 PowerOff()
-IncrementSpeed()
-IncrementSpeed()
 PowerOn()
 PowerOff()
 IncrementSpeed()
 PowerOn()
+IncrementSpeed()
 PowerOff()
+PowerOn()
 IncrementSpeed()
-IncrementSpeed()
-  0. Finished at step 12, reached accepting state
+PowerOff()
+  0. Finished at step 11, reached accepting state
 Scenarios module with four runs, by itself
 
 Scenarios module, compose with PowerSwitch model, last two runs not allowed

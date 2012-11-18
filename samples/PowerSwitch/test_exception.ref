@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+Exception
+Raise an exception - does traceback go to .log file?
+
