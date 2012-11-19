@@ -63,7 +63,7 @@ Scenarios module with three runs, by itself
 
 Scenarios module, compose with Stack model, last two runs not allowed
 
-Scenarios, compose with Stack, Push is observable
+Scenarios, compose with Stack, Push is observable, get args from scenario
 
-Scenarios, compose with Stack, Push and Pop are observable
+Scenarios, compose with Stack, Push and Pop are observable, get args from scenario
 
