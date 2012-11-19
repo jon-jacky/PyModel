@@ -1,36 +1,221 @@
-20 states, 50 transitions, 4 accepting states
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o WebModelFSM.svg WebModelFSM.dot 
-7 states, 19 transitions, 4 accepting states
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserDomainFSM.svg OneUserDomainFSM.dot 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserScenario.svg OneUserScenario.dot 
-7 states, 16 transitions, 4 accepting states
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserScenarioFSM.svg OneUserScenarioFSM.dot 
-7 states, 25 transitions, 4 accepting states
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserFilterFSM.svg OneUserFilterFSM.dot 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserNoIntScenario.svg OneUserNoIntScenario.dot 
-3 states, 3 transitions, 2 accepting states
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>rem generate .svg from .dot, do not display, user can view in browser 
-
-C:\Users\jon\Documents\mbt\samples\WebApplication>dot -v -Tsvg -o OneUserNoIntScenarioFSM.svg OneUserNoIntScenarioFSM.dot 
+21 states, 50 transitions, 5 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  21 nodes 27 edges maxiter=2147483647 balance=1
+network simplex: 21 nodes 27 edges 2 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 34 best_cross 34
+mincross: pass 0 iter 1 trying 0 cur_cross 10 best_cross 10
+mincross: pass 0 iter 2 trying 0 cur_cross 8 best_cross 8
+mincross: pass 0 iter 3 trying 0 cur_cross 4 best_cross 4
+mincross: pass 1 iter 0 trying 0 cur_cross 43 best_cross 4
+mincross: pass 1 iter 1 trying 1 cur_cross 9 best_cross 4
+mincross: pass 1 iter 2 trying 2 cur_cross 9 best_cross 4
+mincross: pass 1 iter 3 trying 3 cur_cross 9 best_cross 4
+mincross: pass 2 iter 0 trying 0 cur_cross 4 best_cross 4
+mincross: pass 2 iter 1 trying 1 cur_cross 11 best_cross 4
+mincross: pass 2 iter 2 trying 2 cur_cross 14 best_cross 4
+mincross: pass 2 iter 3 trying 3 cur_cross 5 best_cross 4
+mincross: pass 2 iter 4 trying 0 cur_cross 3 best_cross 3
+mincross: pass 2 iter 5 trying 1 cur_cross 12 best_cross 3
+mincross: pass 2 iter 6 trying 2 cur_cross 10 best_cross 3
+mincross: pass 2 iter 7 trying 3 cur_cross 4 best_cross 3
+mincross: pass 2 iter 8 trying 0 cur_cross 2 best_cross 2
+mincross: pass 2 iter 9 trying 1 cur_cross 11 best_cross 2
+mincross: pass 2 iter 10 trying 2 cur_cross 11 best_cross 2
+mincross: pass 2 iter 11 trying 3 cur_cross 5 best_cross 2
+mincross: pass 2 iter 12 trying 4 cur_cross 3 best_cross 2
+mincross: pass 2 iter 13 trying 5 cur_cross 12 best_cross 2
+mincross: pass 2 iter 14 trying 6 cur_cross 10 best_cross 2
+mincross: pass 2 iter 15 trying 7 cur_cross 4 best_cross 2
+mincross: pass 2 iter 16 trying 8 cur_cross 2 best_cross 2
+mincross WebModelFSM: 1 crossings, 0.00 secs.
+network simplex:  153 nodes 222 edges maxiter=2147483647 balance=2
+network simplex: 153 nodes 222 edges 49 iter 0.00 sec
+routesplines: 32 edges, 196 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+7 states, 19 transitions, 4 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  7 nodes 7 edges maxiter=2147483647 balance=1
+network simplex: 7 nodes 7 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserDomainFSM: 0 crossings, 0.00 secs.
+network simplex:  44 nodes 57 edges maxiter=2147483647 balance=2
+network simplex: 44 nodes 57 edges 2 iter 0.00 sec
+routesplines: 11 edges, 59 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  2 nodes 1 edges maxiter=2147483647 balance=1
+network simplex: 2 nodes 1 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserScenario: 0 crossings, 0.00 secs.
+network simplex:  8 nodes 9 edges maxiter=2147483647 balance=2
+network simplex: 8 nodes 9 edges 0 iter 0.00 sec
+routesplines: 2 edges, 10 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+7 states, 16 transitions, 4 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  7 nodes 7 edges maxiter=2147483647 balance=1
+network simplex: 7 nodes 7 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserScenarioFSM: 0 crossings, 0.00 secs.
+network simplex:  44 nodes 57 edges maxiter=2147483647 balance=2
+network simplex: 44 nodes 57 edges 2 iter 0.00 sec
+routesplines: 11 edges, 59 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+7 states, 25 transitions, 4 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  7 nodes 7 edges maxiter=2147483647 balance=1
+network simplex: 7 nodes 7 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserFilterFSM: 0 crossings, 0.00 secs.
+network simplex:  44 nodes 57 edges maxiter=2147483647 balance=2
+network simplex: 44 nodes 57 edges 1 iter 0.00 sec
+routesplines: 11 edges, 59 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  2 nodes 1 edges maxiter=2147483647 balance=1
+network simplex: 2 nodes 1 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserNoIntScenario: 0 crossings, 0.00 secs.
+network simplex:  8 nodes 9 edges maxiter=2147483647 balance=2
+network simplex: 8 nodes 9 edges 0 iter 0.00 sec
+routesplines: 2 edges, 10 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+3 states, 3 transitions, 2 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  3 nodes 2 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 2 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross OneUserNoIntScenarioFSM: 0 crossings, 0.00 secs.
+network simplex:  12 nodes 13 edges maxiter=2147483647 balance=2
+network simplex: 12 nodes 13 edges 0 iter 0.00 sec
+routesplines: 3 edges, 15 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
 Explore WebModel, limit exploration by -m
 
 Generate dot graphics commands
