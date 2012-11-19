@@ -1,0 +1,172 @@
+20 states, 16 transitions, 4 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross ScenariosFSM: 0 crossings, 0.00 secs.
+network simplex:  68 nodes 91 edges maxiter=2147483647 balance=2
+network simplex: 68 nodes 91 edges 30 iter 0.00 sec
+routesplines: 16 edges, 80 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+11 states, 7 transitions, 1 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  3 nodes 2 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 2 edges 0 iter 0.00 sec
+network simplex:  2 nodes 1 edges maxiter=2147483647 balance=1
+network simplex: 2 nodes 1 edges 0 iter 0.00 sec
+network simplex:  1 nodes 0 edges maxiter=2147483647 balance=1
+network simplex: 1 nodes 0 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross ValidateScenarios: 0 crossings, 0.00 secs.
+network simplex:  32 nodes 37 edges maxiter=2147483647 balance=2
+network simplex: 32 nodes 37 edges 6 iter 0.00 sec
+routesplines: 7 edges, 35 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+12 states, 8 transitions, 1 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  3 nodes 2 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 2 edges 0 iter 0.00 sec
+network simplex:  3 nodes 2 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 2 edges 0 iter 0.00 sec
+network simplex:  1 nodes 0 edges maxiter=2147483647 balance=1
+network simplex: 1 nodes 0 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross ValidateObservables: 0 crossings, 0.00 secs.
+network simplex:  36 nodes 43 edges maxiter=2147483647 balance=2
+network simplex: 36 nodes 43 edges 10 iter 0.00 sec
+routesplines: 8 edges, 40 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+14 states, 10 transitions, 2 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  3 nodes 2 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 2 edges 0 iter 0.00 sec
+network simplex:  5 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 5 nodes 4 edges 0 iter 0.00 sec
+network simplex:  1 nodes 0 edges maxiter=2147483647 balance=1
+network simplex: 1 nodes 0 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross ValidateAllObservables: 0 crossings, 0.00 secs.
+network simplex:  44 nodes 55 edges maxiter=2147483647 balance=2
+network simplex: 44 nodes 55 edges 13 iter 0.00 sec
+routesplines: 10 edges, 50 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+Scenarios module with three runs, by itself
+
+Generate Dot
+
+Generate SVG
+
+Scenarios module, compose with Stack model, last three runs not allowed
+
+Generate Dot
+
+Generate SVG
+
+Scenarios, compose with Stack, Push is observable
+
+Generate Dot
+
+Generate SVG
+
+Scenarios, compose with Stack, Push and Pop are observable
+
+Generate Dot
+
+Generate SVG
+
