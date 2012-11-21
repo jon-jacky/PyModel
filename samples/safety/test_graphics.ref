@@ -1,0 +1,68 @@
+4 states, 8 transitions, 1 accepting states, 1 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  4 nodes 4 edges maxiter=2147483647 balance=1
+network simplex: 4 nodes 4 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross unsafe_ovenFSM: 0 crossings, 0.00 secs.
+network simplex:  44 nodes 61 edges maxiter=2147483647 balance=2
+network simplex: 44 nodes 61 edges 10 iter 0.00 sec
+routesplines: 8 edges, 56 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+3 states, 5 transitions, 1 accepting states, 0 unsafe states
+dot - graphviz version 2.28.0 (20111028.1807)
+libdir = "/usr/local/lib/graphviz"
+Activated plugin library: libgvplugin_quartz.6.dylib
+Using textlayout: textlayout:quartz
+Activated plugin library: libgvplugin_core.6.dylib
+Using render: svg:core
+Using device: svg:svg:core
+Activated plugin library: libgvplugin_dot_layout.6.dylib
+Using layout: dot:dot_layout
+The plugin configuration file:
+	/usr/local/lib/graphviz/config6
+		was successfully loaded.
+    render	:  dot fig gd map ps quartz svg tk vml vrml xdot
+    layout	:  circo dot fdp neato nop nop1 nop2 osage patchwork sfdp twopi
+    textlayout	:  textlayout
+    device	:  bmp canon cgimage cmap cmapx cmapx_np dot eps exr fig gd gd2 gif gv imap imap_np ismap jp2 jpe jpeg jpg pct pdf pict plain plain-ext png ps ps2 psd sgi svg svgz tga tif tiff tk vml vmlz vrml wbmp xdot
+    loadimage	:  (lib) bmp eps gd gd2 gif jpe jpeg jpg pdf png ps svg
+fontname: unable to resolve "Times-Roman"
+network simplex:  3 nodes 3 edges maxiter=2147483647 balance=1
+network simplex: 3 nodes 3 edges 0 iter 0.00 sec
+mincross: pass 0 iter 0 trying 0 cur_cross 0 best_cross 0
+mincross ovenFSM: 0 crossings, 0.00 secs.
+network simplex:  26 nodes 35 edges maxiter=2147483647 balance=2
+network simplex: 26 nodes 35 edges 6 iter 0.00 sec
+routesplines: 5 edges, 33 boxes 0.00 sec
+Using render: svg:core
+Using device: svg:svg:core
+Generate FSM from unsafe_oven program
+
+Generate dot graphics commands from generated unsafe_ovenFSM
+
+Generate SVG file from dot commands
+
+Generate FSM from oven program
+
+Generate dot graphics commands from generated ovenFSM
+
+Generate SVG file from dot commands
+
