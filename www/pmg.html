@@ -24,19 +24,27 @@ Usage:
 </p>
 
 <pre>
-  pmg.py [options] fsm
+  pmg [options] fsm
 </pre>
 
 <p>
 The single argument fsm is one <a href="concepts.html">finite state
 machine</a> (FSM) module name (without the .py suffix).  The FSM is
 typically produced by the PyModel
-Analyzer, <a href="pma.html">pma</a>.  From the FSM, pmg generates a
-file of commands in the dot graph-drawing language.  This .dot file
-can then be processed by the dot program in the Graphviz package from
-www.graphviz.org.  Use the PyModel commands dotps, dotpdf, or dotsvg to run dot
-and produce PostScript, PDF, or SVG, respectively. SVG files can be viewed
-in a web browser.
+Analyzer, <a href="pma.html">pma</a>.  From the
+FSM, <b>pmg</b> generates a file of commands in the
+dot graph-drawing language.  This .dot file can then be processed by
+the dot program in the Graphviz package from
+<a href="http://www.graphviz.org/">www.graphviz.org</a>.  Use the
+PyModel commands dotps, dotpdf, or dotsvg to run dot and produce
+PostScript, PDF, or SVG, respectively. SVG files can be viewed in a
+web browser.  
+</p>
+
+<p>
+Alternatively, pma, pmg, and a dot program can all
+be invoked by the <a href="pmv.html">pmv</a> program, so analysis and
+display can be accomplished by a single command.
 </p>
 
 <p>

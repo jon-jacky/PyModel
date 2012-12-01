@@ -4,18 +4,23 @@ Options and arguments for PyModel Analyzer
 
 from optparse import OptionParser
 
-usage = """pma.py [options] models  
+usage = """pma [options] models  
 
 PyModel Analyzer. models is a list of one or more module names (with
 no .py suffix).  Each module named in models must contain a model,
 that is: a model program, an FSM, or a test suite.  In addition, a
-module named in models can contain additional configuration information
-for a model program.  Multiple models (model programs including
-configuration, FSMs, and test suites) are composed into a product.
-The analyzer generates a finite state machine from the product and
-writes an FSM module that includes the generated FSM, the explored
-states, and other results of the analysis.  The FSM module contents
-can be displayed using the PyModel Graphics program, pmg.py."""
+module named in models can contain additional configuration
+information for a model program.  Multiple models (model programs
+including configuration, FSMs, and test suites) are composed into a
+product.  The analyzer generates a finite state machine from the
+product and writes an FSM module that includes the generated FSM, the
+explored states, and other results of the analysis.  The FSM module
+contents can be displayed using the PyModel Graphics program pmg,
+and one of the Graphviz commands, dotps, dotpdf, or dotsvg.
+Alternatively, pma and a dot program can all be invoked by the pmv
+program, so analysis and display can be accomplished by a single
+command.
+"""
 
 parser = OptionParser(usage=usage)
 

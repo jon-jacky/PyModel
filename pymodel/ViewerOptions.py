@@ -6,12 +6,14 @@ from optparse import OptionParser
 
 usage = """pmv.py [options] models  
 
-PyModel Viewer.  A single program that invokes pma, pmg, and graphviz
+PyModel Viewer.  A single program that invokes pma, pmg, and Graphviz
 dot to to perform analysis, generate dot commands, and generate a file
-of graphics in .svg, .pdf or another format.  This program accepts all
-of the command line options and arguments of both pma and pmg, and the
--T option of dot (to select the graphics format), then passes the
-options to the appropriate program."""
+of graphics in .svg, .pdf or another format.  The pmv program provides
+brevity and convenience, so analysis and display can be accomplished
+by a single command.  This program accepts all of the command line
+options and arguments of both pma and pmg, and the -T option of dot
+(to select the graphics format), then passes the options to the
+appropriate program."""
 
 parser = OptionParser(usage=usage)
 

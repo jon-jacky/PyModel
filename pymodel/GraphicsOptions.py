@@ -4,16 +4,20 @@ Options and arguments for PyModel Graphics
 
 from optparse import OptionParser
 
-usage = """pmg.py [options] fsm
+usage = """pmg [options] fsm
 
 PyModel Graphics. The single argument fsm is one finite state machine
 (FSM) module name (without the .py suffix).  The FSM is typically
-produced by the PyModel Analyzer, pma.py.  From the FSM, pmg generates
+produced by the PyModel Analyzer, pma.  From the FSM, pmg generates
 a file of commands in the dot graph-drawing language.  This .dot file
 can then be processed by the dot program in the Graphviz package from
 www.graphviz.org.  Use the PyModel commands dotps, dotpdf, or dotsvg to run dot
 and produce PostScript, PDF, or SVG, respectively. SVG files can be viewed
 in a web browser.
+
+Alternatively, pma, pmg, and a dot program can all be invoked by the
+pmv program, so analysis and display can be accomplished by a single
+command.
 
 Control clutter in the graph with the -l --transitionLabels option:
 -l action shows the action name, arguments, and return value,

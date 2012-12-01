@@ -25,7 +25,7 @@ Usage:
 
 
 <pre>
-  pma.py [options] models  
+  pma [options] models  
 </pre>
 
 <p>
@@ -38,8 +38,15 @@ models (model programs including configuration, FSMs, and test suites)
 are composed into a product.  The analyzer generates a finite state
 machine from the product and writes an FSM module that includes the
 generated FSM, the explored states, and other results of the analysis.
+</p>
+
+<p>
 The FSM module contents can be displayed using the PyModel Graphics
-program, <a href="pmg.html">pmg</a>.
+program, <a href="pmg.html">pmg</a>, and one of
+the <a href="http://www.graphviz.org/">Graphviz</a> commands, dotps,
+dotpdf, or dotsvg.  Alternatively, pma, pmg, and a dot program can all
+be invoked by the <a href="pmv.html">pmv</a> program, so analysis and
+display can be accomplished by a single command.
 </p>
 
 <p>
@@ -63,7 +70,7 @@ Options:
 
 <hr>
 
-Revised March 2010
+Revised Nov 2012
 
 </body>
 </html>
