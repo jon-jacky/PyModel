@@ -1,0 +1,12 @@
+2 states, 2 transitions, 1 accepting states, 0 unsafe states
+pma.py --maxTransitions 100 PowerSwitch
+pmg.py --transitionLabels action PowerSwitchFSM
+dot -Tsvg -o PowerSwitchFSM.svg PowerSwitchFSM.dot
+6 states, 12 transitions, 1 accepting states, 0 unsafe states
+pma.py --maxTransitions 100 --output PowerSpeed SpeedControl PowerSwitch
+pmg.py --transitionLabels action PowerSpeed
+dot -Tsvg -o PowerSpeed.svg PowerSpeed.dot
+Generate FSM from PowerSwitch model program
+
+Generate FSM from composition of PowerSwitch and SpeedControl, show interleaving
+

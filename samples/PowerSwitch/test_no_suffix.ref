@@ -1,0 +1,45 @@
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+  0. Finished at step 10, reached accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  0. Finished at step 3, ended in non-accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+PowerOff()
+  0. Finished at step 4, reached accepting state
+PowerOn()
+  0. Finished at step 1, no more actions enabled, ended in non-accepting state
+PowerOn()
+  0. Finished at step 1, no more actions enabled, ended in non-accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  0. Finished at step 3, ended in non-accepting state
+PowerOn()
+PowerOff()
+PowerOn()
+  1. Finished at step 3, ended in non-accepting state
+Test finished, completed 2 runs
+PowerOn, PowerOff alternate due to enabling conditions
+
+PowerOn, PowerOff alternate, end in non-accepting state
+
+Same as above but add -c cleanup option to reach accepting state
+
+Use -a option so only PowerOn action is included, can only execute once
+
+Use -e option so PowerOff action is excluded, PowerOn can only execute once
+
+Use -r option for multiple runs, notice run after PowerOn also starts with PowerOn
+
