@@ -1,9 +1,16 @@
 Notes on tests
 
 These notes explain how to script and run tests on the PyModel
-software itself.  It is not about using PyModel to test other
-programs.  These notes describe our unit tests, along with our little
-homemade unit testing commands, which are distinct from PyModel.  We
+software itself.  These notes are not about using PyModel to test
+other programs -- that is described elsewhere.
+
+These notes explain how to re-execute the test scripts included in the
+distribution, including the tests of all the samples.  These scripts
+demonstrate the samples, as well as testing PyModel itself.
+
+These notes describe our unit tests, along with our little homemade
+unit testing commands, which are independent of the rest of PyModel
+(they could be used to test any program that writes to stdout).  We
 use these (instead of a conventional unit test framework like unittest
 or nose) because:
 
@@ -11,9 +18,10 @@ or nose) because:
  but entire program invocations including command line arguments.
 
  - The results that our tests check are not function or method return
- values, but the entire output from a program run.
+ values, but the entire output from a program run, including all the
+ output to stdout and stderr, and (sometimes) other output files.
 
-The last section (below) explains how to achieve something similar
+The last section (below) explains how to script tests similar to ours
 using the unittest module from the Python standard library.
 
 These directions apply to both Windows and Unix-like systems
@@ -28,7 +36,7 @@ Summary
 Commands and modules
 Test scripts
 Checking test script output
-Testing multiple scripts
+Output files
 Using other unit testing frameworks
 
 Quick Start
@@ -37,11 +45,11 @@ In each subdirectory of samples, put the current directory
 (whatever it is) on the PYTHONPATH by executing the tpath command
 ("source tpath" in bash, just "tpath" in Windows).  Then, type:
 
- clogdiff trun.py test
+ clogdiff trun test
 
 if there are more test*.py files besides test.py, you can run them too:
 
- clogdiff trun.py test_scenarios
+ clogdiff trun test_scenarios
 
 etc.  If messages indicate differences were found, there may be a problem.
 
@@ -49,37 +57,54 @@ Notice that we only show the command you type, we do not show the
 command prompt, for example usually ...> for the Windows cmd prompt
 and ... $ for the Unix (Linux, OSX) bash prompt.
 
+
 Summary
 
 commands
   tpath (or source tpath) - put current directory on PYTHONPATH, needed by trun
-  trun.py test          - execute test script module, output to cmd window
-  clogdiff trun.py test - execute test script, compare output to reference log
+  trun test          - execute test script module, output to cmd window
+  clogdiff trun test - execute test script, compare output to reference log
 
 Programs and scripts in the pymodel directory
   trun.py - executes test script module given as argument
-  tpath - puts . on PYTHONPATH, needed by trun
+  tpath - sh script that puts . on PYTHONPATH, needed by trun
   tpath.bat  - ditto, batch script for Windows
-  clogdiff - compares output to saved reference output, use with trun
+  clogdiff - sh script compares output to saved reference output, use with trun
   clogdiff.bat - ditto, batch script for Windows
   
 In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
   test.py - test script module, executed by trun.py
-  test.log - most recent output from test.py, saved by clogdiff 
-  test.ref - reference output from test.py, saved by hand, used by clogdiff
-  test_scenarios.py - another test script module
-  ...  - etc.
+  test.log - most recent output from test.py, including stdout and stderr, 
+              saved by clogdiff 
+  test.ref - sample test.log from from test.py, including stdout and stderr, 
+              renamed by hand, used by clogdiff
+  test_scenarios.py, test_graphics.py, ...  - other test script modules
+  test_scenarios.ref ...  - etc., like test.ref
+  fsmpy/ - directory of FSM Python modules written by pma.py (maybe via pmv.py)
+            moved here by hand
+  svg/ - directory of .svg graphics files written by pma.py + pmg.py + 
+          dot scripts (maybe via pmv.py), moved here by hand
+  pdf/ -  ditto, .pdf (not many of these), moved here by hand
 
-Commands and modules
+Programs, Modules, and Commands
 
-In these notes, "the foo module" means the Python module in the file
-foo.py.  The "the bar command" means the bar shell script on Unix-like
-systems, and the bar.bat batch command file on Windows.  Both are
-provided; simply invoking "bar" invokes the right command on either
-kind of system.  In general we use Python modules to perform
-operations that can easily be coded in a system-independent way, and
-shell scripts (or batch commands) for operations that require
-particular system commands.
+In these notes, "the foo module" or "the foo program" means the Python
+module in the file foo.py.  The "the bar command" means the bar shell
+script on Unix-like systems, and the bar.bat batch command file on
+Windows.  Both are provided; simply invoking "bar" invokes the right
+command on either kind of system.  In general we use Python modules to
+perform operations that can easily be coded in a system-independent
+way, and shell scripts (or batch commands) for operations that are
+more easily coded with particular system-dependent commands (for
+example: setting the execution path, checking differences between
+files).
+
+These Python programs are typically used as commands: pma.py pmg.py pmt.py
+pmv.py trun.py and wsgirunner.py.  When used as commands, the .py
+suffix can be omitted.  For example you can type pmt -n 10 PowerSwitch
+instead of pmt.py ...  or trun test_graphics instead of trun.py ...
+Both forms work (in Windows as well as Unix-like systems), and both appear in
+test scripts.
 
 
 Test scripts
@@ -103,6 +128,10 @@ cases = [
   'pmt.py -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
 ]
 
+The PyModel commands in test scripts often include the .py suffix, as
+in pmt.py ... here.  The suffix is not required, recent test scripts 
+often use pmt ... etc.
+
 The trun module takes one argument, the module name of the script (NOT
 the file name, there is no path prefix or .py suffix).  The trun
 module imports the script, then iterates over the cases list, printing
@@ -111,30 +140,34 @@ each description and invoking each command.
 It is typical to put a script named test in each source directory that
 contains modules to test.  This command executes it:
 
- trun.py test
+ trun test
 
 For this command to work, the pymodel directory must be on the
 execution PATH.  The current directory must be on the PYTHONPATH.
 This is necessary to enable PyModel tools (such as pmt) in the pymodel
 directory to import modules in the current directory.  The tpath
 command in the pymodel directory assigns the current directory to the
-PYTHONPATH (use 'source tpath' in bash).  It is NOT necessary to
-repeat the tpath command after a change directory command (cd).
-
+PYTHONPATH (use 'source tpath' in bash).    It is NOT necessary to
+repeat the tpath command after a change directory command (cd)
+(checked on Mac OS X - this may differ under Windows).
 
 Checking test script output
 
-Executing a test script typically produces a lot of output.  For
-regression testing, use the clogdiff command in the pymodel directory.
-clogdiff runs a command, collects the output in a log file and
+Executing a test script typically writes a lot of output to the
+terminal (that is, to stdout and stderr).  For regression testing, use
+the clogdiff command in the pymodel directory.  clogdiff runs a
+command, collects the output to stdout and stderr in a log file and
 compares it to a reference log file.  To use it, make a reference log
 file first:
 
- trun.py test > test.ref
+ trun test >& test.ref
+
+(But on Windows systems you must use > and >& and only stdout not
+stderr is captured in test.ref.)
 
 Then invoke clogdiff:
 
- clogdiff trun.py test
+ clogdiff trun test
 
 On Unix-like systems (including Linux and Mac OS X), clogdiff prints
 no output when there are no differences, and only prints out any
@@ -145,11 +178,12 @@ differences that it finds.  On Windows systems, clogdiff.bat prints
 
 when there are no differences.
 
-Be warned that "clogdiff trun.py test_graphics" writes a lot of output
-to the screen, but on Windows systems the line "FC: no differences
+Be warned that on Windows systems "clogdiff trun test_graphics" writes
+a lot of output to the screen, but the line "FC: no differences
 encountered" should appear at the end. (On Unix-like systems, nothing
 more should appear.)  Apparently all this output is stderr output from
-the graphviz dot program, which is not captured or checked by clogdiff.
+the graphviz dot program, which is not captured or checked by
+clogdiff.
 
 Be warned that if you use .ref files generated on one system and
 execute clogdiff on another system, differences may be reported even
@@ -169,7 +203,7 @@ generated.
 If clogdiff reports differences, examine the output (in the .log file)
 to determine whether the differences indicate errors, or are merely
 due to different randomly selected choices on your system, or to
-environmental differnences like command prompts or file paths.  In the
+environmental differences like command prompts or file paths.  In the
 latter case, you can create a new .ref file for your system by copying
 the latest .log file over the .ref file.
 
@@ -191,6 +225,30 @@ by trun appear after all the test case output, at the end of the file.
 If a test case crashes (raises an unhandled exception) on Windows, the
 traceback goes to the screen, not the log file.  I can't find anything
 in Windows like Unix >& to redirect error output also.
+
+Output files
+
+The PyModel pmt.py program only writes to the terminal (to stdout and
+stderr), but other PyModel programs write output files: pma.py writes
+another module (.py file) that contains the generated FSM, pmg.py
+writes a .dot file with commands for the Graphviz dot program, and the
+various dot commands (dotsvg etc.) write graphics files: .svg, .pdf,
+.ps etc.  The pmv.py program invokes all of these programs causes all
+of these files to be written.
+
+The PyModel programs write all of these output files in the current
+working directory, so each time you repeat a test, all of its output
+files are overwritten (in the same way that the test.log file is
+overwitten).  In the PyModel distribution, we provide copies of some
+of the output files we made (on our development system) so you can
+compare them to yours (that you generate when you repeat the tests on
+your system).  In some samples directories, there may be an fsmpy
+directory which contains FSM modules written by pma.py, and there may
+be an svg or pdf directory which contains .svg files written by pma +
+pmg + dot (or pmv).  You may wish to copy output files that you
+generate into these directories, so you can compare them to output
+from tests that you run later (in much the same way that the .ref
+files are used to compare output to stdout).
 
 
 Using other unit testing frameworks
@@ -215,7 +273,7 @@ There is an example in the samples/populations directory.  The module
 test_populations.py there works with unittest to run the same tests
 as in tests.py.  That is, instead of
 
- trun.py tests  # test with our homemade framework
+ trun tests  # test with our homemade framework
 
 You can do 
 
@@ -229,4 +287,4 @@ check the results (it uses no assertions).  To check the results, you
 could capture and check the output using our clogdiff command, just as
 you would do with with test.py.
 
-Revised Nov 2012
+Revised Dec 2012
