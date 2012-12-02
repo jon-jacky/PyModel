@@ -29,7 +29,7 @@ These directions apply to both Windows and Unix-like systems
 already installed and your environment is configured so you can run
 it (if not, see http://docs.python.org/2/using/).  It also assumes 
 that PyModel is installed and its pymodel directory (containing trun.py, 
-pmt.py etc.) is on your execution path. 
+pmt.py etc.) is on your execution path.  
 
 Quick Start
 Summary
@@ -130,7 +130,9 @@ cases = [
 
 The PyModel commands in test scripts often include the .py suffix, as
 in pmt.py ... here.  The suffix is not required, recent test scripts 
-often use pmt ... etc.
+often use pmt ... etc.  (On Unix-like systems, you must execute 
+the symlinks command in the pymodel directory *once* after you install
+PyModel to enabled this).
 
 The trun module takes one argument, the module name of the script (NOT
 the file name, there is no path prefix or .py suffix).  The trun

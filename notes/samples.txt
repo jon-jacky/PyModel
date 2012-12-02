@@ -5,33 +5,21 @@ There are some examples in the subdirectories under the pymodel samples
 directory: ABP, Marquee, PowerSwitch, Socket, Stack, WebApplication, etc.
 
 Each sample subdirectory contains some test script modules: test.py,
-test_scenarios.py, test_graphics.py etc.  Each of these test scripts
-contains commented command lines that demonstrate combinations of
-arguments and options.
+test_graphics.py etc.  These scripts demonstrate the samples, as well
+as testing PyModel itself.  The file test.txt provides detailed
+instructions for running the scripts.
 
-To prepare to execute test scripts, put the pymodel directory (that
-contains trun.py, pma.py etc.) on your execution path.  Then in each
-samples directory, put the current directory (whatever it is) on the
-PYTHONPATH by executing the tpath command ("source tpath" in bash,
-just "tpath" in Windows).
+Each test script contains commented command lines that demonstrate
+combinations of arguments and options.  Running each test script
+displays output on the terminal, and many test scripts also generate
+files of graphic output in .svg, .pdf, or .ps format. The graphics
+files can then be displayed by an appropriate viewer (for example,
+.svg files can be displayed by many browsers).
 
-To execute all the commands in a test script, run it with trun.py:
+Some samples directories contain svg/ subdirectories (etc.) with test
+output files that we computed on our development system, so you can
+view them without having to execute the tests scripts yourself.
+(Executing the test scripts will not overwrite the contents of these
+directories.)
 
- trun.py test
-
- trun.py test_scenarios 
-
- (etc.)
-
-Or, you can type individual commands that you find in the test
-scripts, or try your own variations.
-
-The test_graphics scripts run the analyzer and graphics programs, and
-generate FSM modules and SVG files that can be displayed by a browser.
-
-If you are using a Unix-like system (including Linux or Mac OS X), you
-can just type trun ... instead of trun.py ..., and likewise for all
-PyModel commands: pmt ... instead of pmt.py ... etc.  To make that
-work, you must execute the symlink command in the pymodel directory
-
-Revised Nov 2012
+Revised Dec 2012
