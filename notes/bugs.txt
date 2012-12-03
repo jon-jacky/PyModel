@@ -4,7 +4,8 @@ PyModel bugs and limitations
  9 Sep 2012
 
 In Socket/len_buffers_two.py, a pymodel config file, state_filter has
-no effect.  Workaround: StateFilter has the intended effect.
+(lowercase with underscore) no effect.  Workaround: StateFilter (mixed
+case) has the intended effect.
 
 
 16 Sep 2012
