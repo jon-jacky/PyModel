@@ -6,7 +6,7 @@ from operator import concat
 
 class TestSuite(object):
 
-  def __init__(self, module):
+  def __init__(self, module, exclude, include):
     self.module = module
 
     # recognize PEP-8 style names (all lowercase) if present

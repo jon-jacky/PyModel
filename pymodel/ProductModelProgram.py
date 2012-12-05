@@ -32,24 +32,24 @@ class ProductModelProgram(object):
     self.module = dict()  # dict of modules keyed by name
     self.mp = dict()      # dict of model programs keyed by same module name
 
-    # populate self.mp
+    # populate self.module and self.mp from modules named in command line args:
     for mname in args: # args is list of module name
       self.module[mname] = __import__(mname) 
-      # In FSM and TestSuite, __init__  raises AttributeError
-      #  if passed a module which does not contain the expected attributes
-      try:
-        self.mp[mname] = FSM(self.module[mname]) # uses 'initial' attribute
-      except AttributeError: # if we get here, this module is not FSM
-        try:
-          self.mp[mname] = TestSuite(self.module[mname]) #uses 'testSuite' attr
-          self.TestSuite = True # used by pmt nruns logic
-        except AttributeError: 
-          if self.module[mname].__doc__.strip().upper().startswith('PYMODEL CONFIG'):
-            pass # configuration module, merely importing it did all the work
-          else:
-            # got this far, consider any other module a ModelProgram
-            self.mp[mname] = ModelProgram(self.module[mname], options.exclude, 
-                                          options.action)
+      if hasattr(self.module[mname], 'graph'):
+        self.mp[mname] = FSM(self.module[mname],options.exclude,options.action)
+      # for backwards compatibility we accept all of these test_suite variants
+      elif (hasattr(self.module[mname], 'testSuite') or 
+            hasattr(self.module[mname], 'testsuite') or 
+            hasattr(self.module[mname], 'test_suite')):
+        self.mp[mname] = TestSuite(self.module[mname], 
+                                   options.exclude, options.action)
+        self.TestSuite = True # used by pmt nruns logic
+      elif self.module[mname].__doc__.strip().upper().startswith('PYMODEL CONFIG'):
+        pass # configuration module, merely importing it did all the work
+      else:
+        # got this far, should be a ModelProgram -- if not, crash
+        self.mp[mname] = ModelProgram(self.module[mname], 
+                                      options.exclude, options.action)
 
     # Must process metadata that might be affected by configuration modules
     # after all modules have been imported.
