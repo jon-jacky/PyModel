@@ -26,3 +26,7 @@ interleaves with other actions; it behaves like an unshared action.
 Workaround: write a different FSM or TestSuite without the actions you
 wish to exclude.
 
+FIXED for FSM 4 Dec 2012, for TestSuite 5 Dec 2012.
+
+
+
