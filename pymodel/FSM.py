@@ -2,44 +2,37 @@
 Interface to an FSM module (graph) used by ProductModelProgram
 """
 
-class FSM(object):
- 
+from model import Model
+
+class FSM(Model):
+
   def __init__(self, module, exclude, include):
-    self.module = module
-    self.exclude = exclude
-    self.include = include
-    self.current = self.module.initial # raise exception if module is not FSM
-    # Assign defaults to optional attributes
-    # need copy, might not be same as self.module.actions due to include/excl
-    # This FSM self.actions is not used in this module outside this __init__
-    #  BUT it is used in several places in ProductModelProgram
+    Model.__init__(self, module, exclude, include)
+
+  def post_init(self):
+    """
+    Now that all modules have been imported and executed their __init__
+     do a postprocessing pass
+     to process metadata that might be affected by configuration modules
+    """
+    # Make copies of collections that may be altered later
+    # self.actions is not used in this module outside this __init__
+    #  BUT it is used in several places in Model and ProductModelProgram
     # EnabledTransitions below works directly on self.module.graph,
     #  not self.actions
     if not hasattr(self.module, 'actions'):
       self.actions = list(self.actions_in_graph()) # default, make copy
     else:
       self.actions = list(self.module.actions) # copy
-    if not hasattr(self.module, 'cleanup'):
-      self.module.cleanup = tuple() # else just use the ones already there
-    if not hasattr(self.module, 'observables'):
-      self.module.observables = tuple() # no observable actions
-    # Account for exclude, actions options, copy code in ModelProgram.
-    # Can't easily factor this out to caller ProductModelProgram because
-    # self.actions list is constructed differently in each type of model
-    if self.exclude:
-      self.actions = [ a for a in self.actions if a.__name__ not in self.exclude ]
-    if self.include:
-      self.actions = [ a for a in self.actions if a.__name__ in self.include ]
-    self.cleanup = list(self.module.cleanup) # need a copy, may change it below
-    if self.exclude:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ not in self.exclude ]
-    if self.include:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ in self.include ]
+    Model.post_init(self) # uses self.actions
     # Construct self.graph like self.module.graph 
     #  BUT also accounts for include, exclude via self.actions
     self.graph = [ (current, (action,args,result), next) 
                    for (current, (action,args,result), next) in
                    self.module.graph if action in self.actions ]
+    # prepare for first run
+    self.current = self.module.initial # raise exception if module is not FSM
+
 
   def actions_in_graph(self):
     return tuple(set([ action for (current, (action,args,result), next) in 

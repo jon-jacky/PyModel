@@ -9,13 +9,12 @@ import sys
 import copy
 import inspect
 import itertools
+from model import Model
 
-class ModelProgram(object):
+class ModelProgram(Model):
 
   def __init__(self, module, exclude, include):
-    self.module = module
-    self.exclude = exclude
-    self.include = include
+    Model.__init__(self, module, exclude, include)
 
     # recognize PEP-8 style names (all lowercase) if present
     if hasattr(self.module, 'accepting'):
@@ -32,10 +31,9 @@ class ModelProgram(object):
       self.module.Reset = self.module.reset
 
     # assign defaults to optional attributes
+    # cleanup and observables are handled in Models base class
     if not hasattr(self.module, 'enablers'):
       self.module.enablers = dict() # all actions always enabled
-    if not hasattr(self.module, 'cleanup'):
-      self.module.cleanup = tuple() # no cleanup actions
     if not hasattr(self.module, 'domains'):
       self.module.domains = dict() # empty domains
     if not hasattr(self.module, 'combinations'):
@@ -46,8 +44,17 @@ class ModelProgram(object):
       self.module.StateFilter = self.TrueDefault
     if not hasattr(self.module, 'StateInvariant'):
       self.module.StateInvariant = self.TrueDefault
-    if not hasattr(self.module, 'observables'):
-      self.module.observables = tuple() # no observable actions
+
+  def post_init(self):
+    """
+    Now that all modules have been imported and executed their __init__
+     do a postprocessing pass 
+     to process metadata that might be affected by configuration modules
+    """
+    # Make copies of collections that may be altered by post_init
+    self.actions =  list(self.module.actions)
+    Model.post_init(self) # uses self.actions
+
 
   def make_argslist(self, a):
     """
@@ -73,21 +80,6 @@ class ModelProgram(object):
     # return tuple not list, hashable so it can be key in dictionary 
     # also handle special case (None,) indicates empty argslist in domains
     return tuple([() if x == (None,) else x for x in argslists ]) 
-
-  def MakeActions(self):
-    # separate function from __init__, call after all modules imported
-    # need copy, might not be same as self.module.actions due to include/excl
-    # note self.actions can include shared but unused actions
-    self.actions = list(self.module.actions)
-    if self.exclude:
-      self.actions = [ a for a in self.actions if a.__name__ not in self.exclude ]
-    if self.include:
-      self.actions = [ a for a in self.actions if a.__name__ in self.include ]
-    self.cleanup = list(self.module.cleanup) # need a copy, may change it below
-    if self.exclude:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ not in self.exclude ]
-    if self.include:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ in self.include ]
 
   def ParamGen(self):
     #print 'ModelProgram ParamGen for', self.module.__name__ #DEBUG

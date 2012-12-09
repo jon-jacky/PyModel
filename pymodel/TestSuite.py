@@ -3,13 +3,12 @@ Interface to a test suite module (one or more runs) used by ProductModelProgram
 """
 
 from operator import concat
+from model import Model
 
-class TestSuite(object):
+class TestSuite(Model):
 
   def __init__(self, module, exclude, include):
-    self.module = module
-    self.exclude = exclude
-    self.include = include
+    Model.__init__(self, module, exclude, include)
 
     # recognize PEP-8 style names (all lowercase) if present
     if hasattr(self.module, 'testsuite'):
@@ -17,33 +16,18 @@ class TestSuite(object):
     if hasattr(self.module, 'test_suite'):
       self.module.testSuite = self.module.test_suite
 
-    # assign defaults to optional attributes
-    if not hasattr(self.module, 'observables'):
-      self.module.observables = tuple() # no observable actions
 
-    self.irun = 0 # index of current test run in test suite
-    self.pc = 0 # program counter
+  def post_init(self):
+    """
+    Now that all modules have been imported and executed their __init__
+     do a postprocessing pass
+     to process metadata that might be affected by configuration modules
+    """
     if hasattr(self.module, 'actions'):
       self.actions = list(self.module.actions) # copy, actions from cmd line
     else:
       self.actions = list(self.actions_in_suite()) # default, copy
-    # Account for exclude, actions options, copy code in ModelProgram.
-    # Can't easily factor this out to caller ProductModelProgram because
-    # self.actions list is constructed differently in each type of model
-    # elsewhere in this module it says we can ignore cleanup, but ...
-    if self.exclude:
-      self.actions = [ a for a in self.actions if a.__name__ not in self.exclude ]
-    if self.include:
-      self.actions = [ a for a in self.actions if a.__name__ in self.include ]
-    # Is cleanup even meaningful for test suite?
-    if not hasattr(self.module, 'cleanup'):
-      self.cleanup = tuple() # else just use the ones already there
-    else:
-      self.cleanup = list(self.module.cleanup) # need a copy, may change it below
-    if self.exclude:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ not in self.exclude ]
-    if self.include:
-      self.cleanup = [ c for c in self.cleanup if c.__name__ in self.include ]
+    Model.post_init(self) # uses self.actions
     # Revise the test suite to account for excluded, included actions
     self.test_suite = list()
     for run in self.module.testSuite:
@@ -54,7 +38,10 @@ class TestSuite(object):
          else:
            break # truncate the run before the excluded action
        self.test_suite.append(new_run)
-    # replace self.module.testSuite with self.test_suite below
+    # prepare for first run
+    self.irun = 0 # index of current test run in test suite
+    self.pc = 0 # program counter
+
 
   def actions_in_suite(self):
     # there might be two or three items in action_tuple

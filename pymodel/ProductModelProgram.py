@@ -32,7 +32,10 @@ class ProductModelProgram(object):
     self.module = dict()  # dict of modules keyed by name
     self.mp = dict()      # dict of model programs keyed by same module name
 
-    # populate self.module and self.mp from modules named in command line args:
+    # Populate self.module and self.mp from modules named in command line args
+    # Models that users write are just modules, not classes (types)
+    #  so we find out what type to wrap each one in 
+    #  by checking for one of each type's required attributes using hasattr
     for mname in args: # args is list of module name
       self.module[mname] = __import__(mname) 
       if hasattr(self.module[mname], 'graph'):
@@ -51,15 +54,11 @@ class ProductModelProgram(object):
         self.mp[mname] = ModelProgram(self.module[mname], 
                                       options.exclude, options.action)
 
-    # Must process metadata that might be affected by configuration modules
-    # after all modules have been imported.
+    # Now that all modules have been imported and executed their __init__
+    #  do a postprocessing pass over all model objects
+    #  to process metadata that might be affected by configuration modules
     for mp in self.mp.values():
-      # configuration modules only apply to ModelProgram, not FSM or TestSuite
-      if isinstance(mp, ModelProgram):
-        # Generate lists of actions in each mp module: self.actions, .cleanup
-        mp.MakeActions()
-        # Generate action parameters in each mp module: self.argslists
-        # mp.ParamGen() # move to EnabledTransitions for state-dependent params
+      mp.post_init()
 
     # set of all anames in all model programs - the vocabulary of the product
     self.anames = set().union(*[set([a.__name__ for a in mp.actions ])
