@@ -16,12 +16,6 @@ class Model(object):
     self.exclude = exclude
     self.include = include
 
-    # make sure unassigned optional attributes exist
-    if not hasattr(self.module, 'cleanup'):
-      self.module.cleanup = tuple() # else just use the ones already there
-    if not hasattr(self.module, 'observables'):
-      self.module.observables = tuple() # no observable actions
-
 
   def revise_actions(self):
     """
@@ -49,7 +43,17 @@ class Model(object):
     If you override this method in a subclass, make sure the overriding method
      calls Model.post_init() to ensure that revise_actions() is called.
     """
+    # Do all of this work here rather than in __init__
+    #  so it can include the effects of any pymodel config modules
+
+    # make sure unassigned optional attributes exist
+    if not hasattr(self.module, 'cleanup'):
+      self.module.cleanup = tuple() # else just use the ones already there
+    if not hasattr(self.module, 'observables'):
+      self.module.observables = tuple() # no observable actions
+
     # make copies of collections that may be altered by revise_actions below
     self.cleanup = list(self.module.cleanup) # this works for each class
+
     # make self.actions differently in each class before calling this post_init
     self.revise_actions()

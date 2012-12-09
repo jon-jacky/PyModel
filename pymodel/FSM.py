@@ -15,6 +15,9 @@ class FSM(Model):
      do a postprocessing pass
      to process metadata that might be affected by configuration modules
     """
+    # Do all of this work here rather than in __init__
+    #  so it can include the effects of any pymodel config modules
+
     # Make copies of collections that may be altered later
     # self.actions is not used in this module outside this __init__
     #  BUT it is used in several places in Model and ProductModelProgram

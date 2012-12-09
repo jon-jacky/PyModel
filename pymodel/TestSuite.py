@@ -10,19 +10,21 @@ class TestSuite(Model):
   def __init__(self, module, exclude, include):
     Model.__init__(self, module, exclude, include)
 
-    # recognize PEP-8 style names (all lowercase) if present
-    if hasattr(self.module, 'testsuite'):
-      self.module.testSuite = self.module.testsuite
-    if hasattr(self.module, 'test_suite'):
-      self.module.testSuite = self.module.test_suite
-
-
   def post_init(self):
     """
     Now that all modules have been imported and executed their __init__
      do a postprocessing pass
      to process metadata that might be affected by configuration modules
     """
+    # Do all of this work here rather than in __init__
+    #  so it can include the effects of any pymodel config modules
+
+    # recognize PEP-8 style names (all lowercase) if present
+    if hasattr(self.module, 'testsuite'):
+      self.module.testSuite = self.module.testsuite
+    if hasattr(self.module, 'test_suite'):
+      self.module.testSuite = self.module.test_suite
+
     if hasattr(self.module, 'actions'):
       self.actions = list(self.module.actions) # copy, actions from cmd line
     else:

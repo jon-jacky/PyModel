@@ -16,6 +16,15 @@ class ModelProgram(Model):
   def __init__(self, module, exclude, include):
     Model.__init__(self, module, exclude, include)
 
+  def post_init(self):
+    """
+    Now that all modules have been imported and executed their __init__
+     do a postprocessing pass 
+     to process metadata that might be affected by configuration modules
+    """
+    # Do all of this work here rather than in __init__
+    #  so it can include the effects of any pymodel config modules
+
     # recognize PEP-8 style names (all lowercase) if present
     if hasattr(self.module, 'accepting'):
       self.module.Accepting = self.module.accepting
@@ -45,12 +54,6 @@ class ModelProgram(Model):
     if not hasattr(self.module, 'StateInvariant'):
       self.module.StateInvariant = self.TrueDefault
 
-  def post_init(self):
-    """
-    Now that all modules have been imported and executed their __init__
-     do a postprocessing pass 
-     to process metadata that might be affected by configuration modules
-    """
     # Make copies of collections that may be altered by post_init
     self.actions =  list(self.module.actions)
     Model.post_init(self) # uses self.actions
