@@ -83,6 +83,10 @@ time (each time the action is used) to return a collection of argument
 values.  This function can use the model state, so the arguments can
 depend on the state.  See populations/populations.py and
 populations/test/domains9.py for examples of state-dependent domains.
+State-dependent domains *must* be callables (as in populations.py or 
+domains9.py) to force them be re-evaluated each time they are used.
+Just naming the collection variable (as in populations/test/domainsx.py)
+does *not* work.
 
 combinations: dictionary, associates each action function with 'all'
 (to form argument lists from the Cartesian product of all the domains)
