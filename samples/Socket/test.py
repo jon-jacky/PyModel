@@ -4,12 +4,12 @@ Socket model tests
 
 cases = [
     ('Model only, shows interleaving between _call and _return',
-     'pmt.py -s 8 -n 20 Socket'),
+     'pmt -n 10 -c 6 socket'),
     
-    ('Compose model with non-blocking scenario that ensures _call then _return',
-     'pmt.py -s 11 -n 20 Socket NoBlockScenario'),
+    ('Compose model with synchronous scenario that ensures _call then _return',
+     'pmt -n 10 -c 6 synchronous socket'),
 
-    ('Compose model with scenario, config to make behavior synchronous, deterministic',
-     'pmt.py -s 2 -r 6 SendAll Socket NoBlockScenario')
+    ('Add state-dependent domains to make behavior deterministic',
+     'pmt -n 10 -c 6 deterministic synchronous socket')
     ]
 
