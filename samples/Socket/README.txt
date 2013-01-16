@@ -1,13 +1,13 @@
 
-PyModel socket sample: modeling and testing nondeterminism and concurrency
+PyModel socket sample: modeling and testing with nondeterminism and concurrency
 
 This sample uses network sockets to demonstrate several PyModel
 techniques for modeling and testing systems that exhibit
 nondeterminism, concurrency, and asynchrony.
 
-To understand the discussion here, you should first read these files
-in the notes directory: concepts.txt, models.txt, composition.txt, and
-stepper.txt.
+To understand the discussion here, it might be helpful to read
+these files in the notes directory: concepts.txt, models.txt,
+composition.txt, and stepper.txt.
 
 
 Motivation: sockets are nondetermistic and concurrent
@@ -32,8 +32,8 @@ Socket sample contents
 
 The sample includes these modules:
 
-- Socket: a model program that can exhibit nondeterminism and the
-  effects of concurrency.
+- Socket: a model program for network sockets that can exhibit
+  nondeterminism and concurrency.
 
 - NoBlockScenario, SendAll, send_aa, observables, etc.: several
   scenario machines and configuration files that select particular
@@ -41,17 +41,19 @@ The sample includes these modules:
 
 - Stepper, stepper_o, and stepper_a: three different steppers that use
   the model program and scenarios to test actual sockets on localhost
-  (via the Python standard socket library).  Also, Sender.py,
-  Receiver.py, etc.: other code for exercising the socket library.
+  (via the Python standard library socket module).  Also, Sender.py,
+  Receiver.py, etc.: other code for exercising the standard library
+  socket module.
 
 - socket_simulator and socket_simulator_a: two simulators that can
-  optionally replace the Python standard socket library in the
+  optionally replace the Python standard library socket module in the
   steppers.  These simulators can be configured to demonstrate a great
   deal of nondeterminism and concurrency, even with small messages.
 
 - test, test_graphics, test_stepper, test_msgsize, etc.: several test
   scripts that invoke various combinations of these modules.
 
+- fsmpy/ and svg/ directories ...
 
 Socket model program: modeling nondeterminism and concurrency
 
@@ -62,12 +64,16 @@ and all recv actions occur at the other.  Messages sent at one end can
 be eventually received at the other.
 
 This model program assumes the connection is already established in
-the initial state, so it does not include actions for open, bind,
+its initial state, so it does not include actions for open, bind,
 listen, accept, connect.  To test a real implementation, those must
 all be handled in the stepper initialization and reset (see Stepper
-sections, below).  However this model program does include close
-actions for each end of the connection.  After these close actions, no
-more messages can be transmitted.
+sections, below).  
+
+... maybe omit close from the model... However this model program does
+include close actions for each end of the connection.  After these
+close actions, no more messages can be transmitted.
+
+Nondeterminism
 
 The model exhibits nondeterminism, like a real socket connection.  The
 send operation may accept any (incomplete) segment of its message
@@ -91,59 +97,63 @@ nondeterminism easily.  PyModel may call the action with any one of
 the combinations of arguments that satisfy the enabling condition in
 the current state.  PyModel considers all satisfying combinations and
 chooses one (at random, or optionally guided by a strategy defined by
-the programmer).  Usually the enabling condition can be satisfied by a
-large range of argument values, but the actual argument values that
-are used must be drawn from a *parameter generator*, a collection
-defined by the programmer.  A parameter generator must be defined for
-each argument of each action.  The parameter generator might be a
-fixed collection that is defined when the model program is written, or
-it might be computed from the model program state each time an
-argument value is needed.  The parameter generators are defined
-separately from the enabling conditions, so they provide a convenient
-way to control the potential nondeterminism offered by the enabling
-conditions.  An enabling condition might permit a large range of
-argument values, but the parameter generator can limit it to a few, or
-just one.
+the programmer).  
 
-It is typical for the enabling conditions and parameter generators to
-permit several different actions to be enabled in a given state;
-again, PyModel chooses one (at random or according to a programmed
+Usually the enabling condition can be satisfied by a large range of
+argument values, but the actual argument values that are used must be
+drawn from a *domain*, a collection defined by the programmer.  A
+domain must be defined for each argument of each action.  The domain
+might be a fixed collection that is defined when the model program is
+written, or it might be a *state-dependent domain* computed from the
+model program state each time an argument value is needed.  The
+domains are defined separately from the enabling conditions, so they
+provide a convenient way to restrict the potential nondeterminism
+offered by the enabling conditions.  An enabling condition might
+permit a large range of argument values, but the domain can limit it
+to a few, or just one.
+
+It is typical for the enabling conditions and domains to permit
+several different actions to be enabled in a given state.  PyModel
+chooses one of these actions (at random or according to a programmed
 strategy).  In this way, a model program can exhibit nondeterminism
 regarding which action is executed, not just which argument values are
 used.
 
-Enabling conditions and parameter generators can also represent
-nondeterministic outcomes from actions.  This is accomplished by
-coding each operation (here, each function call in the implementation)
-as *two* actions in the model program.  For example, the send function
-in the implementation is represented by send_call and send_return
-actions in the model program.  An action modeled in this style, where
-the start and finish of the operation (here, the function call and its
-return) are coded as two separate actions in the model, is called a
-*split action*.  Both start and finish actions in a split action
-require an enabling condition (if either is omitted, that part of the
-action is considered to be enabled always).  Split actions never have
-return values.  Instead, the return value (or values) of the modeled
-action are coded as arguments of the finish action.  So where the
+Enabling conditions and domains can also represent nondeterministic
+outcomes from actions.  This is accomplished by coding each operation
+(in this model, each function call in the implementation) as *two*
+actions in the model program.  For example, the send function in the
+implementation is represented by send_call and send_return actions in
+the model program.  An action modeled in this style, where the start
+and finish of the operation (here, the function call and its return)
+are coded as two separate actions in the model, is called a *split
+action*.  Both start and finish actions in a split action require an
+enabling condition (if either is omitted, that part of the action is
+considered to be enabled always).  Split actions never have return
+values.  Instead, the return value (or values) of the modeled
+operation are coded as arguments of the finish action.  So where the
 implemention has n = c.send(msg) and msg = s.recv(bufsize), the model
-has send_call(msg) then send_return(n), and recv_call(bufsize) and
-recv_return(msg).  Therefore, nondeterministic action outcomes can be
-represented by coding the enabling conditions and parameter generators
-for the finish actions.  For example, PyModel can nondeterministically
-choose values for n (the number of characters acceped by send) and msg
-(the message returned by recv).  The enabling conditions for the
-finish actions are the postconditions for those operations --- which
-can be nondeterministic, if the programmer desires.
+has a split action with send_call(msg) then send_return(n), and
+another split action with recv_call(bufsize) and recv_return(msg).
+Therefore, nondeterministic action outcomes can be represented by
+coding the enabling conditions and domains for the finish actions.
+For example, PyModel can nondeterministically choose values for n (the
+number of characters acceped by send) and msg (the message returned by
+recv).  The enabling conditions for the finish actions are, in effect,
+the postconditions for those operations --- which can be
+nondeterministic, if the programmer desires.
 
 (An alternative way to represent nondeterministic outcomes without
 split actions would be to write code in the action body that generates
-a collection of possible results, and then randomly choose one.  But
+a collection of possible results, and then randomly chooses one.  But
 it turns out to be more convenient, flexible, and general to represent
-nondeterminism with split actions, enabling conditions, and parameter
-generators.  This is the method that is recommended and supported by
-PyModel.  In particular, the PyModel analyzer (the pma program) might
-overlook nondeterminism that arises in action bodies -- it might omit
-some of those nondeterministic outcomes from its analyses.)
+nondeterminism with split actions, enabling conditions, and domains.
+This is the method that is recommended and supported by PyModel.  In
+particular, the PyModel analyzer (the pma program) might overlook
+nondeterminism that arises in action bodies -- it might omit some of
+those nondeterministic outcomes from its analyses.)
+
+Concurrency
 
 The model exhibits concurrency, like a real socket connection.
 PyModel represents concurrency by interleaving.  Send and receive
@@ -175,41 +185,31 @@ some time after the beginning (with other actions occuring in the
 meantime), is called *asynchronous* behavior.  Split actions are a way
 to code asynchrony in PyModel.  So split actions serve *two* functions
 in PyModel.  In addition to representing nondeterminism (explained
-above), they also represent concurrency.
-
-(... Consider omitting close actions from the model program discussed
-here so we can omit this: ...  In this model, the send and receive
-actions are split actions, but the close actions are not split - they
-are examples of *atomic actions*.)
+above), they also represent concurrency with asynchronous behavior.
 
 
-Scenarios, parameter generators, and configurations:
+Scenarios, domains, and configurations:
 controlling nondeterminism and concurrency.
 
 The Socket model program in this sample exhibits nondeterminism and
-asynchronous behavior, but these are rarely seen in the common
-situation where a socket transmits small messages over a fast network.
-In fact, our Stepper module only works correctly with runs that
-exhibit these common (deterministic, synchronous) behaviors; it
-considers any nondeterminism to be a test failure and just waits
-forever at the first blocking call (stepper_o and stepper_a relax
-these restrictions).  Therefore, sometimes we wish to restrict the
-behavior of the model to deterministic, synchronous behaviors.
+asynchronous behavior (blocking and interleaving send and recv).
+However, these are rarely seen in the common situation where a socket
+transmits small messages over a fast network.  In fact, our first
+Stepper module only works correctly with runs that exhibit these
+common (deterministic, synchronous) behaviors; it considers any
+nondeterminism to be a test failure and just waits forever at the
+first blocking call (our other steppers, stepper_o and stepper_a,
+relax these restrictions).  Therefore, sometimes we wish to restrict
+the behavior of the model to deterministic, synchronous behaviors.
 
 The test_viewer script contains several test cases that show
 the behavior of the unrestricted model program, and others that
 demonstrate techniques for restricting the behavior.
 
-In PyModel, nondeterminism can be restricted by parameter generators.
-The model program specifies the argument values used for every action
-by its enabling conditions: a boolean function that the arguments must
-satisfy.  Recall that when behavior is modeled by split actions, the
-arguments of the finish actions (send_return and recv_return here) are
-actually the return values -- so the enabling conditions for the
-arguments of these actions are actually postconditions on the
-operation.  Recall that a boolean function can often be satisfied (made to
-return True) by many different values, so this way of modeling
-operations represents nondeterminism easily.
+In PyModel, nondeterminism can be restricted by domains.  Recall that
+an enabling condition might permit a large range of argument values,
+but the domain can limit it to a few, or just one.  ... explain domain
+in *SendAll* configuration module ...
 
 In PyModel, concurrency and asychrony permitted by a model program can
 be removed by scenario machines.  *NoBlockScenario* is a scenario
