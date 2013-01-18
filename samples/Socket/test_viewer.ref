@@ -1,6 +1,0 @@
-27 states, 66 transitions, 1 accepting states, 0 unsafe states
-pma.py --exclude send_close --exclude recv_close --maxTransitions 100 send_aa_small Socket len_buffers_two
-pmg.py --transitionLabels action send_aa_smallFSM
-dot -Tsvg -o send_aa_smallFSM.svg send_aa_smallFSM.dot
-Two -e options in a single command
-

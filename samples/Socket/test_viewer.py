@@ -1,20 +1,14 @@
 """
-Socket model viewer  tests
+Socket model - view same compositions and configurations as in test.py
 """
 
 cases = [
-    ('No -e options',
-     'pmv.py -o send_aa_small_no_e_FSM send_aa_small Socket len_buffers_two'),
+    ('Model only, shows interleaving between _call and _return',
+     'pmv socket'),
+    
+    ('Compose model with synchronous scenario that ensures _call then _return',
+     'pmv synchronous socket'),
 
-    ('Two -e options in a single command',
-     'pmv.py send_aa_small Socket len_buffers_two -e send_close -e recv_close'),
-
-    ('Two -e options in a single command, use len_buffers_two_pep8 with state_filter',
-     'pmv.py send_aa_small Socket len_buffers_two_pep8 -e send_close -e recv_close -o send_aa_small_pep8_FSM'),
-
-    ('Two -e options in a single command, use len_buffers_two_lambda with state_filter',
-     'pmv.py send_aa_small Socket len_buffers_two_lambda -e send_close -e recv_close -o send_aa_small_lambda_FSM'),
-
-    ('Same graph, this time generate PDF',
-     'pmv.py -T pdf send_aa_small Socket len_buffers_two -e send_close -e recv_close')
-]
+    ('Add state-dependent domains to make behavior deterministic',
+     'pmv deterministic synchronous socket')
+    ]
