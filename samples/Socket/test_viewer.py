@@ -5,7 +5,10 @@ Socket model - view same compositions and configurations as in test.py
 cases = [
     ('Model only, shows interleaving between _call and _return',
      'pmv socket'),
-    
+
+    ('Synchronous scenario, graph of the FSM',
+     'pmv -o synchronous_graph synchronous'),
+
     ('Compose model with synchronous scenario that ensures _call then _return',
      'pmv synchronous socket'),
 
