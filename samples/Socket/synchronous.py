@@ -2,10 +2,10 @@
 synchronous - send before recv, each _call immediately followed by _return
 """
 
-from socket import send_call, send_return, recv_call, recv_return
+from msocket import send_call, send_return, recv_call, recv_return
 
 initial = 0
-accepting = (0,) # consistent with Socket model
+accepting = (0,) # consistent with msocket model
 
 cleanup = (send_return, recv_call, recv_return)
 

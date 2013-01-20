@@ -1,74 +1,74 @@
 """
-Controllable, synchronous, deterministic stepper for Socket
+Controllable, synchronous, deterministic stepper for msocket
 
 Controllable means all actions are functions that are called by the
 stepper.  No actions are events that are detected by the stepper.
 Make the stepper all-controllable by including *both* server and
 client in the stepper, both running in one thread on localhost.
 
-Synchronous means no blocking: next action after send_call is send_return, etc.
-To make model behavior synchronous, compose Socket with NoBlockScenario.
-Implementation must obey because in this stepper all actions are controllable.
+Synchronous means no blocking: next action after send_call is
+send_return, etc.  To make model behavior synchronous, compose msocket
+with the synchronous scenario machine.  Implementation must obey
+because in this stepper all actions are controllable.
 
 Deterministic means entire message is always sent, entire msg always received.
-To make model behavior deterministic, use the SendAll config. module.
+To make model behavior deterministic, use the deterministic config. module.
 The implementation cannot be made to obey.  Nondeterministic
 implementation behavior will be reported as test failures. Implementation
 behavior is likely to be deterministic if messages are small enough.
 
-Example: pmt.py -i Stepper Socket SendAll NoBlockScenario
+Example: pmt.py -n 10 -c 6 -i stepper msocket synchronous nondeterministic
 """
 
-import socket
+import socket  # Python standard library socket module, OR a simulator
 
 # Default configuration, may rebind below
-
 port = 8080
 line_length = 80  # length limit for received messages
 
-# Server's listener socket
+# Initial setup, runs once when test runner pmt imports stepper 
 
+# Server's listener socket
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# get and recv buffer size to print below, just FYI
 rcvbuf = listener.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
 
-# Release listener socket immediately when program exits, 
-# avoid socket.error: [Errno 48] Address already in use
+# Ensure we release listener socket immediately when program exits, 
+#  to avoid socket.error: [Errno 48] Address already in use
 listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-# Wait for client to connect
+# Listen, prepare for clients to connect
 listener.bind(('localhost', port))
 listener.listen(1) 
-print '\nServer listening on localhost port %s with RCVBUF %s' % (port, rcvbuf)
+print '\nServer listens on localhost port %s with RCVBUF size %s' % (port, rcvbuf)
 
-# Client socket
+# Define function for client connect - also used in stepper reset()
+def new_connection():
+  global client, server, addr, msg, n, bufsize
+  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  # get and print send buffer size, just FYI
+  sndbuf = client.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
+  print 'Client creates socket with SNDBUF size %s' % (sndbuf)
+  client.connect(('localhost', port))
+  print 'Client connects to localhost port %s' % port
+  server, addr = listener.accept()
+  print 'Server accepts connection from ', addr
+  # State needed to remember _call args for __return
+  msg = ''
+  n = 0
+  bufsize = 0
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sndbuf = client.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-print 'Client creates socket with SNDBUF %s' % (sndbuf)
+# Now call that function to connect the first time
+new_connection()
 
-# Client connect
-client.connect(('localhost', port))
-print 'Client connecting to localhost port %s' % port
+def close_connection():
+  global client, server
+  client.close()
+  server.close()
 
-# Server accepts connection
-server, addr = listener.accept()
-print 'Server accepted from ', addr
-
-# Now can client can repeat client.send(data) until EOF,
-# then should client.close
-# Now server can read by repeating data=server.recv(n) until EOF
-# Then should server.close()
-
-# Omit - can leave stuff in buffers that confuses test runs
-# Test the connection
-#client.send('Hello world!')
-#data = server.recv(line_length)
-#print 'Try a test message, server got "%s"\n' % data
-
-# State needed to remember _call args for __return
-msg = ''
-n = 0
-bufsize = 0
+def reset():
+  close_connection()
+  new_connection()
 
 def testaction(aname, args, modelResult):
   """
@@ -94,11 +94,6 @@ def testaction(aname, args, modelResult):
     if n != nchars:
       return 'send returned %s, expected %s ' % (nchars, n)
 
-  elif aname == 'send_close':
-    client.close()
-
-  # send_exception shouldn't appear in synchronous scenarios
-  
   elif aname == 'recv_call':
     (bufsize,) = args
 
@@ -117,20 +112,7 @@ def testaction(aname, args, modelResult):
           else msg[:maxlen/2] + '...' + msg[-maxlen/2:]
       return 'recv returned %s (%s), expected %s (%s)' % (sdata, nd, smodel, nm)
 
-  elif aname == 'recv_close':
-    server.close()
-
   else:
     raise NotImplementedError, 'action not supported by stepper: %s' % aname
-
-
-def reset():
-  global client, server, addr
-  # Assume both ends, client and server, are already closed.
-  # Model assumes connection already established in initial state.
-  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  client.connect(('localhost', port))
-  server, addr = listener.accept()
-  print 'Server accepted from ', addr
 
 

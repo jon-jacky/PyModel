@@ -1,17 +1,17 @@
 """
-Socket model - view same compositions and configurations as in test.py
+msocket model - view same compositions and configurations as in test.py
 """
 
 cases = [
     ('Model only, shows interleaving between _call and _return',
-     'pmv socket'),
+     'pmv msocket'),
 
     ('Synchronous scenario, graph of the FSM',
      'pmv -o synchronous_graph synchronous'),
 
     ('Compose model with synchronous scenario that ensures _call then _return',
-     'pmv synchronous socket'),
+     'pmv synchronous msocket'),
 
     ('Add state-dependent domains to make behavior deterministic',
-     'pmv deterministic synchronous socket')
+     'pmv deterministic synchronous msocket')
     ]

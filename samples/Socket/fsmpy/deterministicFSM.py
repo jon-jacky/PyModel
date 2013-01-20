@@ -1,5 +1,5 @@
 
-# pma.py --maxTransitions 100 deterministic synchronous socket
+# pma.py --maxTransitions 100 deterministic synchronous msocket
 # 7 states, 8 transitions, 1 accepting states, 0 unsafe states, 0 finished and 0 deadend states
 
 # actions here are just labels, but must be symbols with __name__ attribute
@@ -12,13 +12,13 @@ def recv_return(): pass
 # states, key of each state here is its number in graph etc. below
 
 states = {
-  0 : {'synchronous': 0, 'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': ''}},
-  1 : {'synchronous': 1, 'socket': {'send_arg': 'a', 'recv_arg': 0, 'buffers': ''}},
-  2 : {'synchronous': 1, 'socket': {'send_arg': 'bb', 'recv_arg': 0, 'buffers': ''}},
-  3 : {'synchronous': 2, 'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'a'}},
-  4 : {'synchronous': 2, 'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'bb'}},
-  5 : {'synchronous': 3, 'socket': {'send_arg': '', 'recv_arg': 4, 'buffers': 'a'}},
-  6 : {'synchronous': 3, 'socket': {'send_arg': '', 'recv_arg': 4, 'buffers': 'bb'}},
+  0 : {'synchronous': 0, 'msocket': {'send_arg': '', 'recv_arg': 0, 'buffers': ''}},
+  1 : {'synchronous': 1, 'msocket': {'send_arg': 'a', 'recv_arg': 0, 'buffers': ''}},
+  2 : {'synchronous': 1, 'msocket': {'send_arg': 'bb', 'recv_arg': 0, 'buffers': ''}},
+  3 : {'synchronous': 2, 'msocket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'a'}},
+  4 : {'synchronous': 2, 'msocket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'bb'}},
+  5 : {'synchronous': 3, 'msocket': {'send_arg': '', 'recv_arg': 4, 'buffers': 'a'}},
+  6 : {'synchronous': 3, 'msocket': {'send_arg': '', 'recv_arg': 4, 'buffers': 'bb'}},
 }
 
 # initial state, accepting states, unsafe states, frontier states, deadend states

@@ -1,6 +1,6 @@
 
 # pma.py --maxTransitions 100 socket
-# 61 states, 100 transitions, 1 accepting states, 0 unsafe states, 0 finished and 0 deadend states
+# 59 states, 100 transitions, 1 accepting states, 0 unsafe states, 0 finished and 0 deadend states
 
 # actions here are just labels, but must be symbols with __name__ attribute
 
@@ -71,8 +71,6 @@ states = {
   56 : {'socket': {'send_arg': 'a', 'recv_arg': 4, 'buffers': 'abb'}},
   57 : {'socket': {'send_arg': 'bb', 'recv_arg': 4, 'buffers': 'abb'}},
   58 : {'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'aaa'}},
-  59 : {'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'aab'}},
-  60 : {'socket': {'send_arg': '', 'recv_arg': 0, 'buffers': 'aabb'}},
 }
 
 # initial state, accepting states, unsafe states, frontier states, deadend states
@@ -80,7 +78,7 @@ states = {
 initial = 0
 accepting = [0]
 unsafe = []
-frontier = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+frontier = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
 finished = []
 deadend = []
 runstarts = [0]
@@ -175,17 +173,17 @@ graph = (
   (30, (send_call, ('bb',), None), 51),
   (31, (send_call, ('a',), None), 52),
   (31, (recv_return, ('a',), None), 5),
+  (31, (recv_return, ('aa',), None), 0),
   (31, (send_call, ('bb',), None), 53),
   (32, (send_call, ('a',), None), 54),
   (32, (recv_return, ('a',), None), 7),
+  (32, (recv_return, ('ab',), None), 0),
   (32, (send_call, ('bb',), None), 55),
   (33, (send_call, ('a',), None), 56),
   (33, (recv_return, ('a',), None), 8),
+  (33, (recv_return, ('ab',), None), 7),
   (33, (send_call, ('bb',), None), 57),
   (34, (recv_call, (4,), None), 52),
   (34, (send_return, (1,), None), 58),
   (35, (recv_call, (4,), None), 53),
-  (35, (send_return, (1,), None), 59),
-  (35, (send_return, (2,), None), 60),
-  (36, (recv_call, (4,), None), 54),
 )

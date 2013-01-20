@@ -1,10 +1,13 @@
 """
-Socket, model program for Python socket library send and recv,
+msocket, model program for Python socket library send and recv,
 including nondeterminism and concurrency.
 
 This model does not include actions for open, bind, listen, accept,
 connect, or close.  To test a real implementation, those must all be
 handled in the stepper initialization and reset.
+
+(named msocket not socket to avoid name conflict with Python standard
+library socket module)
 """
 
 ### Model ###
@@ -80,7 +83,8 @@ enablers = {send_call:(send_call_enabled,),send_return:(send_return_enabled,),
             recv_call:(recv_call_enabled,),recv_return:(recv_return_enabled,)}
 
 domains = { send_call: {'msg':('a','bb')}, send_return: {'n':(1,2)},
-            recv_call: {'bufsize':(4,)}, recv_return: {'msg':('','a','b','bb')}}
+            recv_call: {'bufsize':(4,)}, 
+            recv_return: {'msg':('a','b','aa','ab','ba','bb')}}
 
 # Restore initial state, needed by test runner for multiple runs
 
