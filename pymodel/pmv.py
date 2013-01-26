@@ -16,7 +16,9 @@ def make_opts(keys, options):
     """
     Turn options object back into a string of command line options
     """
-    return ' '.join([(('--%s %s' % (k,options.__dict__[k]))
+    # special case, don't print True for boolean options --noStateTooltip etc.
+    return ' '.join([(('--%s %s' % (k, options.__dict__[k]
+                                    if options.__dict__[k] != True else ''))
                       if not isinstance(k,tuple) else
                       ' '.join([('--%s %s' % (k[0], v))
                                  for v in options.__dict__[k[0]]]))
