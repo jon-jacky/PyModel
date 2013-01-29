@@ -2,7 +2,7 @@
 Asynchronous stepper.
 
 Controllable/observable, asynchronous, non-deterministic stepper for Socket
-(see Stepper.py header for explanations.)
+(see stepper.py header and README.txt for explanations).
 
 In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
@@ -22,7 +22,7 @@ This stepper is asynchronous - a _call action need not be immediately
 followed by its _return action.  Each _call is handled in its own thread,
 so test_action can return even if _call blocks.
 
-Example: pmt.py -i stepper_o ...
+Example: pmt -i stepper_a ...
 """
 
 import socket

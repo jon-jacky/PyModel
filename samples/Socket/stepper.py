@@ -70,7 +70,7 @@ def reset():
   close_connection()
   new_connection()
 
-def testaction(aname, args, modelResult):
+def test_action(aname, args, modelResult):
   """
   To indicate success, return None (no return statement).
   To indicate failure, return string that explains failure.

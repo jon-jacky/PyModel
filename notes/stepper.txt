@@ -2,49 +2,96 @@ PyModel Test Harness, or Stepper
 
 To actually execute tests on the implemention, from offline test
 suites or on-the-fly, you must write a test harness in Python that
-couples your implementation to the model through test runner, pmt.
+couples your implementation to the model through the test runner, pmt.
 In PyModel, the test harness is called a "stepper" because it steps
 the implementation one action at a time.
 
 A stepper is written in its own module.  To use that stepper, name that
 module on the pmt command line with the -i or --iut option.
 
-The WebApplication and Socket samples each include a stepper, both
-called Stepper.py.
+The WebApplication sample include a stepper called Stepper.py.  The
+Socket sample includes three different steppers: stepper.py,
+stepper_o.py, and stepper_a.py - see Socket/README.txt for
+explanations.
 
-Each stepper must provide a testAction (or test_action or TestAction)
+Each stepper must provide a TestAction (or testaction or test_action)
 method, which is called by the test runner like this:
 
- failMessage = stepper.testaction(aname, args, modelresult) 
+  result = stepper.TestAction(aname, args, modelResult)
 
-The testaction method takes three arguments: the model's action name
+The TestAction method takes three arguments: the model's action name
 string, the model's action arguments tuple, and the value returned by
 the model (when executing that action with those arguments), which
-might be None.  The testaction method calls the corresponding
-implementation action with the corresponding implementation arguments.
-The testaction method returns None if the test was successful (the
-implementation executed the action correctly) and returns a (nonempty)
-error message string if the test failed.  So, the stepper must
-translate from the model action to an implementation action (or
-several) and from the model arguments to the implementation arguments.
-Finally, the stepper determines whether the implementation succeeded
-or failed, usually by comparing the model return value to the
-implemenation return value.  The stepper must also handle exceptions
-raised by the implementation (these are often interpreted as failures,
-but need not be).
+might be None.  
+
+The TestAction method calls the corresponding implementation action
+with the corresponding implementation arguments.  So, the stepper must
+translate from the model action name string to an implementation
+action and from the model arguments to the implementation arguments.
+
+The stepper cooperates with pmt to determine whether the
+implementation passed or failed the test.  The pmt program supports
+two quite different techniques for this.
+
+In the first technique, code in the stepper TestAction method checks
+whether the test passed or failed.  Usually the stepper performs this
+check by comparing the return value computed by the model (which is
+passed in the third argument to TestAction) to the return value
+returned by the implementation.  Usually the test passes when these
+two return values are equal (when tested by the Python == operator),
+and fails if they are not equal.  The stepper indicates that the test
+passed by returning None, and indicates the test failed by returning a
+string, which usually describes the reason for the test failure.  
+
+In our samples, WebApplication/Stepper.py and Socket/stepper.py both
+use this first technique.
+
+This first technique is the more obvious of the two, but less
+flexible.  It is only recommended for deterministic, synchronous
+systems, where it is easy to determine whether the test passed by
+doing a simple comparison of the return values from the model and the
+implementation.
+
+In the second technique, the model's enabling conditions check whether
+the test passed or failed.  This technique is a bit more complicated,
+but more flexible and versatile.  It is necessary for systems that are
+nondeterministic or asynchronous.  It requires that the model be coded
+with split actions (with pairs of separate _call and _return, or
+_start and _finish actions).  The stepper's TestAction method uses the
+first half of the split action (for example recv_call) to construct a
+call to the implementation, then collects any return values from the
+implementation, and uses them to construct the second half of the
+split action (recv_return), which it appends to observation_queue.  It
+always returns None from the TestAction method.  At some later time,
+the pmt program pops the recv_return action from the observation queue
+and applies the corresponding enabling condition
+(recv_return_enabled).  If the enabling condition returns True, the
+test passes, but if it returns False, the test fails.
+
+In the Socket sample, both stepper_o and stepper_a use this second
+technique.
+
+This second technique supports nondeterminism easily because the
+enabling condition for the _return action can check any condition on
+the returned values and the state variables.  This condition is coded
+in the model along with other knowledge about the intended behavior.
+(it is not coded in the stepper).
+
+This second technique supports asynchrony because it does not need to
+have the _return action when TestAction returns.  Instead, the
+implementation's action can return later (it can run in a separate
+thread), when the stepper can construct the _return action and append
+it to observation_queue.  The Socket stepper_a works this way.
+
+The test_action method in the stepper may also handle exceptions
+raised by the implementation.  Any exceptions that are raised by the
+implementation that are not handled by the stepper are reported as
+test failures by pmt.
 
 Each stepper must also provide a Reset (or reset) function (with no
 arguments) that resets the implementation, to support multiple test
 runs in a single pmt session.
 
-There is an important limitation. The current version of the tester is
-synchronous.  That means pmt can only execute traces consisting of
-controllable actions that the tester can call to make the
-implementation do something.
 
-Future versions of the tester will also support observable actions:
-events that the tester can detect in the implementation.
-
-
-Revised May 2011
+Revised Jan 2013
 

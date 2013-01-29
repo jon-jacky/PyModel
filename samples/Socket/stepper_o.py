@@ -1,6 +1,6 @@
 """
 Controllable/observable, synchronous, non-deterministic stepper for Socket
-(see Stepper.py header for explanations.)
+(see stepper.py header and README.txt for explanations).
 
 In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
@@ -20,7 +20,7 @@ This stepper is still synchronous - each _call action must be
 immediately followed by its _return action, otherwise the call to
 test_action will block.
 
-Example: pmt.py -i stepper_o Socket SendAll NoBlockScenario
+Example: pmt -i stepper_o ...  NoBlockScenario
 """
 
 import socket

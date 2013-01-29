@@ -1,14 +1,10 @@
 """
-Analyze msgsizes test suite
+Analyze msgsizes test suite by composing it with msocket model.
 """
 
 cases = [
-    ('Compose Socket model with msgsizes test suite',
-     'pma.py -o msgsizesFSM msgsizes msocket all_observables'),
-
-    ('Generate graphics, suppress tooltips because messages are too big',
-     'pmg.py -l name -xy msgsizesFSM'), # -xy suppresses tooltips
-
-    ('Generate an SVG file you can display in a browser',
-     'dotsvg msgsizesFSM'),
+    ("""Compose Socket model with msgsizes test suite and generate graphics.
+Do not show argument lists and tooltips in graph because messages are so big.
+""",
+     'pmv -o msgsizesFSM msgsizes msocket all_observables -l name -xy'),
 ]

@@ -299,7 +299,8 @@ The test_viewer script
 
 The test_viewer module generates graphs that illustrate the behavior
 of the msocket model program and the effects of the synchronous
-scenario and deterministic configuration.
+scenario and deterministic configuration.  To generate the graphs,
+type this command: trun test_viewer
 
 The test_viewer module is a test script that runs pmv, the PyModel
 viewer.  The pmv program in turn invokes pma, the PyModel analyzer,
@@ -342,6 +343,7 @@ synchronous msocket.  It is a graph of the msocket model program
 composed with the synchronous scenario machine, using the domains in
 the deterministic module.
 
+
 The stepper test harness
 
 The stepper module is a test harness (sometimes called an adapter)
@@ -368,26 +370,154 @@ behave this way when when small messages are sent across a fast
 network.  
 
 This stepper is included to show how a basic stepper that supports a
-subset of behaviors can be written easily.  Below we will discuss
-stepper_o and stepper_a, that support all model behaviors correctly.
+useful subset of behaviors can be written easily.  Below we will
+discuss stepper_o and stepper_a, that support all model behaviors
+correctly.
 
 
 The test_stepper script
 
+The test_stepper module is a test script with three test cases that
+reveal some of the limitations of this stepper.  To run these tests,
+type the command: trun test_stepper.  None of the test
+cases in this script uses the -s option to set the random seed, so
+repeating this command will result in different test runs.
+
+The first test case runs this command: pmt.py -n 10 -c 6 msocket -i
+stepper.  In this test case model behavior is not restricted by any
+scenario machine, so _call actions are not always followed immediately
+by _return actions.  However, the test does not block because this
+stepper does not call the socket implementation until the _return
+action appears in the trace.  This test case does not use any
+configuration modules to limit nondeterminism, so recv often returns
+only part of the message provided by send.  But with messages this
+small, the implementation usually returns the entire message - so the
+behaviors of the model and the implementation differ, even though both
+are correct.  This is the essence of nondeterminism: different
+behaviors can all be correct.  But this stepper does not handle
+nondeterminism, so any differences between the behaviors of the model
+and the implementation are reported as test failures.  So usually this
+test case fails, due to limitations in the stepper, not errors in the
+model or the implementation.  The next two test cases attempt to remedy
+this by limiting the behavior of the model.
+
+The second test case runs this command: pmt.py -n 10 -c 6 msocket
+synchronous -i stepper.  This command composes the msocket model with
+the synchronous scenario, so it generates test runs where _call is
+always immediately followed by _return.  However it does not limit
+nondeterminism so usually this test case fails due to limitations
+of this stepper.
+
+The third and final test case runs this command: pmt.py -n 10 -c 6
+msocket deterministic synchronous -i stepper.  This limits the model
+to behaviors that are synchronous (_call is always immediately
+followed by _return) and deterministic (the entire message sent is
+always immediately received).  Now the model satisfies all the
+assumptions of this stepper.  Moreover, with messages this small (they
+are defined by the domains in the mstepper and deterministic modules),
+the implementation is also synchronous and deterministic.  Therefore
+the model and implementation behave exactly the same, so these test runs 
+succeed.  
+
 
 The msgsizes test suite
+
+The msgsizes module is a test suite that investigates how socket
+behavior depends on message size.
+
+Recall that our stepper assumes that socket behavior is synchronous
+and deterministic.  We observe that this assumption is usually
+satisfied when sending small messages.  How large a message does it
+take to break this assumption?  The msgsizes module contains a test
+suite (a collection of test runs) with increasingly larger messages,
+to find how large a message must be so it is no longer completely
+transmitted by one send.  When that happens, the test will fail.  The
+message sizes range from 8192 characters (8K) up to 1024K (1M).
+
+The first two test runs in this suite are intended to fail - the sent
+message and the received message differ by one character (as if that
+character had been corrupted during transmission).  This behavior is
+not permitted by the model.  The last test run in this suite is
+expected to fail with this stepper, because only part of the sent
+message is received.  
 
 
 The test_analyze_msgsize script
 
+The test_analyze_msgsize module is a test script that uses the PyModel
+analyzer pma to check the test suite in the msgsizes module.  It
+checks that the first two runs violate the msocket model, and all the
+rest satisfy it.  Composing a test suite with a model is the usual way
+to check that that the runs in the test suite are allowed by the model.
+This can be used to validate either the test suite or the model
+(depending on which is more trusted).  Here we are using it to
+validate the msgsizes test suite.
+
+This script contains one test case, that runs this command:
+
+ pmv -o msgsizesFSM msgsizes msocket all_observables -l name -xy
+
+Recall that the PyModel viewer pmv invokes the analyzer pma and the
+graphics programs pmg and dot.  This command forms the composition of
+msgsizes and msocket.  The all_observables module declares that all
+actions in the model are observable actions.  In this context, that
+means that the analyzer pma uses the action arguments in the test
+suite and ignores the arguments defined in the domains in the model
+program.  (The -l and -xy options reduce clutter in the generated
+graphics.)
+
+Running the test script (type: trun test_analyze msgsize) generates
+msgsizesFSM.svg, which you can display in a browser.  It shows a graph
+of every test run in the suite.  As intended, the first two runs are
+not permitted by the model.  The graph of each of these two runs does
+not include the final recv_return action, which is forbidden because
+its message argument violates the model --- each contains one
+erroneous character that differs from the message passed to send_call.
+The final state in these runs is colored yellow because it is not an
+accepting state (because it does not reach the final state of the run
+in the test suite).  As intended, all of the other runs are permitted
+by the model.  The final state in all runs (but the last) is colored
+green, because it is an accepting state (it reaches the final state of
+the run in the test suite).  The final state in the last run is
+colored yellow.  It reaches the final state in the test suite, but it
+is not an accepting state in the model (because part of the message is
+still in transit - but this is intended here).
+
 
 The test_msgsize script
+
+Now that we have validated the test suite, we can execute it.  The
+test_msgsize script is a test script that uses the PyModel tester pmt
+to execute the runs in the msgsizes test suite with the Python
+standard library socket module, with the aid of the stepper test
+harness.
+
+Execute the test suite: trun test_msgsize.  The first two runs fail,
+as they should, because the test suite claims that the receive message
+will contain an erroneous character, but the message actually received
+by the real socket is a perfect copy of the sent message.  The next
+runs, with larger and larger messages, all succeed.  Finally the
+message becomes too large to send all of it in a single call and that
+test case fails.  On my system (MacBook Pro, Mac OS X 10.7.5) it fails
+on run number 9 (the tenth run), where the message size reaches 1
+megabyte! (The failure is a timeout, indicating that the real socket
+send call blocked).
+
+The final call also fails, because the run in the test suite receives
+only part of the message that was sent.  This behavior is permitted by
+the model, but the real socket receives the entire message.  This
+stepper considers any difference between the test suite and the
+implementation to be a test failure.
 
 
 The stepper_o observable stepper module
 
+This stepper_o module supports nondeterminism. ...
+
 
 The stepper_a asynchronous stepper module
+
+The stepper_a module supports nondeterminism and asynchrony ...
 
 
 The socket_simulator module
