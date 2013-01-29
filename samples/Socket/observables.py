@@ -1,6 +1,6 @@
 """pymodel config"""
 
-import Socket
+import msocket
 
-Socket.observables = (Socket.send_return, Socket.recv_return)
+msocket.observables = (msocket.send_return, msocket.recv_return)
 
