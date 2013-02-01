@@ -20,57 +20,9 @@ behavior is likely to be deterministic if messages are small enough.
 Example: pmt.py -n 10 -c 6 -i stepper msocket synchronous nondeterministic
 """
 
-import socket  # Python standard library socket module, OR a simulator
+from stepper_util import reset, client, server, msg, n, bufsize, line_length
 
-# Default configuration, may rebind below
-port = 8080
-line_length = 80  # length limit for received messages
-
-# Initial setup, runs once when test runner pmt imports stepper 
-
-# Server's listener socket
-listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# get and recv buffer size to print below, just FYI
-rcvbuf = listener.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
-
-# Ensure we release listener socket immediately when program exits, 
-#  to avoid socket.error: [Errno 48] Address already in use
-listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-# Listen, prepare for clients to connect
-listener.bind(('localhost', port))
-listener.listen(1) 
-print '\nServer listens on localhost port %s with RCVBUF size %s' % (port, rcvbuf)
-
-# Define function for client connect - also used in stepper reset()
-def new_connection():
-  global client, server, addr, msg, n, bufsize
-  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  # get and print send buffer size, just FYI
-  sndbuf = client.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-  print 'Client creates socket with SNDBUF size %s' % (sndbuf)
-  client.connect(('localhost', port))
-  print 'Client connects to localhost port %s' % port
-  server, addr = listener.accept()
-  print 'Server accepts connection from ', addr
-  # State needed to remember _call args for __return
-  msg = ''
-  n = 0
-  bufsize = 0
-
-# Now call that function to connect the first time
-new_connection()
-
-def close_connection():
-  global client, server
-  client.close()
-  server.close()
-
-def reset():
-  close_connection()
-  new_connection()
-
-def test_action(aname, args, modelResult):
+def test_action(aname, args, model_result):
   """
   To indicate success, return None (no return statement).
   To indicate failure, return string that explains failure.
@@ -81,6 +33,9 @@ def test_action(aname, args, modelResult):
   empty, do all the work in the _return branches.
 
   For now send_ always invokes client.send and recv_ always invokes server.recv
+
+  model_result must appear in arg list but it is not used here, 
+  instead model results are passed in _return args
   """
 
   global msg, n, bufsize # state needed to remember _call args for _return
