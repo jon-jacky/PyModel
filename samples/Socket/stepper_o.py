@@ -20,7 +20,7 @@ This stepper is still synchronous - each _call action must be
 immediately followed by its _return action, otherwise the call to
 test_action will block.
 
-Example: pmt -i stepper_o ...  NoBlockScenario
+Example: pmt.py -n 10 -c 6 msocket observables synchronous -i stepper_o
 """
 
 import socket
@@ -80,28 +80,18 @@ def test_action(aname, args, modelResult):
   For now send_ always invokes client.send and recv_ always invokes server.recv
   """
 
-  global msg, n, bufsize # state needed to remember _call args for _return
-
   if aname == 'send_call':
     (msg,) = args # extract msg from args tuple, like msg = args[0]
-    nchars = client.send(msg)
+    n = client.send(msg)
     # append result to observation queue
-    observation_queue.append(('send_return', (nchars,)))
+    observation_queue.append(('send_return', (n,)))
     return None # pmt will check observation_queue
-
-  elif aname == 'send_close':
-    client.close()
-
-  # send_exception shouldn't appear in synchronous scenarios
   
   elif aname == 'recv_call':
     (bufsize,) = args
-    data = server.recv(bufsize)
-    observation_queue.append(('recv_return', (data,)))
+    msg = server.recv(bufsize)
+    observation_queue.append(('recv_return', (msg,)))
     return None
-
-  elif aname == 'recv_close':
-    server.close()
 
   else:
     raise NotImplementedError, 'action not supported by stepper: %s' % aname
