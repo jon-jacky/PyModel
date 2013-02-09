@@ -11,7 +11,7 @@ import random
 import signal
 import traceback
 import TesterOptions
-from observation_queue import observation_queue
+import observation_queue as observation
 
 from ProductModelProgram import ProductModelProgram
 
@@ -63,8 +63,9 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     # print 'Current state: %s' % mp.Current() # DEBUG
 
     # observable action
-    if observation_queue: # if queue not empty
-      (aname, args) = observation_queue.popleft()
+    if observation.queue: # if queue not empty
+      # print 'observable action branch, call observation.queue.popleft()'
+      (aname, args) = observation.queue.popleft()
       observable_action = True
       # print '< test runner gets', (aname, args)
       if not mp.ActionEnabled(aname, args):
@@ -83,9 +84,17 @@ def RunTest(options, mp, stepper, strategy, f, krun):
       (aname, args) = strategy.SelectAction(enabled)
       # exit conditions
       if not aname: 
-        if not cleanup:
-          infoMessage = 'no more actions enabled'
-        break   
+          if observation.asynch:
+            # print 'asynch branch, call observation.wait()' # DEBUG
+            observation.event.wait() # FIXME add timeout
+            # FIXME?  If another event occurs right now, we will miss it!
+            observation.event.clear() # got this event, prepare for next
+            continue # get observable action from queue
+          # if not asynch, come directly here
+          # if asynch, only reach here if event.wait() times out        
+          if not cleanup:
+              infoMessage = 'no more actions enabled'
+          break   
       elif cleanup and mp.Accepting():
         break
       else:

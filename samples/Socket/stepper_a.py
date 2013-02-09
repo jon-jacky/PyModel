@@ -25,53 +25,18 @@ so test_action can return even if _call blocks.
 Example: pmt -i stepper_a ...
 """
 
-import socket
 from threading import Thread
-from observation_queue import observation_queue
 
-# Default configuration, may rebind below
+# We must import stepper_util.sender, receiver this way, 
+#  or they don't work in runs after the first one, after executing reset
+import stepper_util as connection
 
-port = 8080
-line_length = 80  # length limit for received messages
+# But we can import these items in this way, they do work after reset -- why?
+from stepper_util import reset
 
-# Server's listener socket
+import observation_queue as observation
 
-listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-rcvbuf = listener.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
-
-# Release listener socket immediately when program exits, 
-# avoid socket.error: [Errno 48] Address already in use
-listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-# Wait for client to connect
-listener.bind(('localhost', port))
-listener.listen(1) 
-print '\nServer listening on localhost port %s with RCVBUF %s' % (port, rcvbuf)
-
-# Client socket
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sndbuf = client.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-print 'Client creates socket with SNDBUF %s' % (sndbuf)
-
-# Client connect
-client.connect(('localhost', port))
-print 'Client connecting to localhost port %s' % port
-
-# Server accepts connection
-server, addr = listener.accept()
-print 'Server accepted from ', addr
-
-# Now can client can repeat client.send(data) until EOF,
-# then should client.close
-# Now server can read by repeating data=server.recv(n) until EOF
-# Then should server.close()
-
-# Omit - can leave stuff in buffers that confuses test runs
-# Test the connection
-#client.send('Hello world!')
-#data = server.recv(line_length)
-#print 'Try a test message, server got "%s"\n' % data
+observation.asynch = True # make pmt wait for asynch observable actions
 
 def test_action(aname, args, modelResult):
   """
@@ -83,46 +48,25 @@ def test_action(aname, args, modelResult):
   For now send_ always invokes client.send and recv_ always invokes server.recv
   """
 
-  global msg, n, bufsize # state needed to remember _call args for _return
-
   if aname == 'send_call':
     def wait_for_return():
         (msg,) = args # extract msg from args tuple, like msg = args[0]
-        nchars = client.send(msg)
-        observation_queue.append(('send_return', (nchars,)))
+        nchars = connection.sender.send(msg)
+        observation.queue.append(('send_return', (nchars,)))
+        observation.event.set() # notify pmt that data has been added to queue
     t = Thread(target=wait_for_return)
     t.start()
     return None # pmt will check observation_queue
 
-  elif aname == 'send_close':
-    client.close()
-
-  # send_exception shouldn't appear in synchronous scenarios
-  
   elif aname == 'recv_call':
     def wait_for_return():
         (bufsize,) = args
-        data = server.recv(bufsize)
-        observation_queue.append(('recv_return', (data,)))
+        data = connection.receiver.recv(bufsize)
+        observation.queue.append(('recv_return', (data,)))
+        observation.event.set() # notify pmt that data has been added to queue
     t = Thread(target=wait_for_return)
     t.start()
     return None
 
-  elif aname == 'recv_close':
-    server.close()
-
   else:
     raise NotImplementedError, 'action not supported by stepper: %s' % aname
-
-
-def reset():
-  global client, server, addr
-  # Assume both ends, client and server, are already closed.
-  # Model assumes connection already established in initial state.
-  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-  client.connect(('localhost', port))
-  server, addr = listener.accept()
-  observation_queue.clear()
-  print 'Server accepted from ', addr
-
-

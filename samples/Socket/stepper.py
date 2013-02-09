@@ -3,24 +3,31 @@ Controllable, synchronous, deterministic stepper for msocket
 
 Controllable means all actions are functions that are called by the
 stepper.  No actions are events that are detected by the stepper.
-Make the stepper all-controllable by including *both* server and
-client in the stepper, both running in one thread on localhost.
+Make the stepper all-controllable by including *both* sender and
+receiver in the stepper, both running in one thread on localhost.
 
-Synchronous means no blocking: next action after send_call is
+Synchronous means no blocking: next action after send_call is always
 send_return, etc.  To make model behavior synchronous, compose msocket
 with the synchronous scenario machine.  Implementation must obey
 because in this stepper all actions are controllable.
 
-Deterministic means entire message is always sent, entire msg always received.
-To make model behavior deterministic, use the deterministic config. module.
-The implementation cannot be made to obey.  Nondeterministic
-implementation behavior will be reported as test failures. Implementation
+Deterministic means entire message is always sent, entire message
+always received.  To make model behavior deterministic, use the
+deterministic configuration module.  BUT the implementation cannot be
+made to obey.  Implementation behavior that differs from the model
+will be reported as test failures.  Although the model allows
+nondeterministic behavior, this stepper does not.  Implementation
 behavior is likely to be deterministic if messages are small enough.
 
 Example: pmt.py -n 10 -c 6 -i stepper msocket synchronous nondeterministic
 """
 
-from stepper_util import reset, client, server, msg, n, bufsize, line_length
+# We must import stepper_util.sender, receiver this way, 
+#  or they don't work in runs after the first one, after executing reset
+import stepper_util as connection
+
+# But we can import these items in this way, they do work after reset -- why?
+from stepper_util import reset, msg, n, bufsize, line_length
 
 def test_action(aname, args, model_result):
   """
@@ -32,7 +39,8 @@ def test_action(aname, args, model_result):
   followed by send_return, etc.  Therefore all the _call branches are
   empty, do all the work in the _return branches.
 
-  For now send_ always invokes client.send and recv_ always invokes server.recv
+  send_return always invokes sender.send and recv_return always
+  invokes receiver.recv
 
   model_result must appear in arg list but it is not used here, 
   instead model results are passed in _return args
@@ -45,7 +53,7 @@ def test_action(aname, args, model_result):
 
   elif aname == 'send_return':
     (n,) = args 
-    nchars = client.send(msg)
+    nchars = connection.sender.send(msg)
     if n != nchars:
       return 'send returned %s, expected %s ' % (nchars, n)
 
@@ -54,7 +62,7 @@ def test_action(aname, args, model_result):
 
   elif aname == 'recv_return':
     (msg,) = args 
-    data = server.recv(bufsize)
+    data = connection.receiver.recv(bufsize)
     if data != msg: # now msg is like old modelresult
       # wrapped failMessage should fit on two 80 char lines, 
       # failMessage prefix from pmt is 20 char, fixed text here is > 32 char
@@ -69,5 +77,3 @@ def test_action(aname, args, model_result):
 
   else:
     raise NotImplementedError, 'action not supported by stepper: %s' % aname
-
-

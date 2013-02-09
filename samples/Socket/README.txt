@@ -42,8 +42,8 @@ The sample includes these modules:
 - stepper, stepper_o, and stepper_a: three different steppers (also
   called test harnesses or adapters) that use the model program and
   scenarios to test actual sockets on localhost (via the Python
-  standard library socket module).  Also, Sender.py, Receiver.py,
-  etc.: other code for exercising the standard library socket module.
+  standard library socket module).  Also, stepper_util, code used
+  by all three steppers.
 
 - socket_simulator and socket_simulator_a: two simulators that can
   optionally replace the Python standard library socket module in the
@@ -343,7 +343,6 @@ synchronous msocket.  It is a graph of the msocket model program
 composed with the synchronous scenario machine, using the domains in
 the deterministic module.
 
-
 The stepper test harness
 
 The stepper module is a test harness (sometimes called an adapter)
@@ -392,6 +391,14 @@ This stepper is included to show how a basic stepper that supports a
 useful subset of behaviors can be written easily.  Below we will
 discuss stepper_o and stepper_a, that support all model behaviors
 correctly.
+
+
+The stepper_util test harness utilities
+
+The stepper_util module defines constants and methods used by 
+all three steppers, including methods to open and close sockets
+and to make a connection.  The three stepper modules only
+handle the send and recv methods - that is their only difference.
 
 
 The test_stepper script
@@ -582,22 +589,25 @@ invoke send_call and recv_call.
 
 The first test case does not use the synchronous scenario so it often
 blocks, times out, and fails.  The second test case uses the
-synchronous scenario so it never blocks and always succeeds.  With
-test_stepper, the second test case often fails, but here it always
+synchronous scenario so it never blocks and always succeeds.  With our
+test_stepper, the second test case often failed because the results
+were nondeterministically chosen by the model, but here it always
 succeeds because the return values are chosen by the implementation
 rather than the model, and the test outcomes are determined by
 checking those return values with the enabling conditions in the
 model.  The third case always succeeds for the same reason.  The third
 test case names the deterministic configuration, but it is not
-necessary because here the return values are chosen by the implemenation,
-not the model.
+necessary because here the return values are chosen by the
+implemenation, not the model.
 
 
 The stepper_a asynchronous stepper module
 
-The stepper_a module supports nondeterminism and asynchrony.  Each
-call to the implementation runs in its own thread, so it can wait
-without blocking the test run. ...
+The stepper_a module supports nondeterminism and asynchrony.  It is
+similar to stepper_o, but here each call to the implementation runs in
+its own thread, so the implementation can block at that call
+without blocking the whole test run.  This enables pmt to make another
+call that results in unblocking the earlier call.
 
 
 The socket_simulator module
