@@ -392,13 +392,12 @@ useful subset of behaviors can be written easily.  Below we will
 discuss stepper_o and stepper_a, that support all model behaviors
 correctly.
 
-
 The stepper_util test harness utilities
 
-The stepper_util module defines constants and methods used by 
-all three steppers, including methods to open and close sockets
-and to make a connection.  The three stepper modules only
-handle the send and recv methods - that is their only difference.
+The stepper_util module defines constants and methods used by all
+three steppers, including methods to open and close sockets and to
+make a connection.  The three stepper modules only handle the send and
+recv methods --- that is their only difference.
 
 
 The test_stepper script
@@ -608,6 +607,51 @@ similar to stepper_o, but here each call to the implementation runs in
 its own thread, so the implementation can block at that call
 without blocking the whole test run.  This enables pmt to make another
 call that results in unblocking the earlier call.
+
+
+The test_stepper_a script
+
+The test_stepper_a module is a test script that contains a single test
+case that invokes the msocket model with the stepper_a asynchronous
+stepper module.  With stepper_a, it is not necessary to compose
+msocket with the sychronous scenario to force send (at one end of the
+connection) to always precede recv (at the other end), or to force
+each call to return (at one end) before making a another call (at the
+other end).  Here stepper_a can handle any ordering of send and recv,
+call and return.
+
+The test case does not use the -s option to set the random seed, so repeating
+the test will result in different traces.  Here is the beginning of one trace.
+Notice the interleaving of send and recv, call and return:
+
+Jonathans-MacBook-Pro:Socket jon$ trun test_stepper_a
+...
+Server accepts connection from  ('127.0.0.1', 51559)
+send_call('a',)
+recv_call(4,)
+send_return(1,)
+recv_return('a',)
+...
+
+Sometimes this test fails!  For example
+
+Jonathans-MacBook-Pro:Socket jon$ trun test_stepper_a
+...
+Server accepts connection from  ('127.0.0.1', 51555)
+recv_call(4,)
+send_call('a',)
+  0. Failure at step 2, recv_return('a',), action not enabled
+
+Here stepper_a detects that in the implementation, recv returned the
+message 'a'.  Here pmt calls this a failure because the model forbids
+this behavior (see msocketFSM.svg for the behaviors it allows).  In
+particular, the model only allows recv to return (part of) a message
+*after* the send for that message returns, but here recv returns the
+'a' message before the send that sent it returns.  It is not clear to
+me whether the socket connection actually behaves that way.  It seems
+possible that send returns before recv returns the message, but the
+scheduler runs the thread that reports when send returns before the
+thread that reports when recv returns.
 
 
 The socket_simulator module
