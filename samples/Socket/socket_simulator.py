@@ -2,17 +2,25 @@
 socket_simulator.py
 
 Replacement for the Python standard library socket module to use with
-PyModel, to demo the behavior of the Socket model and the various
-steppers: Stepper, stepper_o, stepper_a.
+the PyModel socket sample, to demonstrate nondeterminism and blocking
+even with small messages.
+
+The simulated socket here nondeterministically sends or receives just
+part of the message, no matter how short the message (even just
+two characters).   The socket blocks on write when buffers are full, and
+the buffers can be made very small, by assigning the bufsize variable.
+The default bufsize is 3 characters.
+
+When used with the asynchronous stepper (stepper_a), send (and recv)
+are called from different threads in the stepper, so that even if the
+call blocks because the buffer is full (or empty), it doesn't block
+pmt (the test run).  This enables a blocked send (or recv) call to be
+unblocked by a later call to recv (or send).
 
 To use this simulator, just put it in the same directory with your
 PyModel socket steppers and rename it (or symlink it) to socket.py.
 The steppers will load this simulator instead of the standard library
-module.  EXCEPT on systems like Mac and Windows that don't distinguish
-case in filenames, you can't put model Socket.py and simulated
-implementation socket.py in the same directory.  Instead you must put
-socket.py in a different directory and put that directory on
-PYTHONPATH.
+module.
 """
 
 import random    # for nondeterministic behavior
@@ -27,7 +35,7 @@ and all the storage in the network between.
 All sockets share the *same* buffer - intended to have just one 
 client socket and one server socket at a time -
 """
-buffers = ''
+buffers = ''  # initially the buffers are empty
 nondet = True # False to send/recv entire msg every time
 bufsize = 3   # send blocks when buffer full, recv blocks when empty
 e = threading.Event() # initially false, e.wait() to block
@@ -47,10 +55,10 @@ class connection(object):
         global buffers
         free = bufsize - len(buffers)
         # send blocks if buffer full
-        if free <= 0:
-            # type ^C to escape from this wait loop
-            while True:
-                e.wait(1) # 1 second timeout, block without spinning
+        # Asynch stepper - don't just block here, instead wait for free > 0
+        while free <= 0:
+            e.wait(1) # 1 second timeout, block without spinning
+            free = bufsize - len(buffers)
         # nondeterministically choose prefix of msg to send
         msglen = min(len(msg),free)
         msglen = random.randint(1,msglen) if nondet else msglen
@@ -60,9 +68,8 @@ class connection(object):
     def recv(self, nmax):
         global buffers
         # recv blocks if buffer empty
-        if len(buffers) <= 0:
-            while True: 
-                e.wait(1)
+        while len(buffers) <= 0:
+            e.wait(1) # 1 second timeout, block without spinning
         # nondeterministically choose suffix of buffers to recv
         msglen = min(nmax,len(buffers))
         msglen = random.randint(1,msglen) if nondet else msglen

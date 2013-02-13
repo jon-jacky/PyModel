@@ -1,5 +1,5 @@
 """
-Asynchronous stepper.
+Asynchronous stepper using threads.
 
 Controllable/observable, asynchronous, non-deterministic stepper for Socket
 (see stepper.py header and README.txt for explanations).

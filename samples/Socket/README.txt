@@ -647,17 +647,50 @@ message 'a'.  Here pmt calls this a failure because the model forbids
 this behavior (see msocketFSM.svg for the behaviors it allows).  In
 particular, the model only allows recv to return (part of) a message
 *after* the send for that message returns, but here recv returns the
-'a' message before the send that sent it returns.  It is not clear to
-me whether the socket connection actually behaves that way.  It seems
-possible that send returns before recv returns the message, but the
-scheduler runs the thread that reports when send returns before the
-thread that reports when recv returns.
+'a' message before the send that sent it returns.  It is not clear
+whether the socket connection actually behaves that way.  Recall that
+pmt actually sees the behavior of the implementation *as reported by
+the stepper*.  Here the stepper starts two threads to monitor the
+socket connection (one for send and one for recv), which are scheduled
+(to run one at a time) by the Python run-time system.  It seems
+possible that, at the socket connection itself, send actually returns
+before recv, but the scheduler runs the thread that reports when recv
+returns before the thread that reports when send returns.
 
 
 The socket_simulator module
 
+The socket_simulator module is a replacement for the Python standard
+library socket module to use with the PyModel socket sample, to
+demonstrate nondeterminism and blocking even with small messages.
 
-The socket_simulator_a asynchronous simulator module
+The simulated socket here nondeterministically sends or receives just
+part of the message, no matter how short the message (even just
+two characters).   The socket blocks on write when buffers are full, and
+the buffers can be made very small, by assigning the bufsize variable.
+The default bufsize is just 3 characters.
+
+When used with the asynchronous stepper (stepper_a), send (or recv)
+are called from different threads in the stepper, so that even if the
+call blocks because the buffer is full (or empty), it doesn't block
+pmt (the test run).  This enables a blocked send (or recv) call to be
+unblocked by a later call to recv (or send).
+
+To use this simulator, just put it in the same directory with your
+PyModel socket steppers and rename it (or make a symbolic link) to
+socket.py.  The stepper will then load this simulator instead of the
+Python standard library socket module.
+
+To demonstrate the simulator, replace the standard library socket
+module (as described in the previous paragraph) and repeat
+test_stepper_a.  (You must use the asynchronous stepper_a, or the
+simulated socket will block.)  You will see that the socket behaves
+nondeterministically: send_return often returns a number smaller than
+the length of the msg argument to send_call, and recv_return often 
+returns fewer characters than have been sent.  You may also notice
+pauses when send blocks when the (quite small) buffer is full,
+or when recv blocks when the buffer is empty.
+
 
 
 
