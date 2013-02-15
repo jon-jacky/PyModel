@@ -685,11 +685,13 @@ To demonstrate the simulator, replace the standard library socket
 module (as described in the previous paragraph) and repeat
 test_stepper_a.  (You must use the asynchronous stepper_a, or the
 simulated socket will block.)  You will see that the socket behaves
-nondeterministically: send_return often returns a number smaller than
-the length of the msg argument to send_call, and recv_return often 
-returns fewer characters than have been sent.  You may also notice
-pauses when send blocks when the (quite small) buffer is full,
-or when recv blocks when the buffer is empty.
+nondeterministically.  Now send_return sometimes returns a number
+smaller than the length of the msg argument to send_call.  For
+example, send_call('bb'), is sometimes followed by send_return(1,) (not
+always send_return(2,)) and the following recv_return often returns
+fewer characters than have been sent.  You may also notice pauses when
+send blocks when the (quite small) buffer is full, or when recv blocks
+when the buffer is empty.
 
 
 
