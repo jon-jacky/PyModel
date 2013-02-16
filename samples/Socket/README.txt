@@ -45,10 +45,10 @@ The sample includes these modules:
   standard library socket module).  Also, stepper_util, code used
   by all three steppers.
 
-- socket_simulator and socket_simulator_a: two simulators that can
-  optionally replace the Python standard library socket module in the
-  steppers.  These simulators can be configured to demonstrate a great
-  deal of nondeterminism and concurrency, even with small messages.
+- socket_simulator: a simulator that can optionally replace the Python
+  standard library socket module in the steppers.  This simulator can
+  be configured to demonstrate a great deal of nondeterminism and
+  concurrency, even with small messages.
 
 - test, test_viewer, test_stepper, test_msgsize, etc.: several test
   scripts that invoke various combinations of these modules.
@@ -692,12 +692,4 @@ always send_return(2,)) and the following recv_return often returns
 fewer characters than have been sent.  You may also notice pauses when
 send blocks when the (quite small) buffer is full, or when recv blocks
 when the buffer is empty.
-
-
-
-
-
-
-
-
 
