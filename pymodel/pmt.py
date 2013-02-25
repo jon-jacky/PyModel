@@ -85,13 +85,11 @@ def RunTest(options, mp, stepper, strategy, f, krun):
       # exit conditions
       if not aname: 
           if observation.asynch:
-            # print 'asynch branch, call observation.wait()' # DEBUG
-            observation.event.wait() # FIXME add timeout
-            # FIXME?  If another event occurs right now, we will miss it!
-            observation.event.clear() # got this event, prepare for next
+            # before exit, wait for item to appear in observation queue
+            stepper.wait(options.timeout if options.timeout else None)
             continue # get observable action from queue
           # if not asynch, come directly here
-          # if asynch, only reach here if event.wait() times out        
+          # if asynch, only reach here if wait times out        
           if not cleanup:
               infoMessage = 'no more actions enabled'
           break   

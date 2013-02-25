@@ -1,5 +1,5 @@
 """
-Asynchronous stepper using threads.
+Asynchronous stepper using select
 
 Controllable/observable, asynchronous, non-deterministic stepper for Socket
 (see stepper.py header and README.txt for explanations).
@@ -19,13 +19,15 @@ This simplifies the stepper (compare test_action branch for
 recv_call/return here to stepper.py).
 
 This stepper is asynchronous - a _call action need not be immediately
-followed by its _return action.  Each _call is handled in its own thread,
-so test_action can return even if _call blocks.
+followed by its _return action.  Instead, each subsequent call to
+stepper.wait calls select, which either times out or puts an item into
+the observation queue.
 
-Example: pmt -i stepper_a ...
+
+Example: pmt -i stepper_s ...
 """
 
-import threading
+import select
 
 # We must import stepper_util.sender, receiver this way, 
 #  or they don't work in runs after the first one, after executing reset
@@ -38,8 +40,9 @@ import observation_queue as observation
 
 observation.asynch = True # make pmt wait for asynch observable actions
 
-# initially clear, stepper sets when new item in queue, pmt clears when remove
-event = threading.Event() 
+bufsize = int() # set by test_action/recv_call, read by wait/select/inputready
+msg = str()     # set by test_action/send_call, read by wait/select/outputready
+
 
 def test_action(aname, args, modelResult):
   """
@@ -52,41 +55,44 @@ def test_action(aname, args, modelResult):
   """
 
   if aname == 'send_call':
-    def wait_for_return():
-        (msg,) = args # extract msg from args tuple, like msg = args[0]
-        nchars = connection.sender.send(msg)
-        observation.queue.append(('send_return', (nchars,)))
-        event.set() # notify pmt that data has been added to queue
-    t = threading.Thread(target=wait_for_return)
-    t.start()
-    return None # pmt will check observation_queue
+    global msg
+    (msg,) = args # extract msg from args tuple, like msg = args[0]
+    call_select(0) # timeout 0, don't block
+    return None # pmt will call wait(), below
 
   elif aname == 'recv_call':
-    def wait_for_return():
-        (bufsize,) = args
-        data = connection.receiver.recv(bufsize)
-        observation.queue.append(('recv_return', (data,)))
-        event.set() # notify pmt that data has been added to queue
-    t = threading.Thread(target=wait_for_return)
-    t.start()
-    return None # pmt will check observation_queue
+    global bufsize
+    (bufsize,) = args
+    call_select(0) # timeout 0, don't block
+    return None # pmt will call wait(), below
 
   else:
     raise NotImplementedError, 'action not supported by stepper: %s' % aname
 
 
 def wait(timeout):
+    # timeout might be None, wait forever
+    call_select(timeout)
+    
+
+def call_select(timeout):
     """
-    wait for event with timeout.  If event occurs, clear event
+    use select to wait for socket input/output with timeout.
 
     This function must be present in any stepper that sets 
      observation.asynch = True
     
-    This function is called from the test runner pmt, 
-     the event is hidden in this module.
+    This function is called from the test runner pmt
     """
-    global event
-    event.wait(timeout if timeout else None)
-    # FIXME?  If another event occurs right now, we will clear it and miss it!
-    if event.is_set(): # if wait timed out, this will be false
-        event.clear() # got this event, prepare for next
+    inputready,outputready,exceptready = select.select([ connection.receiver ],
+                                                       [ connection.sender ], 
+                                                       [],timeout)
+    if inputready:
+        r_msg = connection.receiver.recv(bufsize) # not global msg
+        observation.queue.append(('recv_return', (r_msg,)))
+        
+    if outputready:
+        n = connection.sender.send(msg)
+        observation.queue.append(('send_return', (n,)))
+
+    # timeout - do nothing
