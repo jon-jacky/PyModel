@@ -40,9 +40,8 @@ import observation_queue as observation
 
 observation.asynch = True # make pmt wait for asynch observable actions
 
-bufsize = int() # set by test_action/recv_call, read by wait/select/inputready
-msg = str()     # set by test_action/send_call, read by wait/select/outputready
-
+inbuf_size = int() # set by test_action/recv_call, read by wait/select/inputready
+sendbuf = str() # set by test_action/send_call, read by wait/select/outputready
 
 def test_action(aname, args, modelResult):
   """
@@ -55,14 +54,15 @@ def test_action(aname, args, modelResult):
   """
 
   if aname == 'send_call':
-    global msg
-    (msg,) = args # extract msg from args tuple, like msg = args[0]
+    global sendbuf
+    (send_msg,) = args # extract msg from args tuple, like send_msg = args[0]
+    sendbuf += send_msg
     call_select(0) # timeout 0, don't block
     return None # pmt will call wait(), below
 
   elif aname == 'recv_call':
-    global bufsize
-    (bufsize,) = args
+    global inbuf_size
+    (inbuf_size,) = args
     call_select(0) # timeout 0, don't block
     return None # pmt will call wait(), below
 
@@ -71,28 +71,37 @@ def test_action(aname, args, modelResult):
 
 
 def wait(timeout):
-    # timeout might be None, wait forever
-    call_select(timeout)
-    
-
-def call_select(timeout):
     """
-    use select to wait for socket input/output with timeout.
+    Timeout might be None, wait forever
 
     This function must be present in any stepper that sets 
      observation.asynch = True
     
     This function is called from the test runner pmt
     """
+    call_select(timeout)
+    
+
+def call_select(timeout):
+    """
+    use select to wait for socket input/output with timeout.
+    """
+    global inbuf_size, sendbuf
+
     inputready,outputready,exceptready = select.select([ connection.receiver ],
                                                        [ connection.sender ], 
                                                        [],timeout)
-    if inputready:
-        r_msg = connection.receiver.recv(bufsize) # not global msg
-        observation.queue.append(('recv_return', (r_msg,)))
-        
-    if outputready:
-        n = connection.sender.send(msg)
-        observation.queue.append(('send_return', (n,)))
+    if inputready and inbuf_size:
+        # print 'inputready %s, inbuf_size %s' % (inputready, inbuf_size) # DEBUG
+        recv_msg = connection.receiver.recv(inbuf_size)
+        observation.queue.append(('recv_return', (recv_msg,)))
+        inbuf_size = 0 
 
-    # timeout - do nothing
+    if outputready and sendbuf:
+        # print 'outputready %s, sendbuf %s' % (outputready, sendbuf)
+        n = connection.sender.send(sendbuf) # DEBUG
+        observation.queue.append(('send_return', (n,)))
+        sendbuf = sendbuf[n:] # empty if we sent it all
+
+    # timeout - do nothing, just return
+    
