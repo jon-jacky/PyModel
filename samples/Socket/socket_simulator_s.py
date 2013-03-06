@@ -25,7 +25,6 @@ module.
 """
 
 import random    # for nondeterministic behavior
-import threading # for blocking on send/full or recv/empty 
 
 """
 Configure nondeterminism and blocking 
@@ -36,10 +35,23 @@ and all the storage in the network between.
 All sockets share the *same* buffer - intended to have just one 
 client socket and one server socket at a time -
 """
-buffers = ''  # initially the buffers are empty
+
 nondet = True # False to send/recv entire msg every time
-bufsize = 3   # send blocks when buffer full, recv blocks when empty
-e = threading.Event() # initially false, e.wait() to block
+
+def select(receivers, senders, exceptions, timeout):
+    """
+    receivers - list of one element, the simulated receiver socket
+    senders - list of one element, the simulated sender socket
+    exceptions - empty list, the simulated sockets with exceptions
+    """
+    # ignore timeout - there is no real concurrency here
+    print 'select: recv buffers "%s", send buffers "%s", bufsize %d' % \
+        (''.join(receivers[0].buffers), ''.join(senders[0].buffers), bufsize) #DEBUG
+    inputready = receivers if len(receivers[0].buffers) > 0 else []
+    outputready = senders if bufsize - len(senders[0].buffers) > 0 else []
+    exceptions = []
+    return inputready, outputready, exceptions
+
 
 # used by steppers, here they are all dummies
 AF_INET = 0
@@ -49,23 +61,29 @@ SO_REUSEADDR = 0
 SO_RCVBUF = 0
 SO_SNDBUF = 0
 
-class connection(object):
-    def __init__(self, *args): pass
 
+# buffers has to be one mutable object so it can be shared by send and recv 
+buffers = list('')  # list is mutable
+bufsize = 3   # send blocks when buffer full, recv blocks when empty
 
+class socket(object):
+    def __init__(self, *args): 
+        self.buffers = buffers  # all instances have reference to same global buffers
+    
     def send(self, msg):
         """
         send must block if buffer full
         so select must ensure that 
         send is not called if buffer is full:
         """
-        global buffers
-        free = bufsize - len(buffers)
+        free = bufsize - len(self.buffers)
+        print 'send: buffers "%s", bufsize - len(self.buffers) %d' % \
+            (''.join(self.buffers), free) #DEBUG
         assert free > 0 # send is not called if buffer is full
         # nondeterministically choose prefix of msg to send
         msglen = min(len(msg),free)
         msglen = random.randint(1,msglen) if nondet else msglen
-        buffers += msg[:msglen]
+        self.buffers.extend(list(msg[:msglen])) # mutate list of characters
         return msglen
 
     def recv(self, nmax):
@@ -75,21 +93,17 @@ class connection(object):
         send is not called if buffer is empty
         """
         global buffers
-        assert len(buffers) > 0 # recv is not called if buffer is empty
+        print 'recv: buffers "%s", len(self.buffers) %d' % \
+            (''.join(self.buffers), len(self.buffers)) #DEBUG
+        assert len(self.buffers) > 0 # recv is not called if buffer is empty
         # nondeterministically choose suffix of buffers to recv
-        msglen = min(nmax,len(buffers))
+        msglen = min(nmax,len(self.buffers))
         msglen = random.randint(1,msglen) if nondet else msglen
-        msg = buffers[:msglen]
-        buffers = buffers[msglen:]
+        msg = ''.join(self.buffers[:msglen]) # make string from part of list
+        del self.buffers[:msglen] # mutate list of characters
         return msg
 
     def close(self): pass
-
-
-class socket(connection):
-
-    def __init__(self, *args): 
-        connection.__init__(self, *args)
 
     # client and server can both use these
     def getsockopt(self, *args): return None
@@ -105,6 +119,14 @@ class socket(connection):
     def listen(self, *args): pass
 
     def accept(self, *args):
-        c = connection(*args)
-        return c, 'nowhere.simulator.org'
+        return self, 'nowhere.simulator.org'
 
+# for debugging select, above
+
+if __name__ == '__main__':
+    c = connection()
+    select([c],[c],[],0)
+    c.buffers = 'a'
+    select([c],[c],[],0)
+    c.buffers = 'ab'
+    select([c],[c],[],0)

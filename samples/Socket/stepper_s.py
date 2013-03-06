@@ -2,12 +2,22 @@
 Asynchronous stepper using select
 
 Controllable/observable, asynchronous, non-deterministic stepper for Socket
-(see stepper.py header and README.txt for explanations).
+(see README.txt for explanations).
 
 In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
 
-In the test_action branch for each controllable action, the code for
+In the test_action branch for each controllable action, the code
+merely collects the arguments, assigns them to global (module-level)
+variables in this module, where they can be retrieved later by select.
+Then the code calls select, in case the socket connection happens to
+be ready to handle the call immediately.  If select indicates that the
+connection is not ready, test_action returns so the caller, the test
+runner pmt, does not block.  After that, the test runner pmt
+periodically calls this stepper's wait() function, which in turn calls
+select.
+
+ for
 the _call action constructs the observed _return action, which may
 include nondeterministic return values.  It appends the _return action
 to the observation queue.
@@ -22,7 +32,6 @@ This stepper is asynchronous - a _call action need not be immediately
 followed by its _return action.  Instead, each subsequent call to
 stepper.wait calls select, which either times out or puts an item into
 the observation queue.
-
 
 Example: pmt -i stepper_s ...
 """
@@ -84,7 +93,7 @@ def wait(timeout):
 
 def call_select(timeout):
     """
-    use select to wait for socket input/output with timeout.
+    use select to check/wait for socket input and/or output, with timeout.
     """
     global inbuf_size, sendbuf
 
