@@ -50,7 +50,7 @@ import observation_queue as observation
 observation.asynch = True # make pmt wait for asynch observable actions
 
 inbuf_size = int() # set by test_action/recv_call, read by wait/select/inputready
-sendbuf = str() # set by test_action/send_call, read by wait/select/outputready
+send_msg = str() # set by test_action/send_call, read by wait/select/outputready
 
 def test_action(aname, args, modelResult):
   """
@@ -63,9 +63,8 @@ def test_action(aname, args, modelResult):
   """
 
   if aname == 'send_call':
-    global sendbuf
+    global send_msg
     (send_msg,) = args # extract msg from args tuple, like send_msg = args[0]
-    sendbuf += send_msg
     call_select(0) # timeout 0, don't block
     return None # pmt will call wait(), below
 
@@ -95,7 +94,7 @@ def call_select(timeout):
     """
     use select to check/wait for socket input and/or output, with timeout.
     """
-    global inbuf_size, sendbuf
+    global inbuf_size, send_msg
 
     inputready,outputready,exceptready = select.select([ connection.receiver ],
                                                        [ connection.sender ], 
@@ -106,11 +105,14 @@ def call_select(timeout):
         observation.queue.append(('recv_return', (recv_msg,)))
         inbuf_size = 0 
 
-    if outputready and sendbuf:
-        # print 'outputready %s, sendbuf %s' % (outputready, sendbuf)
-        n = connection.sender.send(sendbuf) # DEBUG
+    if outputready and send_msg:
+        # print 'outputready %s, send_msg %s' % (outputready, send_msg) # DEBUG
+        n = connection.sender.send(send_msg)
         observation.queue.append(('send_return', (n,)))
-        sendbuf = sendbuf[n:] # empty if we sent it all
+        send_msg = ''
+        # RECALL n might be less then len(send_msg): "It is your
+        # responsibility to call them again until your message has been
+        # completely dealt with." - http://docs.python.org/2/howto/sockets.html
 
     # timeout - do nothing, just return
     

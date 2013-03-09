@@ -45,8 +45,8 @@ def select(receivers, senders, exceptions, timeout):
     exceptions - empty list, the simulated sockets with exceptions
     """
     # ignore timeout - there is no real concurrency here
-    print 'select: recv buffers "%s", send buffers "%s", bufsize %d' % \
-        (''.join(receivers[0].buffers), ''.join(senders[0].buffers), bufsize) #DEBUG
+    # print 'select: recv buffers "%s", send buffers "%s", bufsize %d' % \
+    #    (''.join(receivers[0].buffers), ''.join(senders[0].buffers), bufsize) #DEBUG
     inputready = receivers if len(receivers[0].buffers) > 0 else []
     outputready = senders if bufsize - len(senders[0].buffers) > 0 else []
     exceptions = []
@@ -73,18 +73,18 @@ class socket(object):
     def send(self, msg):
         """
         send must block if buffer full
-        so select must ensure that 
-        send is not called if buffer is full:
+        so select must ensure that send is not called if buffer is full
         """
         free = bufsize - len(self.buffers)
-        print 'send: buffers "%s", bufsize - len(self.buffers) %d' % \
-            (''.join(self.buffers), free) #DEBUG
+        # print 'send: msg "%s", buffers "%s", bufsize - len(self.buffers) %d' % \
+        #    (msg, ''.join(self.buffers), free) #DEBUG
         assert free > 0 # send is not called if buffer is full
         # nondeterministically choose prefix of msg to send
-        msglen = min(len(msg),free)
-        msglen = random.randint(1,msglen) if nondet else msglen
-        self.buffers.extend(list(msg[:msglen])) # mutate list of characters
-        return msglen
+        nmax = min(len(msg),free)
+        nsent = random.randint(1,nmax) if nondet else nmax
+        # print 'send: nsent %d' % nsent
+        self.buffers.extend(list(msg[:nsent])) # mutate list of characters
+        return nsent
 
     def recv(self, nmax):
         """
@@ -93,8 +93,8 @@ class socket(object):
         send is not called if buffer is empty
         """
         global buffers
-        print 'recv: buffers "%s", len(self.buffers) %d' % \
-            (''.join(self.buffers), len(self.buffers)) #DEBUG
+        #print 'recv: buffers "%s", len(self.buffers) %d' % \
+        #   (''.join(self.buffers), len(self.buffers)) #DEBUG
         assert len(self.buffers) > 0 # recv is not called if buffer is empty
         # nondeterministically choose suffix of buffers to recv
         msglen = min(nmax,len(self.buffers))
