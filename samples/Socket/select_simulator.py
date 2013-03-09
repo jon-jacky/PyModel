@@ -7,4 +7,19 @@ The steppers will load this simulator instead of the standard library
 module.
 """
 
-from socket_simulator_s import select
+import socket_simulator
+
+def select(receivers, senders, exceptions, timeout):
+    """
+    receivers - list of one element, the simulated receiver socket
+    senders - list of one element, the simulated sender socket
+    exceptions - empty list, the simulated sockets with exceptions
+    """
+    # ignore timeout - there is no real concurrency here
+    # print 'select: recv buffers "%s", send buffers "%s", bufsize %d' % \
+    #    (''.join(receivers[0].buffers), ''.join(senders[0].buffers), bufsize) #DEBUG
+    inputready = receivers if len(receivers[0].buffers) > 0 else []
+    outputready = senders if (socket_simulator.bufsize 
+                              - len(senders[0].buffers)) > 0 else []
+    exceptions = []
+    return inputready, outputready, exceptions
