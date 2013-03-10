@@ -1,27 +1,36 @@
 """
 socket_simulator.py
 
-Socket simulator that works with stepper_s asynchronous stepper that
-uses select, or stepper_a asynchronous stepper that uses threads.
-
 Replacement for the Python standard library socket module to use with
-the PyModel socket sample, to demonstrate nondeterminism and blocking
+the PyModel Socket sample, to demonstrate nondeterminism and blocking
 even with small messages.
 
-The simulated socket here nondeterministically sends or receives just
-part of the message, no matter how short the message (even just
-two characters).   
+This simulated socket module is *not* a general purpose replacement
+for the Python standard library socket module.  It *only* works with
+the PyModel Socket sample steppers, where there is only one socket connection 
+where the caller only sends at one end and only receives at the other end.
 
-(?) The socket blocks on write when buffers are full, and
-the buffers can be made very small, by assigning the bufsize variable.
-The default bufsize is 3 characters.
+The simulated socket here may nondeterministically send or receive just
+part of the message, no matter how short the message (even just two
+characters).
 
-...
+The simulated socket here blocks on send when the buffer is full, and
+blocks on recv when the buffer is empty.  The buffer can be made very
+small, by assigning the bufsize variable.  The default bufsize is 3
+characters.
+
+Note that this *same* socket simulator can be used with stepper_a,
+which achieves asynchrony with threads, and stepper_s which achieves
+asynchrony with select.  When stepper_s imports this socket_simulator,
+stepper_s must also import select_simulator.
+
+This socket simulator can also be used with the synchronous stepper,
+but it may block -- just like a real socket.
 
 To use this simulator, just put it in the same directory with your
 PyModel socket steppers and rename it (or symlink it) to socket.py.
-The steppers will load this simulator instead of the standard library
-module.
+The steppers will load this simulator instead of the Python standard
+library socket module.
 """
 
 import random    # for nondeterministic behavior
@@ -50,13 +59,23 @@ SO_REUSEADDR = 0
 SO_RCVBUF = 0
 SO_SNDBUF = 0
 
-# buffers has to be one mutable object so it can be shared by send and recv 
-buffers = list('')  # list is mutable
+# Shared buffer is a mutable list that is updated, 
+#  not an immutable string that is assigned then reassigned.
+# See explanation in socket __init__.
+buffers = list('')  # mutable list, not immutable string
 bufsize = 3   # send blocks when buffer full, recv blocks when empty
 
 class socket(object):
 
     def __init__(self, *args): 
+        """
+        The shared buffer has to be a shared mutable variable because the
+        only way that the simulated select can access the shared buffer is through its
+        passed arguments, the lists of input and output channels.  These
+        channels have to be objects and they have to both reference the same
+        shared buffer.  Therefore the buffer has to be a shared structure that
+        is updated, not an immutable string that is assigned, then reassigned.
+        """
         self.buffers = buffers  # all instances have reference to same global buffers
     
     def send(self, msg):
@@ -81,8 +100,7 @@ class socket(object):
     def recv(self, nmax):
         """
         recv must block if buffer empty
-        so select must ensure that 
-        send is not called if buffer is empty
+        so select must ensure that send is not called if buffer is empty
         """
         global buffers
         #print 'recv: buffers "%s", len(self.buffers) %d' % \
