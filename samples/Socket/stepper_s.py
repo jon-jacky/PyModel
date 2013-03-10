@@ -8,17 +8,9 @@ In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
 
 In the test_action branch for each controllable action, the code
-merely collects the arguments, assigns them to global (module-level)
-variables in this module, where they can be retrieved later by select.
-Then the code calls select, in case the socket connection happens to
-be ready to handle the call immediately.  If select indicates that the
-connection is not ready, test_action returns so the caller, the test
-runner pmt, does not block.  After that, the test runner pmt
-periodically calls this stepper's wait() function, which in turn calls
-select.
-
- for
-the _call action constructs the observed _return action, which may
+constructs the call to the implementation.  When select indicates that
+the intended call can return, this stepper executes the call, collects
+the result, and constructs the observed _return action, which may
 include nondeterministic return values.  It appends the _return action
 to the observation queue.
 
@@ -30,8 +22,8 @@ recv_call/return here to stepper.py).
 
 This stepper is asynchronous - a _call action need not be immediately
 followed by its _return action.  Instead, each subsequent call to
-stepper.wait calls select, which either times out or puts an item into
-the observation queue.
+stepper.wait calls select, which either times out or executes a call,
+collects the results, and puts an item into the observation queue.
 
 Example: pmt -i stepper_s ...
 """
@@ -54,12 +46,15 @@ send_msg = str() # set by test_action/send_call, read by wait/select/outputready
 
 def test_action(aname, args, modelResult):
   """
-  In the test_action branch for each controllable action, the code for
-  the _call action waits (synchronously) for the implemenation to 
-  return, then uses the observed return value to construct and return 
-  the _return action (which may include nondeterministic return values).
-
-  For now send_ always invokes client.send and recv_ always invokes server.recv
+  In the test_action branch for each controllable action, the code
+  merely collects the arguments, assigns them to global (module-level)
+  variables in this module, where they can be retrieved later by select.
+  Then the code calls select, in case the socket connection happens to
+  be ready to handle the call immediately.  If select indicates that the
+  connection is not ready, test_action returns, so the caller (the test
+  runner pmt) does not block.  After that, the test runner pmt
+  periodically calls this stepper's wait() function, which in turn calls
+  select.
   """
 
   if aname == 'send_call':

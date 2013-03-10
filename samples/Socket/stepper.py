@@ -3,18 +3,18 @@ Controllable, synchronous, deterministic stepper for msocket
 
 Controllable means all actions are functions that are called by the
 stepper.  No actions are events that are detected by the stepper.
-Make the stepper all-controllable by including *both* sender and
+We make the stepper all-controllable by including *both* sender and
 receiver in the stepper, both running in one thread on localhost.
 
-Synchronous means no blocking: next action after send_call is always
-send_return, etc.  To make model behavior synchronous, compose msocket
-with the synchronous scenario machine.  Implementation must obey
-because in this stepper all actions are controllable.
+Synchronous means no blocking: the next action after send_call is
+always send_return, etc.  To make model behavior synchronous, compose
+msocket with the synchronous scenario machine.  The implementation must
+obey because in this stepper all actions are controllable.
 
-Deterministic means entire message is always sent, entire message
-always received.  To make model behavior deterministic, use the
-deterministic configuration module.  BUT the implementation cannot be
-made to obey.  Implementation behavior that differs from the model
+Deterministic means the entire message is always sent, and the entire
+message always received.  To make model behavior deterministic, use
+the deterministic configuration module.  BUT the implementation cannot
+be made to obey.  Implementation behavior that differs from the model
 will be reported as test failures.  Although the model allows
 nondeterministic behavior, this stepper does not.  Implementation
 behavior is likely to be deterministic if messages are small enough.

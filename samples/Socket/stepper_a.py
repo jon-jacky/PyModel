@@ -47,8 +47,6 @@ def test_action(aname, args, modelResult):
   the _call action waits (synchronously) for the implemenation to 
   return, then uses the observed return value to construct and return 
   the _return action (which may include nondeterministic return values).
-
-  For now send_ always invokes client.send and recv_ always invokes server.recv
   """
 
   if aname == 'send_call':
