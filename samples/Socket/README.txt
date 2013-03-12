@@ -368,6 +368,11 @@ and alternating calls to send and recv.
 
 The stepper_d module
 
+(The stepper_d module was the first socket stepper we wrote and was
+originally named just stepper, but has been renamed to stepper_d to
+indicate that it is no longer the preferred stepper for this sample.
+The module formerly named stepper_s has been renamed to stepper.)
+
 This stepper_d module executes and checks test runs in an obvious way.  For
 each action, the test runner pmt calls the action in the model (for
 example recv_call) and collects the result (the return value, msg)
@@ -670,7 +675,11 @@ returns before the thread that reports when send returns.
 
 The stepper_s asynchronous stepper module
 
-The stepper_s module supports nondeterminism and asynchrony.  It is
+(The stepper module was originally called stepper_s, but was renamed
+to just stepper to indicate that it is now the preferred stepper
+module for the socket sample.)
+
+The stepper module supports nondeterminism and asynchrony.  It is
 similar to stepper_a, but here asynchrony is achieved with the select
 function, instead of threads.  Here stepper_a calls select before
 attempting to send or recv on the socket.  The return values from
@@ -680,22 +689,22 @@ enables pmt to proceed and make another call that results in
 unblocking the earlier call.
 
 
-The test_stepper_s script
+The test_stepper script
 
-The test_stepper_s module is a test script that contains a single
-test case that invokes a run with the stepper_s module.
+The test_stepper module is a test script that contains a single
+test case that invokes a run with the stepper module.
 
-The stepper_s module and test_stepper_s script are similar to
+The stepper module and test_stepper script are similar to
 stepper_a and test_stepper_a -- they are all designed to handle runs
 where calls to recv at one end of the connection can precede calls to
 send at the other end, and where calls and returns at the two ends can
 interleave.   
 
-However, with stepper_s and test_stepper_s we do *not* see any test
+However, with stepper and test_stepper we do *not* see any test
 failures like we do with stepper_a and test_stepper_a, where stepper_a
 reports interleaving in an order that the model forbids, where
 recv_return returns a message before the originating send returns.
-Since stepper_s never reports this, this supports our hypothesis that
+Since stepper never reports this, this supports our hypothesis that
 the forbidden interleaving is an artifact of the way the threads in
 stepper_a are scheduled.  It seems that in this sample, select is a better
 way to support asynchrony than threads.
@@ -717,9 +726,9 @@ small, by assigning the bufsize variable.  The default bufsize is 3
 characters.
 
 Note that this *same* socket simulator is used with stepper_a,
-which achieves asynchrony with threads, and stepper_s which achieves
-asynchrony with select.  When stepper_s imports this socket_simulator,
-stepper_s must also import select_simulator.
+which achieves asynchrony with threads, and stepper which achieves
+asynchrony with select.  When stepper imports this socket_simulator,
+stepper must also import select_simulator.
 
 This socket simulator can also be used with the synchronous stepper,
 but it may block -- just like a real socket.
@@ -728,12 +737,12 @@ To use this simulator, just put it in the same directory with your
 PyModel socket steppers and rename it (or symlink it) to socket.py.
 The steppers will load this simulator instead of the Python standard
 library socket module.  If you want to use this simulator with
-stepper_s, you must also rename (or symlink) select_simulator.py to 
+stepper, you must also rename (or symlink) select_simulator.py to 
 select.py.
 
 To demonstrate the simulator, replace the standard library socket
 module (as described in the previous paragraph) and repeat
-test_stepper, test_stepper_a, or test_stepper_s.  
+test_stepper_d, test_stepper_a, or test_stepper.  
 
 You will see that the socket behaves nondeterministically.  Now
 send_return sometimes returns a number smaller than the length of the

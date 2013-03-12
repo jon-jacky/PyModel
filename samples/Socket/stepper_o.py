@@ -16,7 +16,7 @@ Then pmt pops the _return action from the observation queue, then
 calls the model to determine whether the observed _return action is
 enabled.  So pmt + model determines whether the test passed or failed.
 This simplifies the stepper (compare test_action branch for
-recv_call/return here to stepper.py).
+recv_call/return here to stepper_d.py).
 
 This stepper is still synchronous - each _call action must be
 immediately followed by its _return action, otherwise the call to
