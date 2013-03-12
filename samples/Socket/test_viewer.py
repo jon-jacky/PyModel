@@ -1,5 +1,5 @@
 """
-msocket model - view same compositions and configurations as in test.py
+test_viewer - msocket model, view same compositions and configurations as in test.py
 """
 
 cases = [

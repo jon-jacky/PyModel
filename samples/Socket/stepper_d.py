@@ -1,5 +1,5 @@
 """
-Controllable, synchronous, deterministic stepper for msocket
+stepper_d - ontrollable, synchronous, deterministic stepper for msocket
 
 Controllable means all actions are functions that are called by the
 stepper.  No actions are events that are detected by the stepper.
@@ -19,7 +19,7 @@ will be reported as test failures.  Although the model allows
 nondeterministic behavior, this stepper does not.  Implementation
 behavior is likely to be deterministic if messages are small enough.
 
-Example: pmt.py -n 10 -c 6 -i stepper msocket synchronous nondeterministic
+Example: pmt -n 10 -c 6 -i stepper_d msocket synchronous nondeterministic
 """
 
 # We must import stepper_util.sender, receiver this way, 

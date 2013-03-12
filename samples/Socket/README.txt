@@ -39,18 +39,20 @@ The sample includes these modules:
   configuration files that select particular behaviors of the model
   program.
 
-- stepper, stepper_o, stepper_a, and stepper_s: four different
-  steppers (also called test harnesses or adapters) that use the model
-  program and scenarios to test actual sockets on localhost (via the
-  Python standard library socket module).  Also, stepper_util, code
-  used by all four steppers.
+- stepper, stepper_d, stepper_o, stepper_a: several steppers (also
+  called test harnesses or adapters) that use the model program and
+  scenarios to test actual sockets on localhost (via the Python
+  standard library socket module).  Also, stepper_util, code used by
+  all steppers.
+
+- msgsizes: a module that investigates how socket behavior depends on
+  message size.
 
 - socket_simulator and select_simulator: simulators that can
   optionally replace the Python standard library socket and select
   modules in the steppers.  The simulators can be configured to
   demonstrate a great deal of nondeterminism and concurrency, even
-  with small messages.  The select_simulator is used with
-  socket_simulator when stepper_s is used.
+  with small messages.
 
 - test, test_viewer, test_stepper, test_msgsize, etc.: several test
   scripts that invoke various combinations of these modules.
@@ -75,7 +77,7 @@ This model program only models sending and receiving messages - it
 does not model establishing or closing the connections.  Therefore it
 does not include actions that model the socket library operations
 open, bind, listen, accept, connect, or close.  To test a real
-implementation, those operations must all be handled in the stepper
+implementation, those operations must all be handled in the steppers
 (see Stepper sections, below).
 
 
@@ -203,13 +205,13 @@ asynchronous behavior (blocking and interleaving send and recv).
 However, these are rarely seen in the common situation where a socket
 transmits small messages over a fast network -- usually the entire
 message is transmitted in in a single pair of send/recv calls.  In
-fact, our first stepper module only works correctly with runs that
+fact, our stepper_d module only works correctly with runs that
 exhibit this common (deterministic, synchronous) behavior; it
 considers any nondeterminism to be a test failure, and it just waits
-forever at the first blocking call (our other steppers, stepper_o and
-stepper_a, relax these restrictions).  Therefore, sometimes we wish to
-restrict the behavior of the model to deterministic, synchronous
-behaviors.
+forever at the first blocking call (our other steppers, stepper_o,
+stepper_a, and stepper, relax these restrictions).  Therefore,
+sometimes we wish to restrict the behavior of the model to
+deterministic, synchronous behaviors.
 
 In PyModel, concurrency and asychrony permitted by a model program can
 be removed by scenario machines, and nondeterminism can be restricted
@@ -345,102 +347,108 @@ synchronous msocket.  It is a graph of the msocket model program
 composed with the synchronous scenario machine, using the domains in
 the deterministic module.
 
-The stepper test harness
 
-The stepper module is a test harness (sometimes called an adapter)
-that connects a socket model (the mstepper module etc.) to a socket
-implementation (usually the Python standard library socket module).
-The stepper enables the PyModel tester pmt to use a model to 
-call methods in the implementation and check the results.
+Stepper modules
 
-This stepper handles *both* ends of the socket connection so it can
-test both send and recv (recall that the model program msocket always
-sends at one end of the connection and receives at the other).  And,
-it does this in a single ordinary process (Python program invocation)
-on the local machine.  It accomplishes this by connecting to both ends
-of a socket on localhost and alternating calls to send and recv.
+A PyModel stepper is a test harness (sometimes called an adapter) that
+connects a model (here, the msocket module) to a an implementation
+(here, the Python standard library socket module).  A stepper enables
+the PyModel tester pmt to use a model to call methods in the
+implementation and check the results.
 
-This stepper executes and checks test runs in an obvious way.  For
+The PyModel Socket sample contains several steppers that demonstrate
+different technques.  All of these socket steppers handle *both* ends of the
+socket connection so they can test both send and recv (recall that the
+model program msocket always sends at one end of the connection and
+receives at the other).  And, they do this in a single ordinary
+process (Python program invocation) on the local machine.  They
+accomplish this by connecting to both ends of a socket on localhost
+and alternating calls to send and recv.
+
+
+The stepper_d module
+
+This stepper_d module executes and checks test runs in an obvious way.  For
 each action, the test runner pmt calls the action in the model (for
 example recv_call) and collects the result (the return value, msg)
 computed by the model.  Then pmt passes the action and the result to
-the stepper.  The stepper calls the corresponding message (s.recv) in
+stepper_d.  Then stepper_d calls the corresponding message (s.recv) in
 the implementation, and collects the result (return value) computed by
 the implementation (named data here to distinguish it from msg, from
-the model).  Then the stepper compares the two results.  If they are
-equal (checked by the Python == operator), the stepper returns None to
-pmt to indicate that the test should continue; if not, the stepper
+the model).  Then stepper_d compares the two results.  If they are
+equal (checked by the Python == operator), stepper_d returns None to
+pmt to indicate that the test should continue; if not, stepper_d
 constructs a string describing the failure and returns that string to
-pmt to indicate that the test failed.  This stepper deals with the
+pmt to indicate that the test failed.  This stepper_d deals with the
 split actions calling the implementation only on the _return actions.
-This stepper handles the _call actions by simply storing the action
+This stepper_d handles the _call actions by simply storing the action
 arguments locally until it is time to invoke the corresponding _return
 action.
 
-This stepper organization is simple but it results in serious
-limitations.  This stepper cannot handle nondeterminism nor
-asynchrony.  This stepper expects that the connection will always
+This stepper_d organization is simple but it results in serious
+limitations.  This stepper_d cannot handle nondeterminism nor
+asynchrony.  This stepper_d expects that the connection will always
 accept the entire message passed to send and then return immediately.
 It expects that the next call to recv at the other end of the
 connection will return the entire message immediately, and this
 returned message is an exact copy of the message that was sent.  Any
 other behaviors are considered test failures.  These are serious
-limitations but this stepper often works well enough, because real
+limitations but stepper_d often works well enough, because real
 sockets usually behave this way when when small messages are sent
 across a fast network.
 
-This stepper is included to show how a basic stepper that supports a
+This stepper_d is included to show how a basic stepper that supports a
 useful subset of behaviors can be written easily.  Below we will
-discuss stepper_o and stepper_a, that support all model behaviors
-correctly.
+discuss stepper_o, stepper_a, and stepper that support all model
+behaviors correctly.
 
 The stepper_util test harness utilities
 
 The stepper_util module defines constants and methods used by all
-three steppers, including methods to open and close sockets and to
-make a connection.  The three stepper modules only handle the send and
-recv methods --- that is their only difference.
+steppers, including methods to open and close sockets and to make a
+connection.  The stepper modules only handle the send and recv
+methods --- those are the only operations where the steppers differ.
 
 
-The test_stepper script
+The test_stepper_d script
 
-The test_stepper module is a test script with three test cases that
+The test_stepper_d module is a test script with three test cases that
 reveal some of the limitations of this stepper.  To run these tests,
-type the command: trun test_stepper.  None of the test
+type the command: trun test_stepper_d.  None of the test
 cases in this script uses the -s option to set the random seed, so
 repeating this command will result in different test runs.
 
-The first test case runs this command: pmt.py -n 10 -c 6 msocket -i
-stepper.  In this test case model behavior is not restricted by any
+The first test case runs this command: pmt -n 10 -c 6 msocket -i
+stepper_d.  In this test case model behavior is not restricted by any
 scenario machine, so _call actions are not always followed immediately
-by _return actions.  However, the test does not block because this
-stepper does not call the socket implementation until the _return
+by _return actions.  However, the test does not block because
+stepper_d does not call the socket implementation until the _return
 action appears in the trace.  This test case does not use any
 configuration modules to limit nondeterminism, so recv often returns
 only part of the message provided by send.  But with messages this
 small, the implementation usually returns the entire message - so the
 behaviors of the model and the implementation differ, even though both
 are correct.  This is the essence of nondeterminism: different
-behaviors can all be correct.  But this stepper does not handle
+behaviors can all be correct.  But stepper_d does not handle
 nondeterminism, so any differences between the behaviors of the model
 and the implementation are reported as test failures.  So usually this
-test case fails, due to limitations in the stepper, not errors in the
+test case fails, due to limitations in stepper_d, not errors in the
 model or the implementation.  The next two test cases attempt to remedy
 this by limiting the behavior of the model.
 
-The second test case runs this command: pmt.py -n 10 -c 6 msocket
-synchronous -i stepper.  This command composes the msocket model with
+The second test case runs this command: pmt -n 10 -c 6 msocket
+synchronous -i stepper_d.  This command composes the msocket model with
 the synchronous scenario, so it generates test runs where _call is
 always immediately followed by _return.  However it does not limit
 nondeterminism so usually this test case fails due to limitations
-of this stepper.
+of stepper_d.
 
-The third and final test case runs this command: pmt.py -n 10 -c 6
-msocket deterministic synchronous -i stepper.  This limits the model
+The third and final test case runs this command: pmt -n 10 -c 6
+msocket deterministic synchronous -i stepper_d.  This limits the model
 to behaviors that are synchronous (_call is always immediately
 followed by _return) and deterministic (the entire message sent is
 always immediately received).  Now the model satisfies all the
-assumptions of this stepper.  Moreover, with messages this small (they
+assumptions of stepper_d.  Moreover, with messages this small (they
 are defined by the domains in the mstepper and deterministic modules),
 the implementation is also synchronous and deterministic.  Therefore
 the model and implementation behave exactly the same, so these test runs 
@@ -452,7 +460,7 @@ The msgsizes test suite
 The msgsizes module is a test suite that investigates how socket
 behavior depends on message size.
 
-Recall that our stepper assumes that socket behavior is synchronous
+Recall that stepper_d assumes that socket behavior is synchronous
 and deterministic.  We observe that this assumption is usually
 satisfied when sending small messages.  How large a message does it
 take to break this assumption?  The msgsizes module contains a test
@@ -465,7 +473,7 @@ The first two test runs in this suite are intended to fail - the sent
 message and the received message differ by one character (as if that
 character had been corrupted during transmission).  This behavior is
 not permitted by the model.  The last test run in this suite is
-expected to fail with this stepper, because only part of the sent
+expected to fail with stepper_d, because only part of the sent
 message is received.  
 
 
@@ -516,7 +524,7 @@ The test_msgsize script
 Now that we have validated the test suite, we can execute it.  The
 test_msgsize script is a test script that uses the PyModel tester pmt
 to execute the runs in the msgsizes test suite with the Python
-standard library socket module, with the aid of the stepper test
+standard library socket module, with the aid of the stepper_d test
 harness.
 
 Execute the test suite: trun test_msgsize.  The first two runs fail,
@@ -533,7 +541,7 @@ send call blocked).
 The final call also fails, because the run in the test suite receives
 only part of the message that was sent.  This behavior is permitted by
 the model, but the real socket receives the entire message.  This
-stepper considers any difference between the test suite and the
+stepper_d considers any difference between the test suite and the
 implementation to be a test failure.
 
 
@@ -581,7 +589,7 @@ The test_stepper_o script demonstrates stepper_o.  It is similar to
 test_stepper, but with the revisions needed to work with stepper_o.
 The first test case runs this command:
 
- pmt.py -n 10 -c 6 -t 5 msocket observables -i stepper_o
+ pmt -n 10 -c 6 -t 5 msocket observables -i stepper_o
 
 Here -t 5 specifies a 5-second timeout if a call blocks (otherwise the
 test could hang indefinitely).  The observables configuration module specifies

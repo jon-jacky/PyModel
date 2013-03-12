@@ -1,9 +1,6 @@
 """
-msocket tests with stepper_o and observables
+test_stepper_o msocket tests with stepper_o and observables
 """
-
-# Subsequent runs use different port numbers
-# so output is not completely reproducible
 
 cases = [
     ('Just the model, no scenarios or configurations',

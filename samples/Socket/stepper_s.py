@@ -1,7 +1,7 @@
 """
-Asynchronous stepper using select
+stepper - asynchronous stepper for msocket using select
 
-Controllable/observable, asynchronous, non-deterministic stepper for Socket
+Controllable/observable, asynchronous, non-deterministic stepper for msocket
 (see README.txt for explanations).
 
 In this stepper the _return actions are observable, not controllable.

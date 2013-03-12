@@ -1,5 +1,5 @@
 """
-Analyze msgsizes test suite by composing it with msocket model.
+test_analyze_msgsize - analyze msgsizes test suite by composing it with msocket model
 """
 
 cases = [

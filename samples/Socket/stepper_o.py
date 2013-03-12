@@ -1,6 +1,8 @@
 """
-Controllable/observable, synchronous, non-deterministic stepper for Socket
-(see stepper.py header and README.txt for explanations).
+stepper_o - synchronous but non-deterministic stepper for msocket
+
+Controllable/observable, synchronous, non-deterministic stepper for socket
+(see stepper_d.py header and allabout.txt for explanations).
 
 In this stepper the _return actions are observable, not controllable.
 Therefore this stepper supports nondeterminism in return values.
@@ -20,7 +22,7 @@ This stepper is still synchronous - each _call action must be
 immediately followed by its _return action, otherwise the call to
 test_action will block.
 
-Example: pmt.py -n 10 -c 6 msocket observables synchronous -i stepper_o
+Example: pmt -n 10 -c 6 msocket observables synchronous -i stepper_o
 """
 
 # We must import stepper_util.sender, receiver this way, 

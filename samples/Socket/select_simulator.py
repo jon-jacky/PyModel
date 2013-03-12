@@ -1,4 +1,6 @@
 """
+select_simulator
+
 This module simulates the Python standard library select module.  See
 the socket_simulator module header and the Socket sample README for more
 explanation.

@@ -1,5 +1,5 @@
 """
-msocket model tests
+test.py - msocket model tests
 """
 
 cases = [

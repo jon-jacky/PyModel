@@ -1,5 +1,5 @@
 """
-stepper_util.py - common code, utilities for socket steppers
+stepper_util - common code, utilities for socket steppers
 """
 
 import socket  # Python standard library socket module, OR a simulator
