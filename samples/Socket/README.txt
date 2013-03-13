@@ -167,10 +167,10 @@ The model exhibits concurrency, like a real socket connection.
 PyModel represents concurrency by interleaving.  Send and receive
 actions can interleave without synchronization at the two ends of the
 connection.  Each end can send or receive while the other end is
-blocked.  This is achieved by modeling both send and receive as *two*
-distinct actions for the call and return: send_call and send_return,
-and recv_call and recv_return.  For example, we might see a trace with
-these actions:
+blocked.  Once again, this is achieved by modeling both send and
+receive as split actions: *two* distinct actions for the call and
+return: send_call and send_return, and recv_call and recv_return.  For
+example, we might see a trace with these actions:
 
  recv_call
  send_call
@@ -204,7 +204,7 @@ The msocket model program in this sample exhibits nondeterminism and
 asynchronous behavior (blocking and interleaving send and recv).
 However, these are rarely seen in the common situation where a socket
 transmits small messages over a fast network -- usually the entire
-message is transmitted in in a single pair of send/recv calls.  In
+message is transmitted in a single pair of send/recv calls.  In
 fact, our stepper_d module only works correctly with runs that
 exhibit this common (deterministic, synchronous) behavior; it
 considers any nondeterminism to be a test failure, and it just waits
@@ -243,7 +243,7 @@ In a model program, the enabling condition for an action might permit
 a large range of argument values, but the domain for that action can
 limit it to a few, or just one.  Different domains can be written that
 select different collections of arguments.  The *deterministic* module
-is PyModel configuration file that redefines the domains of
+is a PyModel configuration file that redefines the domains of
 send_return and recv_return.  Here both are *state-dependent domains*.
 Now send_return always accepts the entire argument of send_call (not
 just a prefix, as specified in its enabling condition), and
@@ -365,15 +365,21 @@ process (Python program invocation) on the local machine.  They
 accomplish this by connecting to both ends of a socket on localhost
 and alternating calls to send and recv.
 
+We discuss the several steppers below, in the order we wrote them:
+stepper_d (formerly stepper), stepper_o, stepper_a, and stepper
+(formerly stepper_s).  Each improves on its predecessors.  The last
+one, stepper, is now the recommended one.
+
 
 The stepper_d module
 
 (The stepper_d module was the first socket stepper we wrote and was
 originally named just stepper, but has been renamed to stepper_d to
 indicate that it is no longer the preferred stepper for this sample.
-The module formerly named stepper_s has been renamed to stepper.)
+The module formerly named stepper_s has been renamed to stepper and is now
+the preferred stepper recommended for this sample.)
 
-This stepper_d module executes and checks test runs in an obvious way.  For
+Here is how the stepper_d module executes and checks test runs:  For
 each action, the test runner pmt calls the action in the model (for
 example recv_call) and collects the result (the return value, msg)
 computed by the model.  Then pmt passes the action and the result to
@@ -390,8 +396,12 @@ This stepper_d handles the _call actions by simply storing the action
 arguments locally until it is time to invoke the corresponding _return
 action.
 
-This stepper_d organization is simple but it results in serious
-limitations.  This stepper_d cannot handle nondeterminism nor
+Here stepper_d itself determines whether each step in the test passes
+or fails, and, if it fails, constructs the message describing the
+failure.
+
+This stepper_d organization is straightforward but it results in
+serious limitations.  This stepper_d cannot handle nondeterminism nor
 asynchrony.  This stepper_d expects that the connection will always
 accept the entire message passed to send and then return immediately.
 It expects that the next call to recv at the other end of the
@@ -400,11 +410,15 @@ returned message is an exact copy of the message that was sent.  Any
 other behaviors are considered test failures.  These are serious
 limitations but stepper_d often works well enough, because real
 sockets usually behave this way when when small messages are sent
-across a fast network.
+across a fast network.  
 
-This stepper_d is included to show how a basic stepper that supports a
-useful subset of behaviors can be written easily.  Below we will
-discuss stepper_o, stepper_a, and stepper that support all model
+The style of stepper_d follows a pattern that works well for
+deterministic, synchronous sytems -- which sockets are not.  This
+stepper_d is included to here to show how a this pattern can be used
+-- with some limitations -- even with nondeterministic, asynchronous
+systems.  However, this style is not recommended for such systems.
+Below we wdiscuss stepper_o, stepper_a, and stepper, which all use a
+different approach that works better here, and supports all model
 behaviors correctly.
 
 The stepper_util test harness utilities
@@ -673,7 +687,7 @@ before recv, but the scheduler runs the thread that reports when recv
 returns before the thread that reports when send returns.
 
 
-The stepper_s asynchronous stepper module
+The stepper asynchronous stepper module
 
 (The stepper module was originally called stepper_s, but was renamed
 to just stepper to indicate that it is now the preferred stepper
@@ -741,8 +755,8 @@ stepper, you must also rename (or symlink) select_simulator.py to
 select.py.
 
 To demonstrate the simulator, replace the standard library socket
-module (as described in the previous paragraph) and repeat
-test_stepper_d, test_stepper_a, or test_stepper.  
+module (as described in the previous paragraph) and execute any of the
+test_stepper modules.
 
 You will see that the socket behaves nondeterministically.  Now
 send_return sometimes returns a number smaller than the length of the
