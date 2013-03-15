@@ -27,6 +27,7 @@ simultaneous, unsynchronized sending and receiving that add and remove
 data at the two ends of the connection.  For more explanation, see:
 
  http://docs.python.org/howto/sockets.html
+
  http://pyvideo.org/video/885/through-the-ether-and-back-again-what-happens-to
 
 
@@ -143,8 +144,8 @@ actions in the model program.  For example, the `send` function in the
 implementation is represented by `send_call` and `send_return` actions in
 the model program.  An action modeled in this style, where the start
 and finish of the operation (here, the function call and its return)
-are coded as two separate actions in the model, is called a *split
-action*.  Both start and finish actions in a split action require an
+are coded as two separate actions in the model, is called a *split action*.  
+Both start and finish actions in a split action require an
 enabling condition (if either is omitted, that part of the action is
 considered to be enabled always).  Split actions never have return
 values.  Instead, the return value (or values) of the modeled
@@ -232,7 +233,7 @@ by domains.
 Restricting concurrency: synchronous scenario
 ---------------------------------------------
 
-The *`synchronous`* module is a scenario machine, an FSM.  A graph of
+The `synchronous` module is a scenario machine, an FSM.  A graph of
 this scenario appears in Socket/svg/synchronous_graph.svg (which you
 can display in a browser).  As the graph shows, in this scenario
 `send_call` is always immediately followed by `send_return`, and `recv_call`
