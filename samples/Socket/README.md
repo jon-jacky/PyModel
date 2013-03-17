@@ -70,13 +70,13 @@ Some other modules that also appear in this sample are explained in
 Socket model program
 --------------------
 
-The model program in the *msocket* module models *both* ends of the
-connection.  Here we model a system where one end of the connection is
-always the sender and the other end is always the receiver: all send
-actions occur at one end and all *recv* actions occur at the other.
-Messages sent at one end can be eventually received at the other.
-This very simple system is all we need to experiment with concurrency
-and nondeterminism.
+The model program in the [*msocket*](msocket.py) module models *both*
+ends of the connection.  Here we model a system where one end of the
+connection is always the sender and the other end is always the
+receiver: all *send* actions occur at one end and all *recv* actions
+occur at the other.  Messages sent at one end can be eventually
+received at the other.  This very simple system is all we need to
+experiment with concurrency and nondeterminism.
 
 (This model program only models sending and receiving messages - it
 does not model establishing or closing the connections.  To test a
@@ -106,13 +106,15 @@ nondeterminism.
 
 ### Concurrency ###
 
-Concurrency arises from the simultaneous, unsynchronized sending and
-receiving at the two ends of the connection.  PyModel represents
-concurrency by *interleaving*.  Send and receive actions can
-interleave without synchronization at the two ends of the connection.
-Each end can send or receive while the other end is blocked.  Split
-actions enable us to model this.  For example, we might see a trace
-with these actions:
+For sockets, concurrency arises from the simultaneous, unsynchronized
+sending and receiving at the two ends of the connection.  PyModel
+represents concurrency by *interleaving*.  Send and receive actions
+can interleave without synchronization at the two ends of the
+connection.  Each end can send or receive while the other end is
+blocked.  
+
+Split actions enable us to model this.  For example, we
+might see a trace with these actions:
 
     recv_call(4)
     send_call('bb')
@@ -134,15 +136,42 @@ sender).
 
 ### Nondeterminism ###
 
-Nondeterminism arises from the unpredictable amount of data that may
-be sent or received in each call.  The *send* operation may accept any
-(incomplete) segment from the beginning of its message input, and the
-*recv* operation may return any (incomplete) segment from the
-beginning of the accumulated message segments that have been accepted
-at the sender end.  Multiple *send* and *recv* calls might be needed to
-transmit an entire message.
+For sockets, nondeterminism arises from the unpredictable amount of
+data that may be sent or received in each call.  The *send* operation
+may accept any (incomplete) segment from the beginning of its message
+input, and the *recv* operation may return any (incomplete) segment
+from the beginning of the accumulated message segments that have been
+accepted at the sender end.  Multiple *send* and *recv* calls might be
+needed to transmit an entire message.
 
-(more to come)
+In PyModel model programs, nondeterminism is implemented by *enabling
+conditions*.  Each action (for example *send_call*) has a
+corresponding enabling condition (for example *send_call_enabled*), a
+boolean function of the action arguments and the model program state.
+When generating behavior, PyModel can call the action whenever the
+combination of arguments satisfies the enabling condition in the
+current state.  When checking behavior, PyModel allows actions that
+satisfy their enabling conditions, but considers an action that
+violates its enabling condition to be a test failure.
+
+The actual action arguments that are used are drawn from *domains*
+defined in the model program (or in a configuration module).  To
+choose the next action (when generating behavior), PyModel considers
+all combinations from the domains (for all actions) and chooses a
+combination that satisfies the enabling condition.  Often, several
+different actions (and argument combinations) are enabled in the same
+state, so the resulting behavior is nondeterministic.
+
+Split actions enable us to model nondetermistic return values.  The
+*return* actions in the model also have enabling conditions, and these
+can be coded to exhibit nondeterminism.  In the *msocket* model
+program, the enabling condition for *send_return* is coded to allow
+PyModel to nondeterministically choose values for *n* (the number of
+characters acceped by *send*), and the enabling condition for
+*recv_return* allows a range of values for *msg* (the message returned
+by *recv*).  The enabling conditions for the *return* actions are, in
+effect, the postconditions for those operations --- which can be
+nondeterministic, if the conditions are coded to allow that.
 
 
 Restricting behavior
@@ -152,7 +181,7 @@ The *msocket* model program in this sample exhibits nondeterminism and
 asynchronous behavior.  However, these are rarely seen in the common
 situation where a socket transmits small messages over a fast network
 -- usually the entire message is transmitted in a single pair of
-*send*/*recv* calls.  Therefore, sometimes we wish to restrict the
+*send*, *recv* calls.  Therefore, sometimes we wish to restrict the
 behavior of the model to deterministic, synchronous behaviors.
 
 In PyModel, concurrency and asychrony permitted by a model program can
@@ -161,9 +190,10 @@ by domains.
 
 ### Removing concurrency ###
 
-The *synchronous* module is a scenario machine, an FSM.  A graph of
-this scenario appears in *Socket/svg/synchronous_graph.svg* (which you
-can display in a browser).  As the graph shows, in this scenario
+The [*synchronous*](synchronous.py) module is a scenario machine, an
+FSM.  A graph of this scenario appears in
+[*Socket/svg/synchronous_graph.svg*](svg/synchronous_graph.svg) (which
+you can display in a browser).  As the graph shows, in this scenario
 *send_call* is always immediately followed by *send_return*, and
 *recv_call* is always immediately followed by *recv_return*.
 
@@ -183,9 +213,9 @@ behavior is *sequential*.
 In a model program, the enabling condition for an action might permit
 a large range of argument values, but the domain for that action can
 limit it to a few, or just one.  Different domains can be written that
-select different collections of arguments.  The *deterministic* module
-is a PyModel configuration file that redefines the domains of
-*send_return* and *recv_return*. 
+select different collections of arguments.  The
+[*deterministic*](deterministic.py) module is a PyModel configuration
+file that redefines the domains of *send_return* and *recv_return*.
 
 Now *send_return* always accepts the entire argument of *send_call*
 (not just a prefix), and *recv_return* always produces the entire
