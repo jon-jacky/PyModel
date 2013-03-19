@@ -263,7 +263,15 @@ The first test case executes this command:
 (you can also type this command yourself).  It generates a short (10
 to 16 step) trace from the *msocket* module alone, so the trace may
 exhibit nondeterminism and asynchrony, with interleaving *send* and
-*recv* and incompletely sent messages.  
+*recv* and incompletely sent messages.  Here are the first few steps 
+from one of these runs:
+
+    send_call('a',)
+    send_return(1,)
+    send_call('bb',)
+    recv_call(4,)
+    recv_return('a',)
+    send_return(1,)
 
 The messages (arguments to *send_call*) are limited to *'a'* and
 *'bb'* by the domain in the *msocket* module.  This command chooses
@@ -272,7 +280,7 @@ generates different traces (to make runs repeatable, set the random
 seed with the *-s* option).  To see longer traces, use a larger *-n*
 option.  Omit the cleanup option *-c* to generate exactly *-n* steps,
 which may stop in a non-accepting state (with a call in progress or a
-message in flight).
+message in flight).  
 
 The second test case executes: 
 
@@ -281,10 +289,18 @@ The second test case executes:
 Including both the model program and a scenario machine as command
 arguments forms their composition.  Now the run exhibits synchronous
 behavior: each call is immediately followed by its return.  There is
-no more blocking, no more interleaving of *send* and receive.  Moreover,
-*send* and receive alternate, as dictated by the scenario machine.  But
-the behavior may still be nondeterministic - incomplete messages may
-be sent.
+no more blocking, no more interleaving of *send* and receive.
+Moreover, *send* and receive alternate, as dictated by the scenario
+machine.  But the behavior may still be nondeterministic - incomplete
+messages may be sent.  Here are the first few steps from one of these
+runs:
+
+    send_call('bb',)
+    send_return(1,)
+    recv_call(4,)
+    recv_return('b',)
+    send_call('a',)
+    send_return(1,)
 
 The third test case executes: 
 
@@ -292,7 +308,15 @@ The third test case executes:
 
 This also includes the *deterministic* module, the configuration file
 that reassigns domains to ensure that the entire message is always
-sent and received immediately.
+sent and received immediately.   Here are the first few steps from one of these
+runs:
+
+    send_call('a',)
+    send_return(1,)
+    recv_call(4,)
+    recv_return('a',)
+    send_call('bb',)
+    send_return(2,)
 
 
 Visualizing behavior
@@ -397,11 +421,7 @@ stepper enables the PyModel tester *pmt* to use a model to call
 methods in the implementation and check the results.
 
 The [*stepper*](stepper.py) module is our preferred stepper for the
-Socket sample.  The [*test_stepper*](test_stepper.py) module is a test
-script that contains a single test case that invokes a run with the
-stepper module.
-
-The *stepper* module handles *both* ends of the socket connection,
+Socket sample.  It  *both* ends of the socket connection,
 so it can test both *send* and *recv*.  And, it does this in a single
 ordinary process (Python program invocation) on the local machine.  It
 accomplishes this by connecting to both ends of a socket on localhost
@@ -475,6 +495,49 @@ be written with split actions, which might be a disadvantage for
 simple systems.  This sample also includes steppers written in
 different styles, but they are not as versatile. (They are discussed
 in *socket_experiments.txt*.)
+
+The [*test_stepper*](test_stepper.py) module is a test
+script.  
+
+    trun test_stepper
+
+It contains a single command that invokes a run with the *msocket*
+model program driving the *stepper* module, using the observable
+actions identified in the *observable* module:
+
+    pmt -n 10 -c 6 msocket observables -i stepper
+
+Here is an entire test run:
+
+    Server accepts connection from  ('127.0.0.1', 58748)
+    send_call('bb',)
+    send_return(2,)
+    recv_call(4,)
+    recv_return('bb',)
+    recv_call(4,)
+    send_call('a',)
+    send_return(1,)
+    send_call('a',)
+    recv_return('a',)
+    send_return(1,)
+    recv_call(4,)
+    recv_return('a',)
+    0. Success at step 12, reached accepting state
+
+We do not use the *synchronous* scenario here, so the *pmt* does not
+alternate calling *send* and *recv*; the trace contains some
+consecutive *recv* and *send* calls.  Sometimes *pmt* invokes a
+blocking call: when *recv_call* is called the second time here, the
+socket is empty.  But, thanks to the *select* call in the stepper, the
+test session can proceed and make a *send_call* on the other end of
+the socket.  
+
+However, we see here that nondeterminism is absent from the arguments
+of the *return* actions: *send* always sends the entire message and
+*recv* always receives it.  The model does not require this, but here
+the implementation -- the standard library *socket* module -- always
+behaves deterministically.  This is typical when sending small
+messages over *localhost*.
 
 
 Simulating sockets
