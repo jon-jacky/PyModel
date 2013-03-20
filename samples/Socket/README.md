@@ -11,8 +11,7 @@ In this sample we model and test the Python standard library
 don't expect any test failures!  This sample includes a simulator that
 can replace the standard *socket* module with a substitute that can be
 configured to exhibit failures.  (The simulator is more often
-used to demonstrate more nondeterminism than is usually seen in
-typical sockets.)
+used to demonstrate nondeterminism.)
 
 More detailed explanation of this sample appears in *socket.txt* and
 *socket_experiments.txt* in the *notes* directory.  This file uses
@@ -153,6 +152,30 @@ from the beginning of the accumulated message segments that have been
 accepted at the sender end.  Multiple *send* and *recv* calls might be
 needed to transmit an entire message.
 
+For example, we might see each of these traces.  Here the entire
+message *'bb'* is sent and received:
+
+    send_call('bb')
+    send_return(2)
+    recv_call(4)
+    recv_return('bb')
+
+Here only the first character of the message is sent, and that
+character is received:
+
+    send_call('bb')
+    send_return(1)
+    recv_call(4)
+    recv_return('b')
+
+Here the entire message is sent, but only the first character is
+received:
+
+    send_call('bb')
+    send_return(2)
+    recv_call(4)
+    recv_return('b')
+
 In PyModel model programs, nondeterminism is implemented by *enabling
 conditions*.  Each action (for example *send_call*) has a
 corresponding enabling condition (for example *send_call_enabled*), a
@@ -274,13 +297,14 @@ from one of these runs:
     send_return(1,)
 
 The messages (arguments to *send_call*) are limited to *'a'* and
-*'bb'* by the domain in the *msocket* module.  This command chooses
-actions and their arguments at random so repeating the command
+*'bb'* by the domain in the *msocket* module (the comma after the
+argument in each call is just the way *pmt* prints it).  This command
+chooses actions and their arguments at random so repeating the command
 generates different traces (to make runs repeatable, set the random
 seed with the *-s* option).  To see longer traces, use a larger *-n*
 option.  Omit the cleanup option *-c* to generate exactly *-n* steps,
 which may stop in a non-accepting state (with a call in progress or a
-message in flight).  
+message in flight).
 
 The second test case executes: 
 
@@ -431,51 +455,62 @@ The *stepper* module supports nondeterminism and asynchrony.
 It distinguishes between controllable and observable actions.  Here is
 how the stepper executes and checks test runs.  First we describe the
 simpler situation where the socket connection does not block (that is,
-where its buffers are ready).  For each controllable action, for
-example *recv_call*:
+where its buffers are ready).  For this example we consider the
+controllable action *recv_call*:
 
-- The test runner *pmt* calls the action in the *msocket* model (which
-may update the model state).
+- The test runner *pmt* calls the controllable action *recv_call* in
+the *msocket* model (which may update the model state)
 
-- *pmt* passes the controllable action to *stepper*, which calls the
-corresponding method *s.recv* in the implementation (the Python
-standard library *socket* module).
+- *pmt* passes the controllable action *recv_call* to *stepper*
+
+- *stepper* calls the corresponding method *s.recv* in the
+implementation (the Python standard library *socket* module).
 
 - *stepper* collects the result (data) from the implementation and
 constructs the corresponding observable action *recv_return* where
 the result appears as an argument.  
 
-- *stepper* appends this action to the *observation queue*, where
-*pmt* can retrieve it.
+- *stepper* appends the observable action *recv_return*, including its
+argument (the result) to the *observation queue*, where *pmt* can
+retrieve it.
 
-- *pmt* finds that action in the *observation queue*, removes it, and
-checks it (including the *msg* argument) with its enabling condition
-*recv_return_enabled*.
+- *pmt* finds that *recv_return* observable action in the *observation
+queue* and removes it.
+
+- *pmt* checks the *recv_return* observable action (including the
+*msg* argument) by calling its enabling condition *recv_return_enabled*.
 
 - If the enabling condition returns *False*, the test fails.  
 
 - If the enabling condition returns *True*, *pmt* executes the
-observable action in the model (possibly updating the model state) and
-the test continues.
+observable action *recv_return* in the model (possibly updating the
+model state) and the test continues.
 
 - If the test run reaches the end and none of the actions
 have failed, the test passes.
 
 Asynchrony arises when the socket connection buffers are not ready, so
 attempting to read or write at the socket would block.  This situation
-is handled by the Python standard library *select* function.  The
-stepper always calls *select* before attempting to *send* or *recv* on
-the socket.
+is handled by the Python standard library *select* function.  
 
-The return values from *select* indicate when the attempt would block;
-in those cases, the stepper does not call *send* or *recv*, so no
-blocking occurs.  Instead, this stepper simply returns *None* to the
-caller *pmt*, to indicate that the test did not fail.  This enables
-*pmt* to proceed, and continue executing the model and making calls to
-the stepper.  Usually, one of these calls will eventually result in
-unblocking the socket. Then the *select* function can indicate that
-buffers are ready, and *send* or *recv* can be called as described
-above.
+The stepper always calls *select* before attempting to call *send* or
+*recv* on the socket.  The return values from *select* indicate when
+the call would block; in those cases, the stepper does not call
+*send* or *recv*, so no blocking occurs. Instead, this stepper simply
+returns *None* to the caller *pmt*, to indicate that the test did not
+fail, but a blocking call is pending.  This enables *pmt* to proceed,
+and continue executing the model and making calls to the stepper.
+Usually, one of these calls will eventually result in unblocking the
+socket. Then the *select* function can indicate that buffers are
+ready, and the pending *send* or *recv* can be called as described
+above.  
+
+The controllable action appears in the trace as soon as *pmt* chooses
+it, but *stepper* keeps track of pending calls, and does not actually
+make the call in the implementation until *select* indicates the call
+will not block.  (This sample also contains an alternative stepper,
+*stepper_a*, which uses Python threads instead of *select* to handle
+blocking, see *socket_experiments.txt*.)
 
 Notice that this stepper does *not* determine whether each step in the
 test passes or fails, and it does not construct the message describing
@@ -522,7 +557,7 @@ Here is an entire test run:
     send_return(1,)
     recv_call(4,)
     recv_return('a',)
-    0. Success at step 12, reached accepting state
+      0. Success at step 12, reached accepting state
 
 We do not use the *synchronous* scenario here, so the *pmt* does not
 alternate calling *send* and *recv*; the trace contains some
@@ -535,7 +570,7 @@ the socket.
 However, we see here that nondeterminism is absent from the arguments
 of the *return* actions: *send* always sends the entire message and
 *recv* always receives it.  The model does not require this, but here
-the implementation -- the standard library *socket* module -- always
+the implementation -- the standard library *socket* module --
 behaves deterministically.  This is typical when sending small
 messages over *localhost*.
 
@@ -547,16 +582,9 @@ The [*socket_simulator*](socket_simulator.py) and
 [*select_simulator*](select_simulator.py) modules are replacements for
 the Python standard library *socket* and *select* modules to use with
 the PyModel socket sample, to demonstrate nondeterminism and blocking
-even with small messages.
-
-The simulated socket here may nondeterministically send or receive just
-part of the message, no matter how short the message (even just two
-characters).
-
-The simulated socket here blocks on *send* when the buffer is full, and
-blocks on *recv* when the buffer is empty.  The buffer can be made very
-small, by assigning the bufsize variable.  The default bufsize is 3
-characters.
+even with small messages.  The simulated socket here may
+nondeterministically send or receive just part of the message, no
+matter how short the message (even just two characters).
 
 To use this simulator, just put *socket_simulator.py* in the same
 directory with your PyModel socket steppers and rename it (or symlink
@@ -564,16 +592,33 @@ it) to *socket.py*.  You must also rename (or symlink)
 *select_simulator.py* to *select.py*.  Then, you may execute any of
 the tests.
 
-You will see that the socket behaves nondeterministically.  Now
-*send_return* sometimes returns a number smaller than the length of the
-msg argument to *send_call*.  For example, *send_call('bb')*, is sometimes
-followed by *send_return(1,)* (not always *send_return(2,)*) and the
-*recv_return* which follows often returns fewer characters than have been
-sent, *'b'* not *'bb'*.  
+Here, with the simulator activated, we execute
 
-You will also see that the simulated socket connection blocks when the
-buffer is full or empty.  When the (quite small) buffer is full,
-*send_call* is not immediately followed by *send_return*.  Instead,
-*recv_return* must execute first, in order to free some space in the
-buffer.  Likewise, *recv* blocks when the buffer is empty, and cannot
-return until *send_return* leaves a message in the buffer.
+    trun test_stepper
+
+We see this test run:
+
+    Server accepts connection from  nowhere.simulator.org
+    send_call('bb',)
+    send_return(1,)
+    send_call('bb',)
+    send_return(2,)
+    send_call('bb',)
+    recv_call(4,)
+    recv_return('b',)
+    recv_call(4,)
+    recv_return('b',)
+    send_return(1,)
+    recv_call(4,)
+    recv_return('bb',)
+      0. Success at step 12, reached accepting state
+
+Notice the nondetermism.  For example, the *msg* argument for the 
+first *send_call* is *'bb'*, but *send_return* indicates that only 
+one character was sent.
+
+The *socket_simulator* can be configured by editing its source code.
+For example, you can edit the buffer size *bufsize* that determines 
+when *send* must block (the default *bufsize* is only 3 characters --
+notice the effect in the test run above).
+
