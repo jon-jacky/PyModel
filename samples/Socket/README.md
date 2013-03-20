@@ -37,10 +37,10 @@ behavior, see:
 This sample demonstrates how to use PyModel to model and test this
 behavior, including its nondeterminism and concurrency.
 
-Socket sample contents
-----------------------
+Sample contents
+---------------
 
-The sample includes several modules.  In this README we discuss these:
+The Socket sample includes several modules.  In this README we discuss these:
 
 - *msocket*: a model program for network sockets that can exhibit
   nondeterminism and concurrency.
@@ -75,8 +75,8 @@ The sample includes several modules.  In this README we discuss these:
 Some other modules that also appear in this sample are explained in
 *notes/socket_experiments.txt*.
 
-Socket model program
---------------------
+Model program
+-------------
 
 The model program in the [*msocket*](msocket.py) module models *both*
 ends of the connection.  Here we model a system where one end of the
@@ -435,8 +435,8 @@ indentified in the [*observables*](observables.py) configuration
 module.
 
 
-Stepper module
---------------
+Stepper
+-------
 
 A PyModel *stepper* is a *test harness* (sometimes called an
 *adapter*) that connects a model (here, the *msocket* module) to a an
@@ -531,14 +531,18 @@ simple systems.  This sample also includes steppers written in
 different styles, but they are not as versatile. (They are discussed
 in *socket_experiments.txt*.)
 
-The [*test_stepper*](test_stepper.py) module is a test
-script.  
+
+Testing
+-------
+
+At last we reach testing.  The [*test_stepper*](test_stepper.py)
+module is a test script.  To execute it:
 
     trun test_stepper
 
-It contains a single command that invokes a run with the *msocket*
-model program driving the *stepper* module, using the observable
-actions identified in the *observable* module:
+This test script contains a single command that invokes a run with the
+*msocket* model program driving the *stepper* module, using the
+observable actions identified in the *observable* module:
 
     pmt -n 10 -c 6 msocket observables -i stepper
 
@@ -575,8 +579,8 @@ behaves deterministically.  This is typical when sending small
 messages over *localhost*.
 
 
-Simulating sockets
-------------------
+Simulator
+---------
 
 The [*socket_simulator*](socket_simulator.py) and
 [*select_simulator*](select_simulator.py) modules are replacements for
