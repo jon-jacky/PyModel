@@ -439,13 +439,13 @@ Stepper
 -------
 
 A PyModel *stepper* is a *test harness* (sometimes called an
-*adapter*) that connects a model (here, the *msocket* module) to a an
+*adapter*) that connects a model (here, the *msocket* module) to an
 implementation (here, the Python standard library *socket* module).  A
 stepper enables the PyModel tester *pmt* to use a model to call
 methods in the implementation and check the results.
 
 The [*stepper*](stepper.py) module is our preferred stepper for the
-Socket sample.  It  *both* ends of the socket connection,
+Socket sample.  It drives *both* ends of the socket connection,
 so it can test both *send* and *recv*.  And, it does this in a single
 ordinary process (Python program invocation) on the local machine.  It
 accomplishes this by connecting to both ends of a socket on localhost
@@ -626,3 +626,22 @@ For example, you can edit the buffer size *bufsize* that determines
 when *send* must block (the default *bufsize* is only 3 characters --
 notice the effect in the test run above).
 
+You can also configure *socket_simulator* to simulate a faulty
+connection that garbles messages.  Assign *errors* to a nonzero
+positive integer to cause some test failures.  Each character in the
+received message will be replaced by *'X'*, with a probability of
+*1.0/errors* (so smaller values for *errors* cause more frequent
+errors).  Here is an example:
+
+    Server accepts connection from  nowhere.simulator.org
+    send_call('bb',)
+    send_return(1,)
+    send_call('a',)
+    send_return(1,)
+    send_call('bb',)
+    send_return(1,)
+    recv_call(4,)
+      0. Failure at step 7, recv_return('baX',), action not enabled
+
+We find *errors = 5* causes a test failure in most (but not all) runs
+of *test_stepper*, so that is the default.

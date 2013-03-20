@@ -19,10 +19,10 @@ blocks on recv when the buffer is empty.  The buffer can be made very
 small, by assigning the bufsize variable.  The default bufsize is 3
 characters.
 
-Note that this *same* socket simulator can be used with stepper_a,
-which achieves asynchrony with threads, and stepper_s which achieves
-asynchrony with select.  When stepper_s imports this socket_simulator,
-stepper_s must also import select_simulator.
+Note that this *same* socket simulator can be used with stepper_a.py,
+which achieves asynchrony with threads, and stepper.py which achieves
+asynchrony with select.  When stepper.py imports this socket_simulator,
+stepper.py must also import select_simulator.
 
 This socket simulator can also be used with the synchronous stepper,
 but it may block -- just like a real socket.
@@ -34,17 +34,6 @@ library socket module.
 """
 
 import random    # for nondeterministic behavior
-
-"""
-Configure nondeterminism and blocking 
-
-buffers represents client's send buffer, server's receive buffer,
-and all the storage in the network between.
-
-All sockets share the *same* buffer - intended to have just one 
-client socket and one server socket at a time -
-"""
-
 import threading # event e for blocking on send/full or recv/empty 
 
 e = threading.Event() # initially false, e.wait() to block
@@ -59,11 +48,16 @@ SO_REUSEADDR = 0
 SO_RCVBUF = 0
 SO_SNDBUF = 0
 
-# Shared buffer is a mutable list that is updated, 
+# buffers represents client's send buffer, server's receive buffer,
+#  and all the storage in the network between.
+# Shared buffers is a mutable list that is updated, 
 #  not an immutable string that is assigned then reassigned.
 # See explanation in socket __init__.
 buffers = list('')  # mutable list, not immutable string
 bufsize = 3   # send blocks when buffer full, recv blocks when empty
+
+# set errors > 0 to simulate faulty/noisy connection, small means more errors
+errors = 5  # characters in recv msg will be altered, with probability 1/errors
 
 class socket(object):
 
@@ -111,8 +105,13 @@ class socket(object):
         # nondeterministically choose suffix of buffers to recv
         msglen = min(nmax,len(self.buffers))
         msglen = random.randint(1,msglen) if nondet else msglen
-        msg = ''.join(self.buffers[:msglen]) # make string from part of list
-        del self.buffers[:msglen] # mutate list of characters
+        msglist = self.buffers[:msglen] # list of characters in msg
+        del self.buffers[:msglen] # mutate buffers, list of characters
+        # simulate errors, garble the returned msg
+        if errors:
+            msglist = [ 'X' if (random.random() < 1.0/errors) else c 
+                        for c in msglist ]
+        msg = ''.join(msglist) # turn list of chars back to string
         return msg
 
     def close(self): pass
