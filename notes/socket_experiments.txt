@@ -1,10 +1,6 @@
-(This file, experiments.txt, was the first draft of the README for the
-PyModel socket sample.  It grew so large that we separated out the
-most pertinent material to a separate, smaller README.  This file is
-what remains)
-
-(Material that was here was removed to the new README.txt, through the
-section named 'Stepper modules')
+(This file discusses some of the modules in the Socket sample that are
+not explained in samples/Socket/README.  You should read that README
+before reading this.)
 
 The stepper_d module
 

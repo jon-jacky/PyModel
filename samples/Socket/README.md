@@ -13,11 +13,11 @@ can replace the standard *socket* module with a substitute that can be
 configured to exhibit failures.  (The simulator is more often
 used to demonstrate nondeterminism.)
 
-More detailed explanation of this sample appears in *socket.txt* and
-*socket_experiments.txt* in the *notes* directory.  This file uses
-concepts and vocabulary defined in
-[*concepts.txt*](../../notes/concepts.txt) in the *notes* directory
-(also *concepts.html* in the *www* directory).
+Here we use concepts and vocabulary explained in
+[*concepts.txt*](../../notes/concepts.txt) in the *notes* directory.
+Some files in this sample that are not discussed here are explained in
+*socket_experiments.txt* in the *notes* directory.
+
 
 Motivation
 ----------
