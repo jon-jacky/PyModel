@@ -13,10 +13,10 @@ states = {
   0 : {'Marquee': {'display': '* * * * * * * * * * * * * '}},
   1 : {'Marquee': {'display': ' * * * * * * * * * * * * *'}},
   2 : {'Marquee': {'display': 'Bye  Bye  Bye  Bye  Bye  '}},
-  3 : {'Marquee': {'display': ' Bye  Bye  Bye  Bye  Bye '}},
-  4 : {'Marquee': {'display': '  Bye  Bye  Bye  Bye  Bye'}},
-  5 : {'Marquee': {'display': 'e  Bye  Bye  Bye  Bye  By'}},
-  6 : {'Marquee': {'display': 'ye  Bye  Bye  Bye  Bye  B'}},
+  3 : {'Marquee': {'display': 'ye  Bye  Bye  Bye  Bye  B'}},
+  4 : {'Marquee': {'display': 'e  Bye  Bye  Bye  Bye  By'}},
+  5 : {'Marquee': {'display': '  Bye  Bye  Bye  Bye  Bye'}},
+  6 : {'Marquee': {'display': ' Bye  Bye  Bye  Bye  Bye '}},
 }
 
 # initial state, accepting states, unsafe states, frontier states, deadend states

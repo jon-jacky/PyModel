@@ -16,12 +16,12 @@ def Load(pattern):
     global display
     display = pattern
 
-# Then, just shift the pattern to the right,
-# wrapping around from the end back to the beginning
+# Then, just shift the pattern to the left, 
+# wrapping around from the begining back to end
 
 def Shift():
     global display
-    display = display[-1] + display[:-1]
+    display = display[1:] + display[0]
 
 ### Metadata
 

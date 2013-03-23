@@ -12,10 +12,10 @@ def Shift(): pass
 states = {
   0 : {'Marquee': {'display': '* * * * * * * * * * * * * '}, 'LoadFirst': 0},
   1 : {'LoadFirst': 1, 'Marquee': {'display': 'Bye  Bye  Bye  Bye  Bye  '}},
-  2 : {'LoadFirst': 1, 'Marquee': {'display': ' Bye  Bye  Bye  Bye  Bye '}},
-  3 : {'LoadFirst': 1, 'Marquee': {'display': '  Bye  Bye  Bye  Bye  Bye'}},
-  4 : {'LoadFirst': 1, 'Marquee': {'display': 'e  Bye  Bye  Bye  Bye  By'}},
-  5 : {'LoadFirst': 1, 'Marquee': {'display': 'ye  Bye  Bye  Bye  Bye  B'}},
+  2 : {'LoadFirst': 1, 'Marquee': {'display': 'ye  Bye  Bye  Bye  Bye  B'}},
+  3 : {'LoadFirst': 1, 'Marquee': {'display': 'e  Bye  Bye  Bye  Bye  By'}},
+  4 : {'LoadFirst': 1, 'Marquee': {'display': '  Bye  Bye  Bye  Bye  Bye'}},
+  5 : {'LoadFirst': 1, 'Marquee': {'display': ' Bye  Bye  Bye  Bye  Bye '}},
 }
 
 # initial state, accepting states, unsafe states, frontier states, deadend states
