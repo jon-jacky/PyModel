@@ -14,7 +14,7 @@ configured to exhibit failures.  (The simulator is more often
 used to demonstrate nondeterminism.)
 
 Here we use concepts and vocabulary explained in
-[*concepts.txt*](../../notes/concepts.txt) in the *notes* directory.
+[*concepts*](../../notes/concepts.md) in the *notes* directory.
 Some files in this sample that are not discussed here are explained in
 *socket_experiments.txt* in the *notes* directory.
 

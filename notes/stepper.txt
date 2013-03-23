@@ -9,10 +9,11 @@ the implementation one action at a time.
 A stepper is written in its own module.  To use that stepper, name that
 module on the pmt command line with the -i or --iut option.
 
-The WebApplication sample include a stepper called Stepper.py.  The
-Socket sample includes three different steppers: stepper.py,
-stepper_o.py, and stepper_a.py - see Socket/README.txt for
-explanations.
+The WebApplication sample includes a stepper called Stepper.py.  The
+Socket sample includes several different steppers: stepper.py, which
+is recommended, and also some experiments: stepper_d.py, stepper_o.py,
+and stepper_a.py.  See Socket/README and notes/socket_experiments.txt
+for explanations.
 
 Each stepper must provide a TestAction (or testaction or test_action)
 method, which is called by the test runner like this:
@@ -43,7 +44,7 @@ and fails if they are not equal.  The stepper indicates that the test
 passed by returning None, and indicates the test failed by returning a
 string, which usually describes the reason for the test failure.  
 
-In our samples, WebApplication/Stepper.py and Socket/stepper.py both
+In our samples, WebApplication/Stepper.py and Socket/stepper_d.py both
 use this first technique.
 
 This first technique is the more obvious of the two, but less
@@ -68,20 +69,24 @@ and applies the corresponding enabling condition
 (recv_return_enabled).  If the enabling condition returns True, the
 test passes, but if it returns False, the test fails.
 
-In the Socket sample, both stepper_o and stepper_a use this second
-technique.
+In the Socket sample, stepper.py, stepper_o.py and stepper_a.py use
+this second technique.
 
 This second technique supports nondeterminism easily because the
 enabling condition for the _return action can check any condition on
 the returned values and the state variables.  This condition is coded
 in the model along with other knowledge about the intended behavior.
-(it is not coded in the stepper).
+(it is not coded in the stepper).  In effect, the enabling condition 
+for the _return action is the postcondition for the call/return pair.
 
-This second technique supports asynchrony because it does not need to
-have the _return action when TestAction returns.  Instead, the
-implementation's action can return later (it can run in a separate
-thread), when the stepper can construct the _return action and append
-it to observation_queue.  The Socket stepper_a works this way.
+This second technique supports asynchrony because the _return action
+does not need to be ready when TestAction returns.  Instead, the
+implementation's action can return later.  Then pmt can continue
+running; the stepper captures the _return action when it eventually
+appears.  To achieve this, the stepper can monitor the implementation
+with the standard library select function (as in Socket/stepper.py),
+or can call the implementation action in a separate thread (as in
+Socket/stepper_a.py).
 
 The test_action method in the stepper may also handle exceptions
 raised by the implementation.  Any exceptions that are raised by the
@@ -93,5 +98,5 @@ arguments) that resets the implementation, to support multiple test
 runs in a single pmt session.
 
 
-Revised Jan 2013
+Revised Mar 2013
 

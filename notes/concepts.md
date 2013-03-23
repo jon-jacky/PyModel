@@ -1,5 +1,5 @@
-
 PyModel concepts and vocabulary
+===============================
 
 In model-based testing, you code a *model* that generates and checks as
 many test cases as desired.
@@ -46,10 +46,6 @@ analyzer tool pma that generates an FSM from a model, using a procedure
 called *exploration*.  Each transition in the FSM represents an
 action, and each path through the FSM represents a trace.
 
-The same concepts are used by NModel, http://www.codeplex.com/NModel/
-(but PyModel is not a translation or re-implementation of NModel).
-The concepts are explained in the book, Model-based Software Testing
-and Analysis with C#.
 
+Revised Mar 2013
 
-Revised January 2010
