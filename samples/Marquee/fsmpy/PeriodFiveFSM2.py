@@ -1,5 +1,5 @@
 
-# pma.py -o PeriodFiveFSM2 DisplayFive Marquee LoadFirst
+# pma.py --maxTransitions 100 --output PeriodFiveFSM2 DisplayFive Marquee LoadFirst
 # 6 states, 6 transitions, 6 accepting states, 0 unsafe states, 0 finished and 0 deadend states
 
 # actions here are just labels, but must be symbols with __name__ attribute

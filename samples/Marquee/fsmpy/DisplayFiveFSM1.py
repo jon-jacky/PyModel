@@ -1,5 +1,5 @@
 
-# pma.py -o DisplayFiveFSM1 Marquee DisplayFive
+# pma.py --maxTransitions 100 --output DisplayFiveFSM1 Marquee DisplayFive
 # 7 states, 14 transitions, 7 accepting states, 0 unsafe states, 0 finished and 0 deadend states
 
 # actions here are just labels, but must be symbols with __name__ attribute
