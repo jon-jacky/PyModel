@@ -27,7 +27,7 @@ cases = [
     ('Generate SVG from dot',
      'dotsvg PowerSpeed')
 
-    # Now display PowerSwitch.svg, SpeedControl.svg and PowerSpeed.svg 
+    # Now you can display PowerSwitch.svg, SpeedControl.svg and PowerSpeed.svg 
     # in three browser tabs
 ]
     

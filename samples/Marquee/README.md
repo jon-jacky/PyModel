@@ -23,7 +23,7 @@ restrict the behavior of a model.
 
 - *test*: *pmt* executes *Marquee* only, so traces only include *Shift*.
 
-- *test_graphics*: *pma* explores *Marquee*, *LoadFirst*, and *Marquee*
+- *test_graphics*: generate graphs of *Marquee*, *LoadFirst*, and *Marquee*
    configured with *DisplayFive*, then that combination composed
    with *LoadFirst*.  Some of the commands are repeated, but modules
    appear on the command line in different orders (to show that

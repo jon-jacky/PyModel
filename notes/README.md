@@ -3,8 +3,8 @@ Notes on PyModel
 
 **PyModel** is a model-based testing framework in Python.
 
-This directory contains much of the PyModel documentation, such as it
-is.  These are the files, in a recommended reading order:
+This directory contains some of the PyModel documentation.  These are
+the files, in a recommended reading order:
 
 * *concepts.md*: concepts and vocabulary
 
@@ -33,10 +33,9 @@ is.  These are the files, in a recommended reading order:
 
 * *release-0.9.txt*: release notes
 
-See also the *README* files in some directories, the slides and papers
+See also the *README* files in each directory, the slides and papers
 in the [*talks*](../talks) directory, and the web pages in the
 [*www*](../www) directory.
 
 
 Revised Mar 2013
-

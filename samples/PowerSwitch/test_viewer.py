@@ -9,12 +9,14 @@ cases = [
     ('Generate FSM from PowerSwitch model program',
      'pmv -T svg PowerSwitch'),
 
-    # skip SpeedControl - it's already an FSM
+    ('Generate graphics from SpeedControl (already an FSM)',
+     'pmv SpeedControl -o SpeedControl'), # -T svg is the default
+                                          # -o for SpeedControl.svg not ...FSM.svg
 
     ('Generate FSM from composition of PowerSwitch and SpeedControl, show interleaving',
      'pmv -T svg SpeedControl PowerSwitch -o PowerSpeed'),
 
-    # Now display PowerSwitchFSM.svg and PowerSpeed.svg 
+    # Now you can display PowerSwitchFSM.svg, SpeedControl.svg and PowerSpeed.svg 
     # in three browser tabs
 ]
     
