@@ -1,5 +1,5 @@
 cases = [
-    ('Scenarios module with three runs, by itself',
+    ('Scenarios module with four runs, by itself',
      'pmt.py Scenarios'),
 
     ('Scenarios module, compose with Stack model, last two runs not allowed',

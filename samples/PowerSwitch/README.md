@@ -1,7 +1,7 @@
 PowerSwitch
 ===========
 
-This sample includes a very simple model program and FSM, for an
+This sample includes a very simple model program and an FSM, for an
 on-off power switch and a speed control.
 
 This sample demonstrates several PyModel techniques (including
