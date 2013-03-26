@@ -2,7 +2,7 @@ StackResult
 ===========
 
 This sample models a stack, in a different style than the *Stack*
-sample.  
+sample.
 
 The contents are:
 
