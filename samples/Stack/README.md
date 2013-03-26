@@ -3,7 +3,11 @@ Stack
 
 This sample models a stack. This sample shows how to:
 
+- model return values as action arguments
+
 - write and use strategies to guide testing
+
+- use *StateFilter* to exclude states from being reached by the model
 
 - use composition of a model with a test suite to check that the
   traces in the test suite conform to the model
@@ -16,7 +20,9 @@ This sample models a stack. This sample shows how to:
 
 The contents are:
 
-- *Stack*: model program
+- *Stack*: model program.  The return value of the *Pop* action is
+  modeled as an argument.  This makes it easy to write its enabling
+  condition *PopEnabled* that constrains the return value.
 
 - *test*: test script that executes *Stack* with the default random
    strategy, then with *ActionNameCoverage*, then with
