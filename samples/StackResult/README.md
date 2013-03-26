@@ -28,6 +28,10 @@ The contents are:
 View the generated graphics files in a browser.  They are similar to
 the *Stack* sample.  
 
+- compare *Stack3FSM.svg* to *StackFSM.svg* to see the effect of
+  limiting exploration with a *StateFilter*, compared to the *pmt -m*
+  option.
+
 This sample does not include a stepper.
 
 
