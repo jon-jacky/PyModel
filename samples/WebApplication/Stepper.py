@@ -10,7 +10,7 @@ import cookielib
 # Default stepper configuration for 
 # webapp.py running on localhost at port 8080
 
-site = 'http://localhost:8080/'
+site = 'http://localhost:8000/'
 path = ''
 webAppPage = 'webapp.py'
 logoutPage = 'logout.py'
