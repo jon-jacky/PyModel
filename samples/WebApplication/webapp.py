@@ -129,7 +129,7 @@ login_page = """<html>
 <form method="POST" action="webapp.py">
 Username: <input type="text" name="username" size="20">
 Password: <input type="password" name="password" size="20">
-<input type="submit" value="Submit" name="login>
+<input type="submit" value="Submit" name="login">
 </form>
 </body>
 </html>
