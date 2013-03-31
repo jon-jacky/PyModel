@@ -106,11 +106,11 @@ def RunTest(options, mp, stepper, strategy, f, krun):
       print aname if options.quiet else '%s%s / %s' % (aname, args, qResult)
     else:
       print aname if options.quiet else '%s%s' % (aname, args)
-      if options.output:
-        if qResult != None:
-          f.write('    (%s, %s, %s),\n' % (aname, args, qResult))
-        else:
-          f.write('    (%s, %s),\n' % (aname, args)) # optional missing result
+    if options.output:
+      if qResult != None:
+        f.write('    (%s, %s, %s),\n' % (aname, args, qResult))
+      else:
+        f.write('    (%s, %s),\n' % (aname, args)) # optional missing result
 
     # execute controllable action in the stepper if present
     if stepper and not observable_action:

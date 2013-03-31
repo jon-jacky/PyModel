@@ -88,7 +88,9 @@ The modules are:
    *ActionNameCoverage* and *StateCoverage* strategies.  Also, one
    test case that executes the *TestIntTwoRuns* test suite.
 
-- *test_offline*: uses the *pmt -o* option to generate an offline test suite
+- *test_offline*: uses the *pmt -o* option to generate an offline test suite.
+  The *test_offline* module contains instructions for running the generated
+  tests.
 
 - *test_scenarios* - use *pmt* to generate traces from *ScenarioLogin*,
   *OneUserScenario*, and both composed with *WebModel*
