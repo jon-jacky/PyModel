@@ -60,6 +60,11 @@ The modules in this sample are:
 - *test_domainsx*: a run that shows *domainsx* does not work (the domain
   is not a callable)
 
+- *test_seed*: demonstrate the *-s* (seed) option to *pmt*, which
+  specifies the random seed used to select arguments and actions,
+  so runs are reproducible.  Whenever this script is executed, the
+  same traces are generated.
+
 - *test_populations*: a test script that uses the Python standard
   library *unittest* module, instead of our own *trun* module. The
   command to run this test is: *python test_populations.py*
