@@ -2,8 +2,32 @@
 Simulate a multi-threaded program that has been
 instrumented to save traces of its API calls in a log. 
 
-Demonstrate the nondeterminism in the order in which API calls and
-returns are made, and the order they appear in the trace log.
+Instead of simply calling the API functions, each thread instead calls
+the *tracecapture* function, which calls the API function but also
+saves the call (with arguments) and return (with return value) in the
+trace log.  The tracecapture function uses a lock:
+
+    tracelock = lock()
+
+    tracecapture(thread_id, call, args): # call is action name
+        tracelock.acquire()
+        log(thread_id, call, "start", args) # log the call with arguments
+        tracelock.release() # release here allows threads to interleave
+        ret = call(*args)
+        tracelock.acquire()
+        log(thread_id, call, "finish", ret) # log the return with return value
+        tracelock.release()
+        return ret
+
+The purpose of *tracelock* is to ensure that only one thread at a time
+can write to the trace log.  To allow threads to interleave, the first
+*tracelock.release()* *precedes* the call, otherwise the call might
+block and hold *tracelock*, prevent other threads from running while
+that call blocks.
+
+This model program Demonstrates the nondeterminism in the order in
+which API calls and returns are made, and the order they appear in the
+trace log.
 
 Parameters (constants that do not change when the model executes):
 
@@ -17,7 +41,7 @@ pc: program counter for each thread, indexed by thread_id
 Indicates which action in program each thread is executing
 
 phase: phase of each thread, indexed by thread id
-models progress through the tracecapture function (see README)
+models progress through the tracecapture function (see above)
 For each API call in program, phases in order are: ready, start, call, finish
 phase[thread] == start means thread holds tracelock to write call start
 phase[thread] == finish means thread holds tracelock to write call finish
