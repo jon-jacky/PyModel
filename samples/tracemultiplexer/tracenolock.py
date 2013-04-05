@@ -1,40 +1,9 @@
 """
-tracenolock.py - like tracemultiplexer.py but no sych on tracelock
+tracenolock.py - like tracemultiplexer.py but no synch on tracelock
 Simply comment out the check for free tracelock in start_enabled and
 finish_enabled.
 
-Simulate a multi-threaded program that has been
-instrumented to save traces of its API calls in a log. 
-
-Demonstrate the nondeterminism in the order in which API calls and
-returns are made, and the order they appear in the trace log.
-
-Parameters (constants that do not change when the model executes):
-
-program: models the multi-threaded program.  It is a sequence of API
-call ids (action ids) for each thread, first index is thread id,
-second index is thread pc.
-
-State:
-
-pc: program counter for each thread, indexed by thread_id
-Indicates which action in program each thread is executing
-
-phase: phase of each thread, indexed by thread id
-models progress through the tracecapture function (see README)
-For each API call in program, phases in order are: ready, start, call, finish
-phase[thread] == start means thread holds tracelock to write call start
-phase[thread] == finish means thread holds tracelock to write call finish
-After processing last API call in its thread, phase[thread] == exit
-
-log: contents of the tracelog written by all the threads
-
-Actions:
-
-Each action represents progress through the phases of tracecapture.
-Each action might be enabled for more than one thread in some states; 
-this models the nondeterminism of threading.
-
+More details appeear in the tracemultiplexer comment header.
 """
 
 ## Parameters
