@@ -15,6 +15,9 @@ More details appear in the *tracemultiplexer* comment header.
 - *tracemultiplexer*: model program that simulates a multi-threaded
   program with and without synchronization.
 
+- *unsynchronized*: configuration that causes *tracemultiplexer* to
+  ignore the lock so writes to the log file are not synchronized
+
 - *test_viewer* - generate a graph that shows the behavior of
   *tracemultiplexer* using a lock to synchronize write access to the
   log file, and a second graph showing the behavior of
