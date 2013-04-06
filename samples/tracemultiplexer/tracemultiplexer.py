@@ -1,11 +1,10 @@
 """
-Simulate a program where two threads write to the same log file.
-Investigate synchronization to ensure that only one thread at a time
-can write to the log.
-
-States where both threads may write to the log are considered unsafe
-states.  Log messages that may have been corrupted by unsynchronized
-writes from both threads are marked.
+Simulate a program where two threads write to the same log
+file. Exhibit nondeterminism in scheduling threads. Try to synchronize
+so that only one thread at a time can write to the log.  Define unsafe
+states where both threads may write to the log.  Identify log messages
+that may have been corrupted by unsynchronized writes from both
+threads.
 
 The simulated multi-threaded program has been instrumented to save
 traces of its API calls in a log.  Instead of simply calling the API
@@ -32,15 +31,20 @@ can write to the trace log.  To allow threads to interleave, the first
 block and hold *tracelock*, prevent other threads from running while
 that call blocks.
 
-This model program Demonstrates the nondeterminism in the order in
-which API calls and returns are made, and the order they appear in the
-trace log.
+This model program exhibits nondeterminism in thread scheduling, so
+traces (paths through the graphs) differ in the order that API calls
+and returns are made, which results in different orders for messages in
+the log.
 
 Parameters (constants that do not change when the model executes):
 
 program: models the multi-threaded program.  It is a sequence of API
 call ids (action ids) for each thread, first index is thread id,
-second index is thread pc.
+second index is thread pc.  Here we model a simple program with just
+two threads, where each thread makes just one API call, executes
+tracecapture just once, and writes just two log messages.  With a few
+revisions, we could also handle a more complicated simulated program
+(with more threads and more actions).
 
 unsynchronized: set False to use tracelock, True to ignore tracelock
 
@@ -179,6 +183,9 @@ def finish(thread):
 def exit_enabled(thread):
     return phase[thread] == 'finish' # holding lock
 
+# For now, handle exit as a special case, assign phase 'done'.
+# If the simulated threads had more than one action, here we
+# would advance to the next action and reset phase to 'start'.
 def exit(thread):
     phase[thread] = 'done'  # release lock, indicate done
 

@@ -2,29 +2,28 @@
 tracemultiplexer
 ================
 
-Simulate a program where two threads write to the same log file.
-Investigate synchronization to ensure that only one thread at a
-time can write to the log.
-
-States where both threads may write to the log are considered unsafe
-states.  Marked log messages may have been corrupted by unsynchronized
-writes from both threads.
+Simulate a program where two threads write to the same log
+file. Exhibit nondeterminism in scheduling threads. Try to synchronize
+so that only one thread at a time can write to the log.  Define unsafe
+states where both threads may write to the log.  Identify log messages
+that may have been corrupted by unsynchronized writes from both
+threads.
 
 More details appear in the *tracemultiplexer* comment header.
 
 - *tracemultiplexer*: model program that simulates a multi-threaded
-  program with and without synchronization.
+  program with and without synchronization
 
 - *unsynchronized*: configuration that causes *tracemultiplexer* to
-  ignore the lock so writes to the log file are not synchronized
+  run without synchronization
 
-- *test_viewer* - generate a graph that shows the behavior of
+- *test_viewer*: Generate a graph that shows the behavior of
   *tracemultiplexer* using a lock to synchronize write access to the
   log file, and a second graph showing the behavior of
   *tracemultiplexer* with the *unsynchronized* configuration that
   ignores the lock.
 
-- *fsmpy*, *svg* - directories of output from *test_viewer*
+- *fsmpy*, *svg*: directories of output from *test_viewer*
 
 View the generated *.svg* files in a browser.  Hover the pointer over
 any state bubble to see a tooltip that shows the state variables in
@@ -35,11 +34,11 @@ where each tuple represents a log message.  Messages that end with
 *'XXX'* were logged when both threads may have written to the log,
 so the message may have been corrupted by unsynchronized writes.
 
-- *tracemultiplexerFSM* - graph that shows the behavior of *tracemultiplexer*
+- *tracemultiplexerFSM*: graph that shows the behavior of *tracemultiplexer*
   using the lock.  None of the states in this graph are unsafe.  None of the 
   log messages are marked with *'XXX'*.  
 
-- *unsynchronizedFSM* - graph that shows the behavior of *tracemultiplexer*
+- *unsynchronizedFSM*: graph that shows the behavior of *tracemultiplexer*
   ignoring the lock.  There are many more transitions and states in this
   graph because the threads are unsynchronized, so many more interleavings are
   possible.  There are many unsafe states (colored red) where both threads may
