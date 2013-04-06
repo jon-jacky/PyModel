@@ -9,7 +9,7 @@ trace log.  The tracecapture function uses a lock:
 
     tracelock = lock()
 
-    tracecapture(thread_id, call, args): # call is action name
+    def tracecapture(thread_id, call, args): # call is action name
         tracelock.acquire()
         log(thread_id, call, "start", args) # log the call with arguments
         tracelock.release() # release here allows threads to interleave
@@ -45,7 +45,7 @@ models progress through the tracecapture function (see above)
 For each API call in program, phases in order are: ready, start, call, finish
 phase[thread] == start means thread holds tracelock to write call start
 phase[thread] == finish means thread holds tracelock to write call finish
-After processing last API call in its thread, phase[thread] == exit
+After processing last API call in its thread, phase[thread] == done
 
 log: contents of the tracelog written by all the threads
 
@@ -66,7 +66,9 @@ from copy import copy
 program = (( 'listfiles', ),  # thread 0
            ( 'openfile', ))   # thread 1
 
-threads = range(len(program))
+threads = range(len(program)) # one element of program for each thread
+
+unsynchronized = False # False: use tracelock, True: ignore tracelock
 
 ### State
 
@@ -81,6 +83,31 @@ log = list() # contents of tracelog written by all threads
 files = list() # filenames in filesystem
 listing = list() # listfiles return value, FIXME ret should be in tracecapture
 
+### Safety condition
+
+# phases where a thread can write to the log
+writing = ('start','finish')
+
+def writing_threads():
+    """
+    list of threads that can write to the log
+    """
+    return [ t for t in threads if phase[t] in writing ]
+
+def state_invariant():
+    """
+    At most one thread can write to the log
+    """
+    return len(writing_threads()) <= 1
+
+
+### Other necessary functions
+
+# run is allowed to stop
+def accepting():
+    return all([ phase[t] == 'done' for t in threads ])
+
+# reset before another run
 def reset():
     global pc, phase, log
     pc = [ 0 for thread in program ]
@@ -88,20 +115,24 @@ def reset():
     log = []
     files = []
 
-reset()
+### Initialize
 
-def accepting():
-    return all([ phase[t] == 'exit' for t in threads ])
+reset()
 
 ### Actions
 
 def start_enabled(thread): 
     return (phase[thread] == 'ready'
-            and not [ t for t in threads if phase[t] == 'start']) #lock is free
+            and (not writing_threads() # lock is free
+                 or unsynchronized))   # ignore lock - might corrupt file
 
 def start(thread):
     phase[thread] = 'start' # acquire lock
-    log.append((thread, program[thread][pc[thread]], 'start')) # write log
+    # write log, if it might be corrupted write 'XXX' at the end
+    if state_invariant():
+        log.append((thread, program[thread][pc[thread]], 'start'))
+    else:
+        log.append((thread, program[thread][pc[thread]], 'start', 'XXX'))
 
 def call_enabled(thread):
     return phase[thread] == 'start' # holding lock
@@ -110,7 +141,7 @@ def call(thread):
     global listing # we reassign whole list, we don't just update it
     phase[thread] = 'call' # release lock, execute call
     action = program[thread][pc[thread]]
-    # FIXME should implement actions and handle them generically, hack for now
+    # for now. handle each action in *program* as a special case inline here
     if action == 'openfile':
         files.append('file0') # only works if openfiles just called once
     if action == 'listfiles':
@@ -118,38 +149,40 @@ def call(thread):
 
 def finish_enabled(thread): 
     return (phase[thread] == 'call'
-            and not [ t for t in threads if phase[t] == 'finish']) #lock is free
+            and (not writing_threads() # lock is free
+                 or unsynchronized))   # ignore lock - might corrupt file
 
 def finish(thread):
     phase[thread] = 'finish' # acquire lock
     action = program[thread][pc[thread]]
-    # FIXME should handle actions generically, hack special cases for now
+    # for now, handle each action in *program* as a special case inline here
     if action == 'openfile':
         ret = files[-1] # most recently appended
     if action == 'listfiles':
         ret = listing # most recently appended
-    log.append((thread, action, 'finish', ret)) # write log
+    # write log, if it might be corrupted write 'XXX' at the end
+    if state_invariant():
+        log.append((thread, action, 'finish', ret))
+    else: 
+        log.append((thread, action, 'finish', ret, 'XXX'))
 
-def release_enabled(thread):
+def exit_enabled(thread):
     return phase[thread] == 'finish' # holding lock
 
-def release(thread):
-    if pc[thread] + 1 < len(program[thread]): # more actions remain
-        phase[thread] = 'ready' # release lock
-        pc[thread] += 1 # advance to next action
-    else:
-        phase[thread] = 'exit'  # release lock, indicate done
+def exit(thread):
+    phase[thread] = 'done'  # release lock, indicate done
+
 
 ### Metadata
 
 state = ('pc', 'phase', 'log', 'files', 'listing')
 
-actions = (start, call, finish, release)
+actions = (start, call, finish, exit)
 
 enablers = {start:(start_enabled,), call:(call_enabled,),
-            finish:(finish_enabled,), release:(release_enabled,)}
+            finish:(finish_enabled,), exit:(exit_enabled,)}
 
 domains = { start: { 'thread': threads },
             call: { 'thread': threads },
             finish: { 'thread': threads },
-            release: { 'thread': threads }}
+            exit: { 'thread': threads }}
