@@ -1,11 +1,18 @@
 """
-Simulate a multi-threaded program that has been
-instrumented to save traces of its API calls in a log. 
+Simulate a program where two threads write to the same log file.
+Investigate synchronization to ensure that only one thread at a time
+can write to the log.
 
-Instead of simply calling the API functions, each thread instead calls
-the *tracecapture* function, which calls the API function but also
-saves the call (with arguments) and return (with return value) in the
-trace log.  The tracecapture function uses a lock:
+States where both threads may write to the log are considered unsafe
+states.  Log messages that may have been corrupted by unsynchronized
+writes from both threads are marked.
+
+The simulated multi-threaded program has been instrumented to save
+traces of its API calls in a log.  Instead of simply calling the API
+functions, each thread instead calls the *tracecapture* function,
+which calls the API function but also saves the call (with arguments)
+and return (with return value) in the trace log.  The tracecapture
+function uses a lock:
 
     tracelock = lock()
 
@@ -34,6 +41,9 @@ Parameters (constants that do not change when the model executes):
 program: models the multi-threaded program.  It is a sequence of API
 call ids (action ids) for each thread, first index is thread id,
 second index is thread pc.
+
+unsynchronized: set False to use tracelock, True to ignore tracelock
+
 
 State:
 
