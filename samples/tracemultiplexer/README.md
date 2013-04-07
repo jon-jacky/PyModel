@@ -4,7 +4,7 @@ tracemultiplexer
 
 Simulate a program where two threads write to the same log
 file. Exhibit nondeterminism in scheduling threads. Try to synchronize
-so that only one thread at a time can write to the log.  Define unsafe
+so that only one thread at a time can write to the log.  Detect unsafe
 states where both threads may write to the log.  Identify log messages
 that may have been corrupted by unsynchronized writes from both
 threads.
