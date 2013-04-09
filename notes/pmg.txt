@@ -1,10 +1,4 @@
-"""
-Options and arguments for PyModel Graphics
-"""
-
-from optparse import OptionParser
-
-usage = """pmg [options] fsm
+Usage: pmg [options] fsm
 
 PyModel Graphics. The single argument fsm is one finite state machine
 (FSM) module name (without the .py suffix).  The FSM is typically
@@ -35,21 +29,17 @@ In the browser, hover the pointer over a state to display a tooltip
 that shows the state variables and their values.  Place the point of
 the pointer over any pixel on a transition vector to display a tooltip
 that shows the transition.
-"""
 
-parser = OptionParser(usage=usage)
 
-def parse_args():
-    parser.add_option('-o', '--output', type='string', default='',
-                  help = 'Output file name (not including .dot), default is <fsm argument>')
-    parser.add_option('-l', '--transitionLabels', type='string', 
-                      default='action',
-                      help = 'Transition labels: action, name, or none, default is action')
-    parser.add_option('-x', '--noStateTooltip', action="store_true", dest="noStateTooltip", 
-                    help = 'Omit tooltips from state bubbles (to work around dot svg problem)')
-    parser.add_option('-y', '--noTransitionTooltip', action="store_true", dest="noTransitionTooltip", 
-                    help = 'Omit tooltips from transition arrows')
-    return parser.parse_args()
-
-def print_help():
-    parser.print_help()
+Options:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output=OUTPUT
+                        Output file name (not including .dot), default is <fsm
+                        argument>
+  -l TRANSITIONLABELS, --transitionLabels=TRANSITIONLABELS
+                        Transition labels: action, name, or none, default is
+                        action
+  -x, --noStateTooltip  Omit tooltips from state bubbles (to work around dot
+                        svg problem)
+  -y, --noTransitionTooltip
+                        Omit tooltips from transition arrows

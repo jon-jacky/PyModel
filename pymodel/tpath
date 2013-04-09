@@ -1,2 +1,1 @@
-# Enable tools in this directory to import modules in current, test directories
-export PYTHONPATH=.:..:test:tests:$PYTHONPATH
+export PYTHONPATH=.:$PYTHONPATH

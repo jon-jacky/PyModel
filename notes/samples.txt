@@ -1,8 +1,10 @@
 
 PyModel Samples
 
-There are some examples in the subdirectories under the pymodel samples
-directory: ABP, Marquee, PowerSwitch, Socket, Stack, WebApplication, etc.
+There are some examples in the subdirectories under the pymodel
+samples directory: ABP, Marquee, PowerSwitch, Socket, Stack,
+WebApplication, etc.  For a description of each sample, see the README
+in the samples directory and in each sample subdirectory.
 
 Each sample subdirectory contains some test script modules: test.py,
 test_graphics.py etc.  These scripts demonstrate the samples, as well
@@ -22,4 +24,4 @@ view them without having to execute the tests scripts yourself.
 (Executing the test scripts will not overwrite the contents of these
 directories.)
 
-Revised Dec 2012
+Revised Apr 2013

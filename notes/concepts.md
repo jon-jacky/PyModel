@@ -48,4 +48,3 @@ action, and each path through the FSM represents a trace.
 
 
 Revised Mar 2013
-

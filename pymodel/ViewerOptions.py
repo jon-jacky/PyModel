@@ -13,7 +13,9 @@ brevity and convenience, so analysis and display can be accomplished
 by a single command.  This program accepts all of the command line
 options and arguments of both pma and pmg, and the -T option of dot
 (to select the graphics format), then passes the options to the
-appropriate program."""
+appropriate program.
+
+Options aemo are passed to pma, lxy are passed to pmg, T is passed to dot."""
 
 parser = OptionParser(usage=usage)
 
