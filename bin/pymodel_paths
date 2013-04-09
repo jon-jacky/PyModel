@@ -1,0 +1,14 @@
+# Assign paths to run PyModel out of PyModel/ development directories
+# Must set both execution path for commands and Python path for modules
+# If you install PyModel, commands and modules may go to some standard place
+#  and you will no longer need these assignments
+
+# execution path to bin, to run PyModel commands: pmt, dotsvg, etc.
+export PATH=$PATH:$HOME/PyModel/bin
+
+# Python path to pymodule, to import PyModel modules: pmt.py etc.
+export PYTHONPATH=$HOME/PyModel/pymodel:$PYTHONPATH
+
+# Python path to current directory (wherever it is), to import modules,
+#  some PyModel command line args are names of modules in current directory
+export PYTHONPATH=.:$PYTHONPATH

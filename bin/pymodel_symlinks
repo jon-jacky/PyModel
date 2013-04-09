@@ -1,0 +1,12 @@
+# Make symlinks to invoke pmt.py in pymodel directory from pmt in bin directory
+# pmt.py etc. all begin with this "shebang line": #!/usr/bin/env python
+# Only works on Unix systems where pymodel and bin dirs are side-by-side,
+#  will not work in the general case where bin and pymodel are separated.
+# bin directory must be on execution path, pymodel dir must be on Python path
+# This is a stopgap awaiting a more general solution to invoke pmt from pmt.py
+ln -s ../pymodel/pma.py pma
+ln -s ../pymodel/pmg.py pmg
+ln -s ../pymodel/pmt.py pmt
+ln -s ../pymodel/pmv.py pmv
+ln -s ../pymodel/trun.py trun
+ln -s ../pymodel/wsgirunner.py wsgirunner

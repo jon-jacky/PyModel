@@ -8,9 +8,10 @@ To use PyModel, this directory must be on your execution *PATH*.
 Or, its contents must be installed in some directory that is on your
 execution *PATH*.
 
-There are two versions of some commands.  The version without a
-file type is a *bash* script for Unix/Linux/Mac; the version with
-*.bat* is a batch file for Windows.
+There are two versions of some commands.  The version without a file
+type is a *bash* script for Unix/Linux/Mac; the version with *.bat* is
+a batch file for Windows.  There are no Windows versions of some
+commands.
 
 The commands are:
 
