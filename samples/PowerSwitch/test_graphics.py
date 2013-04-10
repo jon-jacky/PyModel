@@ -4,25 +4,25 @@ PowerSwitch graphics tests
 
 cases = [
     ('Generate FSM from PowerSwitch model program',
-     'pma.py PowerSwitch'),
+     'pma PowerSwitch'),
 
     ('Generate dot graphics commands from generated PowerSwitchFSM',
-     'pmg.py PowerSwitchFSM'),
+     'pmg PowerSwitchFSM'),
 
     ('Generate SVG file from dot commands',
      'dotsvg PowerSwitchFSM'),
 
     ('Generate dot commands from SpeedControl FSM',
-     'pmg.py SpeedControl'),
+     'pmg SpeedControl'),
 
     ('Generate SVG file from dot commands',
      'dotsvg SpeedControl'),
 
     ('Generate FSM from composition of PowerSwitch and SpeedControl, show interleaving',
-     'pma.py SpeedControl PowerSwitch -o PowerSpeed'),
+     'pma SpeedControl PowerSwitch -o PowerSpeed'),
      
     ('Generate dot commands from composed FSM',
-     'pmg.py PowerSpeed'),
+     'pmg PowerSpeed'),
 
     ('Generate SVG from dot',
      'dotsvg PowerSpeed')

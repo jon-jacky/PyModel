@@ -5,37 +5,37 @@ Test composition with return values
 cases = [    
     # TestSuite
     ('Generate FSM from TestIntSuccess, ReadInt returns correct value',
-     'pma.py TestIntSuccess'),
+     'pma TestIntSuccess'),
 
     ('Generate dot',
-     'pmg.py TestIntSuccessFSM'),
+     'pmg TestIntSuccessFSM'),
     
     ('Generate SVG',
      'dotsvg TestIntSuccessFSM'),
 
     ('Generate FSM from TestIntWrong, ReadInt returns wrong value',
-     'pma.py TestIntWrong'),
+     'pma TestIntWrong'),
 
     ('Generate dot',
-     'pmg.py TestIntWrongFSM'),
+     'pmg TestIntWrongFSM'),
     
     ('Generate SVG',
      'dotsvg TestIntWrongFSM'),
 
     ('Generate FSM from composition, should not synchronize on different args',
-     'pma.py -o TestIntComposeLogoutFSM TestIntSuccess TestIntWrongLogout'),
+     'pma -o TestIntComposeLogoutFSM TestIntSuccess TestIntWrongLogout'),
 
     ('Generate dot',
-     'pmg.py TestIntComposeLogoutFSM'),
+     'pmg TestIntComposeLogoutFSM'),
     
     ('Generate SVG',
      'dotsvg TestIntComposeLogoutFSM'),
 
     ('Generate FSM from composition, should not synchronize on different results',
-     'pma.py -o TestIntComposeFSM TestIntSuccess TestIntWrong'),
+     'pma -o TestIntComposeFSM TestIntSuccess TestIntWrong'),
 
     ('Generate dot',
-     'pmg.py TestIntComposeFSM'),
+     'pmg TestIntComposeFSM'),
     
     ('Generate SVG',
      'dotsvg TestIntComposeFSM'),

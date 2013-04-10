@@ -3,6 +3,15 @@ Web application to test with PyModel WebApplication sample
 
 This is a WSGI-compliant application.  Its behavior is similar to
 Juhan Ernits' sample application in PHP at http://nmodel.codeplex.com/
+
+To run this web application:
+
+ wsgirunner webapp  # runs on port 8000 on localhost
+
+or 
+
+ wsgirunner -p 8080 webapp  # -p option sets port number on localhost
+
 """
 
 import pprint

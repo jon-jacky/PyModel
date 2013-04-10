@@ -6,10 +6,10 @@ cases = [
     # limit exploration by -m 
 
     ('Explore WebModel, limit exploration by -m',
-     'pma.py WebModel -m 50'),
+     'pma WebModel -m 50'),
 
     ('Generate dot graphics commands',
-     'pmg.py WebModelFSM'),
+     'pmg WebModelFSM'),
     
     ('Generate SVG file',
      'dotsvg WebModelFSM'),
@@ -17,10 +17,10 @@ cases = [
     # limit exploration by domain
 
     ('Explore Webmodel, limit exploration by domain OneUserDomain',
-     'pma.py OneUserDomain WebModel'),
+     'pma OneUserDomain WebModel'),
 
     ('Generate dot graphics commands',
-     'pmg.py OneUserDomainFSM'),
+     'pmg OneUserDomainFSM'),
     
     ('Generate SVG file',
      'dotsvg OneUserDomainFSM'),
@@ -29,17 +29,17 @@ cases = [
 
     # FSM that allows interleaving with UpdateInt, ReadInt actions
     ('Generate dot from scenario FSM',
-     'pmg.py OneUserScenario'),
+     'pmg OneUserScenario'),
     
     ('Generate SVG',
      'dotsvg OneUserScenario'),
     
     # Composition with FSM
     ('Explore WebModel, limit exploration by scenario FSM OnUserScenario',
-     'pma.py OneUserScenario WebModel'),
+     'pma OneUserScenario WebModel'),
 
     ('Generate dot',
-     'pmg.py OneUserScenarioFSM'),
+     'pmg OneUserScenarioFSM'),
     
     ('Generate SVG',
      'dotsvg OneUserScenarioFSM'),
@@ -47,10 +47,10 @@ cases = [
     # limit exploration by state filter
 
     ('Explore WebModel, limit exploration by state filter OneUserFilter',
-     'pma.py OneUserFilter WebModel'),
+     'pma OneUserFilter WebModel'),
 
     ('Generate dot',
-     'pmg.py OneUserFilterFSM'),
+     'pmg OneUserFilterFSM'),
     
     ('Generate SVG',
      'dotsvg OneUserFilterFSM'),
@@ -59,17 +59,17 @@ cases = [
 
     # FSM that suppresses interleaving with UpdateInt, ReadInt actions
     ('Generate dot from scenario FSM',
-     'pmg.py OneUserNoIntScenario'),
+     'pmg OneUserNoIntScenario'),
     
     ('Generate SVG',
      'dotsvg OneUserNoIntScenario'),
     
     # Composition with FSM
     ('Explore WebModel, limit exploration by scenario FSM OnUserScenario',
-     'pma.py OneUserNoIntScenario WebModel'),
+     'pma OneUserNoIntScenario WebModel'),
 
     ('Generate dot',
-     'pmg.py OneUserNoIntScenarioFSM'),
+     'pmg OneUserNoIntScenarioFSM'),
     
     ('Generate SVG',
      'dotsvg OneUserNoIntScenarioFSM'),

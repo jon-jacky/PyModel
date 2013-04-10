@@ -11,8 +11,8 @@ import os
 class PopulationTest(unittest.TestCase):
 
     def test_n6(self):
-        """pmt.py -n 6 populations, no seed so different test run each time"""
-        status = os.system('pmt.py -n 6 populations')
+        """pmt -n 6 populations, no seed so different test run each time"""
+        status = os.system('pmt -n 6 populations')
         self.assertEqual(status, 0) # command returned success status to shell
 
 if __name__ == '__main__':

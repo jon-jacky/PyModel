@@ -1,13 +1,13 @@
 cases = [
     ('Scenarios module with four runs, by itself',
-     'pmt.py Scenarios'),
+     'pmt Scenarios'),
 
     ('Scenarios module, compose with Stack model, last two runs not allowed',
-     'pmt.py Scenarios Stack'),
+     'pmt Scenarios Stack'),
 
     ('Scenarios, compose with Stack, Push is observable, get args from scenario',
-     'pmt.py Scenarios Stack Observables'),
+     'pmt Scenarios Stack Observables'),
 
     ('Scenarios, compose with Stack, Push and Pop are observable, get args from scenario',
-     'pmt.py Scenarios Stack AllObservables')
+     'pmt Scenarios Stack AllObservables')
     ]

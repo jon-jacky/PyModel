@@ -4,28 +4,28 @@ Test Stack graphics
 
 cases = [
     ('Generate FSM with first 12 transitions',
-     'pma.py Stack -m 12'),
+     'pma Stack -m 12'),
 
     ('Generate dot commands',
-     'pmg.py StackFSM'),
+     'pmg StackFSM'),
 
     ('Generate SVG file',
      'dotsvg StackFSM'),
 
     ('Generate dot commands for scenario FSM',
-     'pmg.py StackOneScenario'),
+     'pmg StackOneScenario'),
 
     ('Generate dot commands for scenario FSM',
-     'pmg.py StackOneScenario'),
+     'pmg StackOneScenario'),
 
     ('Generate SVG',
      'dotsvg StackOneScenario'),
 
     ('Explore composition of model with scenario machine, show synchronization',
-     'pma.py Stack StackOneScenario -m 6 -o StackSynchronized'),
+     'pma Stack StackOneScenario -m 6 -o StackSynchronized'),
 
     ('Generate dot',
-     'pmg.py StackSynchronized'),
+     'pmg StackSynchronized'),
 
     ('Generate SVG',
      'dotsvg StackSynchronized'),
@@ -34,10 +34,10 @@ cases = [
     # in browser
 
     ('Generate FSM with state filter',
-     'pma.py -o Stack3FSM Stack Filter3'),
+     'pma -o Stack3FSM Stack Filter3'),
 
     ('Generate dot commands',
-     'pmg.py Stack3FSM'),
+     'pmg Stack3FSM'),
 
     ('Generate SVG file',
      'dotsvg Stack3FSM'),
