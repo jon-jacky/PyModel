@@ -4,8 +4,8 @@ pymodel directory
 
 This directory contains the Python modules for PyModel.
 
-To use PyModel, this directory must be on your Python path, *sys.path*
-(the usual way to get this is to add it to your *PYTHONPATH*).  Or, its
+To use PyModel, this directory must be on your Python path.
+The usual way to achieve this is to add it to your *PYTHONPATH*.  Or, its
 contents must be installed in some directory that is on your Python
 path.
 
