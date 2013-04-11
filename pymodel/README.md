@@ -16,18 +16,18 @@ its modules are usually invoked through the commands in the PyModel
 The Python modules are:
 
 - *pma*, *pmg*, *pmt*, *pmv*: the main modules for the four main
-   PyModel programs.  See *commands.txt* in the *notes* directory, or
-   print their built-in help by typing *pma -h* etc.
+   PyModel programs.  For details, see *commands.txt* in the *notes* 
+   directory, or print their built-in help by typing *pma -h* etc.
 
 - *trun*: runs test scripts, including sample demonstrations.  See
    *test.txt* in the *notes* directory.
 
-- *wsgirunner*: runs WSGI-compliant web applications on localhost
+- *wsgirunner*: runs WSGI-compliant web applications on *localhost*,
+  such as *webapp* in the *WebApplication* sample, or *wsgidemo* here.
   
 - *wsgidemo*: a sample web application to run with *wsgirunner*
 
-- *ActionNameCoverage* and all the other modules are used
-  by  *pma*, *pmg*, *pmt*, and *pmv*.
+All the other modules here are used by *pma*, *pmg*, *pmt*, and *pmv*.
 
 
 Revised Apr 2013
