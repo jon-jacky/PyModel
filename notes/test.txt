@@ -53,31 +53,24 @@ if there are more test*.py files besides test.py, you can run them too:
  clogdiff trun test_scenarios
 
 etc.  If messages indicate differences were found, there may be a
-problem.  Or maybe not (see below).  If messages indicate there is no
-.ref file, that means the test scripts are not deterministic and this
-test is not meaningful.
-
-Notice that we only show the command you type, we do not show the
-command prompt, for example usually ...> for the Windows cmd prompt
-and ... $ for the Unix (Linux, OSX) bash prompt.
+problem.  Or maybe not (see Checking test script output, below).  If
+messages indicate there is no .ref file, it means that this test
+script is not deterministic and the clogdiff command is not meaningful
+-- instead just run trun test (or whatever).
 
 
 Summary
 
-commands
-  tpath (or source tpath) - put current directory on PYTHONPATH, needed by trun
-  trun test          - execute test script module, output to cmd window
-  clogdiff trun test - execute test script, compare output to reference log
+commands in bin directory
+  trun         - execute test script module
+  clogdiff     - execute test script, compare output to reference
+  clogdiff.bat - ditto, batch script for Windows
 
 Programs and scripts in the pymodel directory
   trun.py - executes test script module given as argument
-  tpath - sh script that puts . on PYTHONPATH, needed by trun
-  tpath.bat  - ditto, batch script for Windows
-  clogdiff - sh script compares output to saved reference output, use with trun
-  clogdiff.bat - ditto, batch script for Windows
   
 In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
-  test.py - test script module, executed by trun.py
+  test.py - test script module, executed by trun
   test.log - most recent output from test.py, including stdout and stderr, 
               saved by clogdiff 
   test.ref - sample test.log from from test.py, including stdout and stderr, 
@@ -145,9 +138,8 @@ For this command to work, the pymodel directory must be on the Python
 path, and the current directory must be on the Python path.  This is
 necessary to enable PyModel tools (such as pmt) in the pymodel
 directory to import modules in the current directory.  The
-PyModel/bin/pymodel_paths command assigns these paths.  It is NOT
-necessary to repeat the tpath command after a change directory command
-(cd) (checked on Mac OS X - this may differ under Windows).
+PyModel/bin/pymodel_paths command assigns these paths.  
+
 
 Checking test script output
 
@@ -285,4 +277,4 @@ check the results (it uses no assertions).  To check the results, you
 could capture and check the output using our clogdiff command, just as
 you would do with with test.py.
 
-Revised Dec 2012
+Revised Apr 2013
