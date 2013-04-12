@@ -6,7 +6,7 @@ This directory contains the commands for PyModel.
 
 To use PyModel, this directory must be on your execution *PATH*.
 Or, its contents must be installed in some directory that is on your
-execution *PATH*.
+execution *PATH*.  See *pymodel_paths* in this directory.
 
 There are two versions of some commands.  The version without a file
 type is a *bash* script for Unix/Linux/Mac; the version with *.bat* is

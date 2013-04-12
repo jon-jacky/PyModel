@@ -8,8 +8,18 @@ in the samples directory and in each sample subdirectory.
 
 Each sample subdirectory contains some test script modules: test.py,
 test_graphics.py etc.  These scripts demonstrate the samples, as well
-as testing PyModel itself.  The file test.txt provides detailed
-instructions for running the scripts.
+as testing PyModel itself.  
+
+To execute test.py (etc.), type the command
+
+ trun test
+
+For this to work, the PyModel/pymodel directory must be on your Python
+path, the current directory must be on your Python path, and the
+PyModel/bin directory must be on your execution path.  To achieve all
+this, you can run the PyModel/pymodel/pymodel_paths command.
+Alternatively, if you have installed PyModel, these preliminaries may
+not be necessary. Just type: trun test
 
 Each test script contains commented command lines that demonstrate
 combinations of arguments and options.  Running each test script

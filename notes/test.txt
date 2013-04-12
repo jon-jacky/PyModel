@@ -26,10 +26,13 @@ using the unittest module from the Python standard library.
 
 These directions apply to both Windows and Unix-like systems
 (including Linux and Mac OS X).  The directions assume that Python is
-already installed and your environment is configured so you can run
-it (if not, see http://docs.python.org/2/using/).  It also assumes 
-that PyModel is installed and its pymodel directory (containing trun.py, 
-pmt.py etc.) is on your execution path.  
+already installed and your environment is configured so you can run it
+(if not, see http://docs.python.org/2/using/).  It also assumes that
+PyModel is present on your system, the contents of its PyModel/pymodel
+directory are on your Python path, the current directory is on your
+Pyton path, and the contents of its PyModel/bin directory are on your
+execution path.  You can achieve this by executing
+PyModel/bin/pymodel_paths, or the commands therein.
 
 Quick Start
 Summary
@@ -41,9 +44,7 @@ Using other unit testing frameworks
 
 Quick Start
 
-In each subdirectory of samples, put the current directory
-(whatever it is) on the PYTHONPATH by executing the tpath command
-("source tpath" in bash, just "tpath" in Windows).  Then, type:
+In each subdirectory of samples, type:
 
  clogdiff trun test
 
@@ -51,7 +52,10 @@ if there are more test*.py files besides test.py, you can run them too:
 
  clogdiff trun test_scenarios
 
-etc.  If messages indicate differences were found, there may be a problem.
+etc.  If messages indicate differences were found, there may be a
+problem.  Or maybe not (see below).  If messages indicate there is no
+.ref file, that means the test scripts are not deterministic and this
+test is not meaningful.
 
 Notice that we only show the command you type, we do not show the
 command prompt, for example usually ...> for the Windows cmd prompt
@@ -99,12 +103,11 @@ more easily coded with particular system-dependent commands (for
 example: setting the execution path, checking differences between
 files).
 
-These Python programs are typically used as commands: pma.py pmg.py pmt.py
-pmv.py trun.py and wsgirunner.py.  When used as commands, the .py
-suffix can be omitted.  For example you can type pmt -n 10 PowerSwitch
-instead of pmt.py ...  or trun test_graphics instead of trun.py ...
-Both forms work (in Windows as well as Unix-like systems), and both appear in
-test scripts.
+Invoke the four PyModel programs on the command line or in scripts by
+name, without using the .py extension (pmt not pmt.py).  You can also
+include the .py extension (pmt.py not just pmt); some older scripts you
+may still have used this form.  BUT to use this form, you must put
+PyModel/pymodel on your execution path (not just your Python path).
 
 
 Test scripts
@@ -122,17 +125,11 @@ Here are the contents of the script in samples/WebApplication/Model/test.py:
 
 cases = [
  ('Test: -a option includes only Initialize Action',
-  'pmt.py -n 10 -a Initialize WebModel'),
+  'pmt -n 10 -a Initialize WebModel'),
 
  ('Test: -e option excludes all Login, Logout actions',
-  'pmt.py -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
+  'pmt -n 10 -e Login_Start -e Login_Finish -e Logout WebModel'),
 ]
-
-The PyModel commands in test scripts often include the .py suffix, as
-in pmt.py ... here.  The suffix is not required, recent test scripts 
-often use pmt ... etc.  (On Unix-like systems, you must execute 
-the symlinks command in the pymodel directory *once* after you install
-PyModel to enabled this).
 
 The trun module takes one argument, the module name of the script (NOT
 the file name, there is no path prefix or .py suffix).  The trun
@@ -144,14 +141,13 @@ contains modules to test.  This command executes it:
 
  trun test
 
-For this command to work, the pymodel directory must be on the
-execution PATH.  The current directory must be on the PYTHONPATH.
-This is necessary to enable PyModel tools (such as pmt) in the pymodel
-directory to import modules in the current directory.  The tpath
-command in the pymodel directory assigns the current directory to the
-PYTHONPATH (use 'source tpath' in bash).    It is NOT necessary to
-repeat the tpath command after a change directory command (cd)
-(checked on Mac OS X - this may differ under Windows).
+For this command to work, the pymodel directory must be on the Python
+path, and the current directory must be on the Python path.  This is
+necessary to enable PyModel tools (such as pmt) in the pymodel
+directory to import modules in the current directory.  The
+PyModel/bin/pymodel_paths command assigns these paths.  It is NOT
+necessary to repeat the tpath command after a change directory command
+(cd) (checked on Mac OS X - this may differ under Windows).
 
 Checking test script output
 
@@ -230,12 +226,12 @@ in Windows like Unix >& to redirect error output also.
 
 Output files
 
-The PyModel pmt.py program only writes to the terminal (to stdout and
-stderr), but other PyModel programs write output files: pma.py writes
-another module (.py file) that contains the generated FSM, pmg.py
+The PyModel pmt command only writes to the terminal (to stdout and
+stderr), but other PyModel commands write output files: pma writes
+another module (.py file) that contains the generated FSM, pmg
 writes a .dot file with commands for the Graphviz dot program, and the
 various dot commands (dotsvg etc.) write graphics files: .svg, .pdf,
-.ps etc.  The pmv.py program invokes all of these programs causes all
+.ps etc.  The pmv program invokes all of these programs causes all
 of these files to be written.
 
 The PyModel programs write all of these output files in the current
@@ -245,7 +241,7 @@ overwitten).  In the PyModel distribution, we provide copies of some
 of the output files we made (on our development system) so you can
 compare them to yours (that you generate when you repeat the tests on
 your system).  In some samples directories, there may be an fsmpy
-directory which contains FSM modules written by pma.py, and there may
+directory which contains FSM modules written by pma, and there may
 be an svg or pdf directory which contains .svg files written by pma +
 pmg + dot (or pmv).  You may wish to copy output files that you
 generate into these directories, so you can compare them to output
@@ -272,8 +268,8 @@ The popular unit test frameworks are not so well-suited for this kind
 of test.  However, you can use one of the popular frameworks if you
 prefer, as an alterative to our trun command and our test scripts.
 There is an example in the samples/populations directory.  The module
-test_populations.py there works with unittest to run the same tests
-as in tests.py.  That is, instead of
+test_populations there works with unittest to run the same tests
+as in tests.  That is, instead of
 
  trun tests  # test with our homemade framework
 
