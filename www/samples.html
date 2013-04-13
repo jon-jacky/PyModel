@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>PyModel samples</title>
+
+  
+</head>
+<body>
+  <div class="page">
+    
+  <div class="previewPage">
+    <div id="readme" class="announce md">
+      <article class="markdown-body entry-content">
+        <h1>PyModel samples</h1>
+
+<p>
+<a href="index.html">PyModel</a> is an open-source model-based testing
+framework in Python.
+
+<hr>
+
+<p>The <a href="../samples">samples</a> directory contains a
+subdirectory for each sample, including a <em>README</em> with
+more<br> information about that sample.  The samples are:</p>
+
+<ul>
+<li><p><em>abp</em>: models the <em>alternating bit protocol</em>, a simple network<br>
+protocol that retransmits lost or corrupted messages.  This model is<br>
+a Finite State Machine (FSM).  It shows that an FSM can be<br>
+used as the model (not just as a scenario machine).  Just like a<br>
+model program, an FSM can generate traces, generate graphics, and be<br>
+composed with test suites.</p></li>
+<li><p><em>Marquee</em>: a marquee with one line of text scrolling from right to<br>
+left.  Demonstrates how the size and structure of the data affect<br>
+the number of states, how a configuration file can augment or<br>
+replace items in the model, and how composition with a scenario<br>
+machine can restrict the behavior of a model.</p></li>
+<li><p><em>populations</em>: models a population whose members can be added or<br>
+removed.  It demonstrates state-dependent domains.  Since the<br>
+population is a collection of random elements, it would not be<br>
+possible to define a fixed domain in advance.</p></li>
+<li><p><em>PowerSwitch</em>: a very simple model program and an FSM, for an on-off<br>
+power switch and a speed control.  Demonstrates several PyModel<br>
+techniques (including composition) on a minimal example.</p></li>
+<li><p><em>safety</em>: models a microwave oven with a safety condition: the<br>
+microwave power can only be on when the oven door is closed.  Shows<br>
+how to do safety analysis in PyModel: write <em>invariants</em> (safety<br>
+conditions) that describe safe states, then use <em>exploration</em> to<br>
+search for unsafe states.</p></li>
+<li><p><em>Socket</em>: uses network sockets to demonstrate several PyModel<br>
+techniques for modeling and testing systems that exhibit<br>
+nondeterminism, concurrency, and asynchrony.  Includes a stepper<br>
+(test harness) for testing the Python standard library <em>socket</em><br>
+module.  Also includes a simulator that can replace the standard<br><em>socket</em> module with a substitute that can be configured to exhibit<br>
+failures and demonstrate nondeterminism.</p></li>
+<li><p><em>Stack</em>: models a stack.  Shows how to model return values as action<br>
+arguments, write and use strategies to guide testing, use<br><em>StateFilter</em> to exclude states from being reached by the model,<br>
+use composition of a model with a test suite to check that the<br>
+traces in the test suite conform to the model, and use observable<br>
+actions to get action arguments from a composed scenario or test<br>
+suite rather than the domains defined in the model.</p></li>
+<li><p><em>StackResult</em>: models a stack, in a different style than the <em>Stack</em><br>
+sample.</p></li>
+<li><p><em>Timeout</em>: demonstrates the <em>pmt -t</em> (that is, <em>--timeout</em>) option.<br>
+Shows how a simple test suite can be written to exercise a stepper,<br>
+without writing a model program.</p></li>
+<li><p><em>tracemultiplexer</em>: Simulate a program where two threads write to<br>
+the same log file. Exhibit nondeterminism in scheduling threads. Try<br>
+to synchronize so that only one thread at a time can write to the<br>
+log.  Detect unsafe states where both threads may write to the log.<br>
+Identify log messages that may have been corrupted by unsynchronized<br>
+writes from both threads.</p></li>
+<li><p><em>WebApplication</em>: contains <em>WebModel</em>, a model for a web<br>
+application, <em>webapp</em>, an actual web application implementation (in<br>
+Python), and <em>Stepper</em>, a stepper that allows the tester <em>pmt</em> to use<br>
+the model to drive the web application.  To test, run <em>webapp</em> on<br><em>localhost</em> using the PyModel <em>wsgirunner</em> command.  <em>Stepper</em> is a<br>
+web client.  It simulates a browser, sending HTTP requests to the<br>
+web application.</p></li>
+</ul><p>For general directions on how to run the samples, see also<br><em>samples.txt</em> in the <em>notes</em> directory.</p>
+
+<hr>
+
+<p>Revised Apr 2013</p>
+      </article>
+    </div>
+  </div>
+  
+  <div>&nbsp;</div>
+
+  </div>
+  
+
+</body></html>
