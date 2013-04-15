@@ -4,7 +4,7 @@ Options and arguments for PyModel Viewer
 
 from optparse import OptionParser
 
-usage = """pmv.py [options] models  
+usage = """pmv [options] models  
 
 PyModel Viewer.  A single program that invokes pma, pmg, and Graphviz
 dot to to perform analysis, generate dot commands, and generate a file

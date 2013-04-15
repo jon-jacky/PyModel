@@ -1,4 +1,4 @@
-Usage: pmt.py [options] models  
+Usage: pmt [options] models  
 
 models is a list of one or more module names (with no .py suffix).
 Each module named in models must contain a model, that is: a model

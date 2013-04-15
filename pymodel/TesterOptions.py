@@ -4,7 +4,7 @@ Options and arguments for PyModel Tester
 
 from optparse import OptionParser
 
-usage = """pmt.py [options] models  
+usage = """pmt [options] models  
 
 models is a list of one or more module names (with no .py suffix).
 Each module named in models must contain a model, that is: a model
