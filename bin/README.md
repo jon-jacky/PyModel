@@ -44,5 +44,20 @@ The commands are:
     (If you install PyModel so its commands and modules are placed
     in system directories, you may no longer need these commands.)
 
+- *pymodel_paths.bat*: Windows batch file, assigns paths for running
+    PyModel from these *PyModel* directories.  To prepare to use
+    PyModel, execute this batch file, or arrange to have it executed
+    each time you log in.  These commands add *PyModel/bin* to the
+    execution *PATH*, and add *PyModel/pymodel* to the
+    *PYTHONPATH*. They also add the current directory to the
+    *PYTHONPATH*, because the PyModel programs *pmt* etc. all import
+    Python modules in the current directory that are named on the
+    command line.  Unlike the *bash* script, this batch file also adds
+    *PyModel/pymodel* to the execution *PATH*.  (If you install
+    PyModel so its commands and modules are placed in system
+    directories, you may no longer need these commands.)  This file
+    also adds the *.PY* extension to *PATHEXT* so you can run the
+    *.py* files in *PyModel/pymodel* without typing the *.py*
+    extension on the command line.
 
 Revised Apr 2013
