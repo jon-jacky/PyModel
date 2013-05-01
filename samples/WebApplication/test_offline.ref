@@ -36,8 +36,64 @@ UpdateInt('VinniPuhh', 2)
 Logout('VinniPuhh',)
   2. Finished at step 11, reached accepting state
 Test finished, completed 3 runs
-sh: line 0: type: WebModelTest_n10_c3_s3_r3.py: not found
-Generate a test suite with three runs
+
+# pmt -n 10 -c 3 -s 3 -r 3 WebModel -o WebModelTest_n10_c3_s3_r3
+
+# actions here are just labels, but must be symbols with __name__ attribute
+
+def Initialize(): pass
+def ReadInt(): pass
+def Login(): pass
+def Logout(): pass
+def UpdateInt(): pass
+
+# action symbols
+actions = (Initialize, ReadInt, Login, Logout, UpdateInt)
+
+testSuite = [
+  [
+    (Initialize, ()),
+    (Login, ('OleBrumm', 'Correct'), 'Success'),
+    (Login, ('VinniPuhh', 'Incorrect'), 'Failure'),
+    (Logout, ('OleBrumm',)),
+    (Login, ('OleBrumm', 'Correct'), 'Success'),
+    (UpdateInt, ('OleBrumm', 1)),
+    (UpdateInt, ('OleBrumm', 1)),
+    (UpdateInt, ('OleBrumm', 2)),
+    (Login, ('VinniPuhh', 'Correct'), 'Success'),
+    (UpdateInt, ('OleBrumm', 1)),
+    (Logout, ('OleBrumm',)),
+    (Logout, ('VinniPuhh',)),
+  ],
+#
+  [
+    (Initialize, ()),
+    (Login, ('VinniPuhh', 'Incorrect'), 'Failure'),
+    (Login, ('OleBrumm', 'Correct'), 'Success'),
+    (UpdateInt, ('OleBrumm', 1)),
+    (ReadInt, ('OleBrumm',), 1),
+    (UpdateInt, ('OleBrumm', 2)),
+    (Login, ('VinniPuhh', 'Incorrect'), 'Failure'),
+    (Logout, ('OleBrumm',)),
+    (Login, ('OleBrumm', 'Correct'), 'Success'),
+    (UpdateInt, ('OleBrumm', 1)),
+    (Logout, ('OleBrumm',)),
+  ],
+#
+  [
+    (Initialize, ()),
+    (Login, ('VinniPuhh', 'Incorrect'), 'Failure'),
+    (Login, ('OleBrumm', 'Incorrect'), 'Failure'),
+    (Login, ('VinniPuhh', 'Correct'), 'Success'),
+    (ReadInt, ('VinniPuhh',), 0),
+    (Login, ('OleBrumm', 'Incorrect'), 'Failure'),
+    (UpdateInt, ('VinniPuhh', 1)),
+    (Login, ('OleBrumm', 'Incorrect'), 'Failure'),
+    (UpdateInt, ('VinniPuhh', 1)),
+    (UpdateInt, ('VinniPuhh', 2)),
+    (Logout, ('VinniPuhh',)),
+  ],
+]Generate a test suite with three runs
 
 Show the generated test suite
 

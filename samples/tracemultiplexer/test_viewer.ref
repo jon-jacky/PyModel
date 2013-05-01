@@ -1,0 +1,12 @@
+37 states, 36 transitions, 6 accepting states, 0 unsafe states
+pma --maxTransitions 100 tracemultiplexer
+pmg --transitionLabels action tracemultiplexerFSM
+dot -Tsvg -o tracemultiplexerFSM.svg tracemultiplexerFSM.dot
+207 states, 234 transitions, 42 accepting states, 30 unsafe states
+pma --maxTransitions 300 unsynchronized tracemultiplexer
+pmg --transitionLabels action unsynchronizedFSM
+dot -Tsvg -o unsynchronizedFSM.svg unsynchronizedFSM.dot
+Generate graph for synchronized threads that use tracelock
+
+Generate graph for *un*synchronized threads that *ignore* tracelock
+

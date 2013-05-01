@@ -3,7 +3,7 @@ sleep(5,)
 sleep(10,)
   0. Success at step 3, no more actions enabled, reached accepting state
 Traceback (most recent call last):
-  File "/Users/jon/PyModel/pymodel/pmt.py", line 117, in RunTest
+  File "/Users/jon/PyModel/pymodel/pmt.py", line 124, in RunTest
     result = stepper.TestAction(aname, args, modelResult)
   File "/Users/jon/PyModel/samples/Timeout/Stepper.py", line 10, in TestAction
     time.sleep(seconds)

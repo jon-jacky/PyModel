@@ -1,14 +1,14 @@
 13 states, 11 transitions, 2 accepting states, 0 unsafe states
-pma.py --maxTransitions 100 TestIntTwoRuns
-pmg.py --transitionLabels action TestIntTwoRunsFSM
+pma --maxTransitions 100 TestIntTwoRuns
+pmg --transitionLabels action TestIntTwoRunsFSM
 dot -Tsvg -o TestIntTwoRunsFSM.svg TestIntTwoRunsFSM.dot
 9 states, 7 transitions, 2 accepting states, 0 unsafe states
-pma.py --exclude Logout --maxTransitions 100 --output TestIntTwoRuns_NoLogout TestIntTwoRuns
-pmg.py --transitionLabels action TestIntTwoRuns_NoLogout
+pma --exclude Logout --maxTransitions 100 --output TestIntTwoRuns_NoLogout TestIntTwoRuns
+pmg --transitionLabels action TestIntTwoRuns_NoLogout
 dot -Tsvg -o TestIntTwoRuns_NoLogout.svg TestIntTwoRuns_NoLogout.dot
 8 states, 6 transitions, 2 accepting states, 0 unsafe states
-pma.py --action Initialize --action Login --action UpdateInt --maxTransitions 100 --output TestIntTwoRuns_Add TestIntTwoRuns
-pmg.py --transitionLabels action TestIntTwoRuns_Add
+pma --action Initialize --action Login --action UpdateInt --maxTransitions 100 --output TestIntTwoRuns_Add TestIntTwoRuns
+pmg --transitionLabels action TestIntTwoRuns_Add
 dot -Tsvg -o TestIntTwoRuns_Add.svg TestIntTwoRuns_Add.dot
 Test suite with two runs:
 

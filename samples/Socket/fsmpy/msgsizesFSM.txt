@@ -1,0 +1,2 @@
+msgsizesFSM.py is not included in the distribution because it is so large - 
+more than 11 MB.  You can easily regenerate it by running test_analyze_msgsize.

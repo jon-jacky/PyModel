@@ -41,7 +41,7 @@ add(51,) / (51,)
 remove(51,) / ()
   2. Finished at step 6, reached accepting state
 Test finished, completed 3 runs
-pmt.py -s 1 -n 20 populations, use seed so same run each time
+pmt -s 1 -n 20 populations, use seed so same run each time
 
-pmt.py -s 2 -n 6 populations, use seed so same run each time
+pmt -s 2 -n 6 populations, use seed so same run each time
 

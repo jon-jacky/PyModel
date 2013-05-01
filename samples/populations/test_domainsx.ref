@@ -10,5 +10,5 @@ add(9,) / (4, 5, 6, 7, 8, 9)
 remove(9,) / (4, 5, 6, 7, 8)
 add(0,) / (0, 4, 5, 6, 7, 8)
   0. Finished at step 11, no more actions enabled, ended in non-accepting state
-pmt.py -s 2 -n 20 domainsx populations
+pmt -s 2 -n 20 domainsx populations
 
