@@ -1,6 +1,8 @@
-include *.txt *.html *.rst *.in
-recursive-include notes *.txt *.rst
-recursive-include talks *.txt *.rst *.pdf
-recursive-include www *.txt *.rst *.html 
-recursive-include pymodel *.txt *.rst *.py *.bat clogdiff dotpdf dotps dotsvg tpath
-recursive-include samples *.txt *.rst *.py *.ref *.bat 
+include *.txt *.html *.rst *.md *.in *.py
+recursive-include notes *.txt *.rst *.md
+recursive-include talks *.txt *.rst *.md *.pdf
+recursive-include www *.txt *.rst *.md *.html 
+recursive-include pymodel *.txt *.rst *.md *.py
+recursive-include bin *.txt *.rst *.md *.bat clogdiff dotpdf dotps dotsvg pma pmg pmt pmv pymodel_paths tpath trun wsgirunner
+recursive-include samples *.txt *.rst *.md *.bat *.py *.ref *.svg *.pdf
+

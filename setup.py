@@ -10,8 +10,8 @@ To upload distribution to PyPI:
  python setup.py sdist -v -f --formats=gztar,zip upload --show-response
 
 It is not necessary to install, you can just run out of the unpacked
-distrbution.  It is convenient to put PyModel-0.9/pymodel on the
-execution PATH.
+distribution. In that case, it is convenient to run PyModel/bin/pymodel_paths
+to set up your PATH and PYTHONPATH (run pymodel_paths.bat on Windows).
 
 The distribution contents are all specified in MANIFEST.in,
 not in setup.py.  Therefore python setup.py install has no effect.
@@ -24,14 +24,14 @@ setup(
     # from http://docs.python.org/distutils/setupscript.html#meta-data
     # also http://docs.python.org/distutils/apiref.html#module-distutils.core
     name = 'PyModel',
-    version = '0.9',
+    version = '1.0',
     author = 'Jonathan Jacky',
-    author_email = 'jon@u.washington.edu',
+    author_email = 'jon.p.jacky@gmail.com',
     maintainer = 'Jonathan Jacky',
-    maintainer_email = 'jon@u.washington.edu',
+    maintainer_email = 'jon.p.jacky@gmail.com',
     url = 'http://staff.washington.edu/jon/pymodel/www/',
     description = 'Model-based testing in Python',
-    long_description = open('README.rst').read(),
+    long_description = open('README.md').read(),
     download_url = 'http://staff.washington.edu/jon/pymodel/www/',
     license = 'BSD License',
 
@@ -39,7 +39,7 @@ setup(
 
     # from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
