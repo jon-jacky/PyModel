@@ -1,0 +1,76 @@
+
+PyModel v 1.0 release notes
+
+PyModel is a model-based testing framework for Python.  Earlier public
+releases were versions 0.80 in Jan 2010, 0.85 in Mar 2010, and 0.90 in
+July 2011.  Since July 2011 ongoing work has been available at GitHub:
+https://github.com/jon-jacky/PyModel/  
+
+This release is called version 1.0 because it includes all of the
+features considered in the original project plan.  (Development and
+maintenance will continue beyond this release.)
+
+Version 1.0 adds new functionality:
+
+- The PyModel Tester pmt supports observable actions and asynchronous
+  steppers, to handle event-driven systems and nondeterminism.
+
+- The PyModel Analyzer pma performs safety analysis by checking state
+  invariants.  The PyModel Graphics program pmg indicates unsafe states
+  in the generated graphs.
+
+- The new PyModel Viewer command combines the functionality of the
+  PyModel Analyzer pma, the PyModel Graphics program pmg, and the
+  Graphviz dot program in a single command, for convenience and
+  brevity.
+
+- The options to include or exclude actions, -a and -e, are now
+  supported for FSMs and TestSuites as well as Model Programs, so you
+  can use the command line to select which actions to include in your
+  analyses or tests, even when you compose model programs with
+  scenario machines.
+
+- The tester pmt provides a timeout option to specify that the test
+  fails if the implementation does not respond within a given
+  deadline.  (This option might not work on Windows.)
+
+- The PyModel programs pma, pmg, pmt, and pmv can be run from the
+  command line without the .py extension, like any other command.
+  You can just type pmt ... , you no longer have to type pmt.py ... 
+
+Version 1.0 adds a new sample and revises all the others:
+
+- Socket sample and writeup, asynch steppers using threads or
+  select, socket_simulator and select_simulator
+
+- Especially, more documentation for the samples: samples/README.md
+  and README.md in each samples directory that explains every file
+
+- svg/ and fsmpy/ dirs new .ref files, 
+
+Version 1.0 reorganizes some code and directory structure:
+
+- new bin directory separated from pymodel directory
+
+- separate out models.py base class for ModelProgram, FSM, TestSuite
+
+Version 1.0 adds new documentation and revises much of the rest:
+
+- More documentation New README.md files in PyModel in most top-level
+ directories below PyModel
+
+- Revised .txt files in notes/
+
+- Revised .html files in www/, new .html files generated from new .md
+  files in other directories
+
+Version 1.0 makes some bug fixes:
+
+- fix crash when missing parameter generator, now print
+          helpful error msg and exit cleanly
+
+- cancel timeout when timeout was requested but didn't expire
+
+- Correctly handle empty args in composition
+
+- pmt -o offline test generator option
