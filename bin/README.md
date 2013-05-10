@@ -27,8 +27,14 @@ The commands are:
 - *trun*: runs test scripts, including sample demonstrations.  See
    *test.txt* in the *notes* directory.
 
-- *clogdiff*: works with *trun* to execute and check
+- *tdiff*: works with *trun* to execute and check
   regression tests.  See *test.txt* in the *notes* directory.
+
+- *tclean*: remove files created by running test scripts. See
+   *test.txt* in the *notes* directory.
+
+- *clogdiff*: same as *tdiff*, used in versions before 1.0,
+  deprecated, retained for backward compatibility
 
 - *wsgirunner*: runs WSGI-compliant web applications on *localhost*,
   such as *webapp* in the *WebApplication* sample, or *wsgidemo* here.

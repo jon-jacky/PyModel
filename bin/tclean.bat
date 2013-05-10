@@ -1,0 +1,2 @@
+rem remove files created by running pymodel test scripts 
+rm *FSM.py *FSM?.py *.dot *.svg *.pyc *.log
