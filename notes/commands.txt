@@ -50,7 +50,12 @@ PyModel also provides these programs and scripts:
 
  trun: runs sample demonstrations and scripts that test PyModel itself.
 
- clogdiff: works with trun to execute and check regression tests on PyModel.
+ tdiff: works with trun to execute and check regression tests on PyModel.
+
+ clogdiff: same as tdiff, used in PyModel versions before 1.0,
+           retained for backwards compatibility, but now deprecated
+
+ tclean: removes output files from test scripts in the current directory
 
 To prepare to use the programs, put the PyModel/bin directory on your
 execution path.  Put the Pymodel/pymodel directory and the the current

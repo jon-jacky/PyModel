@@ -1,5 +1,5 @@
 """
-Test raising an exception, to check how clogdiff handles it
+Test raising an exception, to check how tdiff (formerly clogdiff) handles it
 """
 
 cases = [

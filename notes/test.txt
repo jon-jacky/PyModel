@@ -9,10 +9,10 @@ distribution, including the tests of all the samples.  These scripts
 demonstrate the samples, as well as testing PyModel itself.
 
 These notes describe our unit tests, along with our little homemade
-unit testing commands, which are independent of the rest of PyModel
-(they could be used to test any program that writes to stdout).  We
-use these (instead of a conventional unit test framework like unittest
-or nose) because:
+unit testing commands: trun, tdiff, and tclean.  These commands are
+independent of the rest of PyModel (they could be used to test any
+program that writes to stdout).  We use these (instead of a
+conventional unit test framework like unittest or nose) because:
 
  - The units we test here are not function calls or method calls,
  but entire program invocations including command line arguments.
@@ -46,25 +46,31 @@ Quick Start
 
 In each subdirectory of samples, type:
 
- clogdiff trun test
+ tdiff trun test
 
 if there are more test*.py files besides test.py, you can run them too:
 
- clogdiff trun test_scenarios
+ tdiff trun test_scenarios
 
 etc.  If messages indicate differences were found, there may be a
 problem.  Or maybe not (see Checking test script output, below).  If
 messages indicate there is no .ref file, it means that this test
-script is not deterministic and the clogdiff command is not meaningful
+script is not deterministic and the tdiff command is not meaningful
 -- instead just run trun test (or whatever).
 
 
 Summary
 
 commands in bin directory
-  trun         - execute test script module
-  clogdiff     - execute test script, compare output to reference
-  clogdiff.bat - ditto, batch script for Windows
+  trun      - execute test script module
+  tdiff     - execute test script, compare output to reference
+  tdiff.bat - ditto, batch script for Windows
+  tclean    - remove output files created by running test scripts
+  tclean.bat - ditto, batch script for Windows
+
+The tdiff command was called clogdiff in PyModel versions before 1.0.
+The clogdiff command is retained for backwards compatibility, but is
+deprecated.
 
 Programs and scripts in the pymodel directory
   trun.py - executes test script module given as argument
@@ -72,9 +78,9 @@ Programs and scripts in the pymodel directory
 In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
   test.py - test script module, executed by trun
   test.log - most recent output from test.py, including stdout and stderr, 
-              saved by clogdiff 
+              saved by tdiff 
   test.ref - sample test.log from from test.py, including stdout and stderr, 
-              renamed by hand, used by clogdiff
+              renamed by hand, used by tdiff
   test_scenarios.py, test_graphics.py, ...  - other test script modules
   test_scenarios.ref ...  - etc., like test.ref
   fsmpy/ - directory of FSM Python modules written by pma.py (maybe via pmv.py)
@@ -145,7 +151,7 @@ Checking test script output
 
 Executing a test script typically writes a lot of output to the
 terminal (that is, to stdout and stderr).  For regression testing, use
-the clogdiff command in the pymodel directory.  clogdiff runs a
+the tdiff command in the pymodel directory.  tdiff runs a
 command, collects the output to stdout and stderr in a log file and
 compares it to a reference log file.  To use it, make a reference log
 file first:
@@ -155,42 +161,42 @@ file first:
 (But on Windows systems you must use > and >& and only stdout not
 stderr is captured in test.ref.)
 
-Then invoke clogdiff:
+Then invoke tdiff:
 
- clogdiff trun test
+ tdiff trun test
 
-On Unix-like systems (including Linux and Mac OS X), clogdiff prints
+On Unix-like systems (including Linux and Mac OS X), tdiff prints
 no output when there are no differences, and only prints out any
-differences that it finds.  On Windows systems, clogdiff.bat prints
+differences that it finds.  On Windows systems, tdiff.bat prints
 
  Comparing files test.log and TEST.REF
  FC: no differences encountered
 
 when there are no differences.
 
-Be warned that on Windows systems "clogdiff trun test_graphics" writes
+Be warned that on Windows systems "tdiff trun test_graphics" writes
 a lot of output to the screen, but the line "FC: no differences
 encountered" should appear at the end. (On Unix-like systems, nothing
 more should appear.)  Apparently all this output is stderr output from
 the graphviz dot program, which is not captured or checked by
-clogdiff.
+tdiff.
 
 Be warned that if you use .ref files generated on one system and
-execute clogdiff on another system, differences may be reported even
+execute tdiff on another system, differences may be reported even
 when the programs work correctly, in cases where PyModel randomly
 selects actions and action arguments (as it does in many scripts).
 Apparently, the functions from the random module that PyModel uses
 behave differently on different systems, even when started with the
 same seed (the pmt -s option, which is supposed to make the random
 selections repeatable).  In particular, some of the .ref files
-included in the PyModel distribution may cause clogdiff to report
+included in the PyModel distribution may cause tdiff to report
 differences on your system.
 
 Differences may also be reported because command prompts or file paths
 appear in the output, and these were different when the .ref file was
 generated.
 
-If clogdiff reports differences, examine the output (in the .log file)
+If tdiff reports differences, examine the output (in the .log file)
 to determine whether the differences indicate errors, or are merely
 due to different randomly selected choices on your system, or to
 environmental differences like command prompts or file paths.  In the
@@ -223,7 +229,7 @@ stderr), but other PyModel commands write output files: pma writes
 another module (.py file) that contains the generated FSM, pmg
 writes a .dot file with commands for the Graphviz dot program, and the
 various dot commands (dotsvg etc.) write graphics files: .svg, .pdf,
-.ps etc.  The pmv program invokes all of these programs causes all
+.ps etc.  The pmv program invokes all of these programs and causes all
 of these files to be written.
 
 The PyModel programs write all of these output files in the current
@@ -240,10 +246,16 @@ generate into these directories, so you can compare them to output
 from tests that you run later (in much the same way that the .ref
 files are used to compare output to stdout).
 
+The pmclean command removes these test output files from the current
+directory.  It does not remove them from the fsmpy or svg
+subdirectories (or any other subdirectories).  All of the files
+removed by pmclean can be easily recreated just by running the test
+scripts again.
+
 
 Using other unit testing frameworks
 
-Our trun and clogdiff commands, along with our test scripts, comprise
+Our trun and tdiff commands, along with our test scripts, comprise
 a very simple homemade unit testing framework, an alternative to the
 popular Python unit test frameworks such as unittest or nose.
 
@@ -274,7 +286,7 @@ the test output is also more verbose (the -v option here just commands
 unittest to print the docstring for each test case).  The
 test_populations.py module merely executes the tests, it does not
 check the results (it uses no assertions).  To check the results, you
-could capture and check the output using our clogdiff command, just as
+could capture and check the output using our tdiff command, just as
 you would do with with test.py.
 
-Revised Apr 2013
+Revised May 2013
