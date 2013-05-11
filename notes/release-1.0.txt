@@ -38,6 +38,14 @@ Version 1.0 adds new functionality:
   command line without the .py extension, like any other command.
   You can just type pmt ... , you no longer have to type pmt.py ... 
 
+- The regression testing command tdiff replaces clogdiff.  It works
+  the same - this is just a renaming.  The clogdiff command is
+  retained in this version for backward compatibility, but is now
+  deprecated.
+
+- The new command tclean removes test output files from the 
+  current directory.
+
 Version 1.0 adds a new sample and revises all the others:
 
 - The completely rewritten Socket sample includes new asynchronous
