@@ -69,10 +69,10 @@ is not a translation or re-implementation.
 PyModel is covered by the 
 [BSD License](http://www.opensource.org/licenses/BSD-3-Clause)
 
-Code and documents are copyright (C) 2009-20013, Jonathan Jacky.
+Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
 
-Revised Apr 2013
+Revised May 2013
 
 
 
