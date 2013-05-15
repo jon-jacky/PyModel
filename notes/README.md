@@ -38,5 +38,7 @@ reading order:
 
 * *release-0.9.txt*: release notes
 
+* *release-1.0.txt*: release notes
 
-Revised Apr 2013
+
+Revised May 2013

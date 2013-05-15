@@ -18,6 +18,9 @@ not in setup.py.  Therefore python setup.py install has no effect.
 """
 
 from distutils.core import setup
+from distutils import sysconfig
+
+site_packages_path = sysconfig.get_python_lib()
 
 setup(
     # Metadata for PyPI
@@ -36,6 +39,8 @@ setup(
     license = 'BSD License',
 
     packages = ['pymodel'],
+
+    data_files = [(site_packages_path, ['pymodel.pth'])],
 
     scripts = [ 'bin/clogdiff', 
                 'bin/clogdiff.bat', 
