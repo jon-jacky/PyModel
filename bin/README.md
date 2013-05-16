@@ -66,4 +66,8 @@ The commands are:
     *.py* files in *PyModel/pymodel* without typing the *.py*
     extension on the command line.
 
-Revised Apr 2013
+- *tpath*: puts the current directory on *PYTHONPATH*, alternative
+  to *pymodel_paths* to use when PyModel is installed in system directories,
+  might still be needed even then.  See *test.txt* in the *notes* directory
+
+Revised May 2013

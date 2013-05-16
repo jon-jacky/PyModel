@@ -32,10 +32,10 @@ setup(
     author_email = 'jon.p.jacky@gmail.com',
     maintainer = 'Jonathan Jacky',
     maintainer_email = 'jon.p.jacky@gmail.com',
-    url = 'http://staff.washington.edu/jon/pymodel/www/',
+    url = 'https://github.com/jon-jacky/PyModel',
     description = 'Model-based testing in Python',
     long_description = open('README.md').read(),
-    download_url = 'http://staff.washington.edu/jon/pymodel/www/',
+    download_url = 'https://pypi.python.org/pypi/PyModel',
     license = 'BSD License',
 
     packages = ['pymodel'],
@@ -60,6 +60,8 @@ setup(
                 'bin/tclean.bat', 
                 'bin/tdiff', 
                 'bin/tdiff.bat', 
+                'bin/tpath', 
+                'bin/tpath.bat', 
                 'bin/trun', 
                 'bin/wsgirunner', ],
 

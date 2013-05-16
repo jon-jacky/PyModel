@@ -1,0 +1,28 @@
+
+To use PyModel, you do not need to install anything into any system
+directories.  Just obtain the PyModel directory and place it at any
+convenient location.  To get the current development version,
+
+ git clone git@github.com:jon-jacky/PyModel.git
+
+To get version 1.0, download PyModel-1.0.tar.gz or PyModel-1.0.zip
+from
+
+ https://pypi.python.org/pypi/PyModel 
+
+or 
+
+ http://staff.washington.edu/jon/pymodel/www/
+
+Then unpack ...
+
+... execute pymodel_paths ...  rename PyModel-1.0 to just PyModel (or 
+edit the commands) ...
+
+The setup.py script now supports the install argument, to optionally
+install the PyModel python modules and commands in system directories.
+
+... source tpath ...
+
+... install does not do anything with samples or docs ...
+

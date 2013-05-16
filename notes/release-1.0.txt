@@ -46,6 +46,10 @@ Version 1.0 adds new functionality:
 - The new command tclean removes test output files from the 
   current directory.
 
+- The revised setup.py now supports the install argument, to
+  optionally install the PyModel python modules and commands in system
+  directories.
+
 Version 1.0 adds a new sample and revises all the others:
 
 - The completely rewritten Socket sample includes new asynchronous

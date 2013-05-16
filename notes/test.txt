@@ -9,8 +9,8 @@ distribution, including the tests of all the samples.  These scripts
 demonstrate the samples, as well as testing PyModel itself.
 
 These notes describe our unit tests, along with our little homemade
-unit testing commands: trun, tdiff, and tclean.  These commands are
-independent of the rest of PyModel (they could be used to test any
+unit testing commands: tpath, trun, tdiff, and tclean.  These commands
+are independent of the rest of PyModel (they could be used to test any
 program that writes to stdout).  We use these (instead of a
 conventional unit test framework like unittest or nose) because:
 
@@ -24,25 +24,34 @@ conventional unit test framework like unittest or nose) because:
 The last section (below) explains how to script tests similar to ours
 using the unittest module from the Python standard library.
 
-These directions apply to both Windows and Unix-like systems
-(including Linux and Mac OS X).  The directions assume that Python is
-already installed and your environment is configured so you can run it
-(if not, see http://docs.python.org/2/using/).  It also assumes that
-PyModel is present on your system, the contents of its PyModel/pymodel
-directory are on your Python path, the current directory is on your
-Pyton path, and the contents of its PyModel/bin directory are on your
-execution path.  You can achieve this by executing
-PyModel/bin/pymodel_paths, or the commands therein.
-
-Quick Start
-Summary
+Prerequisites
+Running tests
+Command summary
 Commands and modules
 Test scripts
 Checking test script output
 Output files
 Using other unit testing frameworks
 
-Quick Start
+
+Prerequisites
+
+These directions apply to both Windows and Unix-like systems
+(including Linux and Mac OS X).  The directions assume that Python is
+already installed and your environment is configured so you can run it
+(if not, see http://docs.python.org/2/using/).  It also assumes that
+the upacked PyModel directories are present on your system, the
+contents of its PyModel/pymodel directory are on your Python path, the
+contents of its PyModel/bin directory are on your execution path, and
+your current directory is on your Python path.  You can achieve this
+by executing PyModel/bin/pymodel_paths, or the commands therein.
+Alternatively, you can install the contents of PyModel/pymodel and
+PyModel/bin into system directories (see INSTALL.txt) but then you may
+need to execute the command "source tpath" in each session (terminal
+window) before you execute any PyModel commands.
+
+
+Running tests
 
 In each subdirectory of samples, type:
 
@@ -59,11 +68,13 @@ script is not deterministic and the tdiff command is not meaningful
 -- instead just run trun test (or whatever).
 
 
-Summary
+Command Summary
 
 commands in bin directory
-  trun      - execute test script module
-  tdiff     - execute test script, compare output to reference
+  tpath     - put current directory on PYTHONPATH, needed by trun
+  tpath.bat - ditto, batch script for Windows
+  trun      - execute test script module named in argument
+  tdiff     - execute command (usually trun ...), compare output to reference
   tdiff.bat - ditto, batch script for Windows
   tclean    - remove output files created by running test scripts
   tclean.bat - ditto, batch script for Windows
@@ -76,6 +87,7 @@ Programs and scripts in the pymodel directory
   trun.py - executes test script module given as argument
   
 In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
+
   test.py - test script module, executed by trun
   test.log - most recent output from test.py, including stdout and stderr, 
               saved by tdiff 
@@ -88,6 +100,7 @@ In each model directory: samples/PowerSwitch,  samples/WebApplication/Model,...
   svg/ - directory of .svg graphics files written by pma.py + pmg.py + 
           dot scripts (maybe via pmv.py), moved here by hand
   pdf/ -  ditto, .pdf (not many of these), moved here by hand
+
 
 Programs, Modules, and Commands
 
@@ -221,6 +234,7 @@ by trun appear after all the test case output, at the end of the file.
 If a test case crashes (raises an unhandled exception) on Windows, the
 traceback goes to the screen, not the log file.  I can't find anything
 in Windows like Unix >& to redirect error output also.
+
 
 Output files
 

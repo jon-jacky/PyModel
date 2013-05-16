@@ -1,0 +1,2 @@
+# put the current directory on PYTHONPATH
+export PYTHONPATH=.:$PYTHONPATH
