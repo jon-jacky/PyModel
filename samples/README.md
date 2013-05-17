@@ -73,7 +73,7 @@ information about that sample.  The samples are:
   web application.
 
 Each sample includes several test scripts: *test.txt* etc. To run a
-script, type *trun test* etc. (not *pyton test.py*).  For more
+script, type *trun test* etc. (not *python test.py*).  For more
 directions on how to run the samples, see also *samples.txt* and
 *test.txt* in the *notes* directory.
 
