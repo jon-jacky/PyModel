@@ -5,7 +5,7 @@ PyModel is a model-based testing framework for Python.  Earlier public
 releases were versions 0.80 in Jan 2010, 0.85 in Mar 2010, and 0.90 in
 July 2011.  Since July 2011 ongoing work has been available at GitHub:
 https://github.com/jon-jacky/PyModel/  PyModel can also be downloaded
-from PyPI http://pypi.python.org/pypi/PyModel or the author's web page
+from PyPI http://pypi.python.org/pypi/PyModel or 
 http://staff.washington.edu/jon/pymodel/www/
 
 This release is called version 1.0 because it includes all of the

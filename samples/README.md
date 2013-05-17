@@ -72,11 +72,13 @@ information about that sample.  The samples are:
   web client.  It simulates a browser, sending HTTP requests to the
   web application.
 
-For general directions on how to run the samples, see also
-*samples.txt* in the *notes* directory.
+Each sample includes several test scripts: *test.txt* etc. To run a
+script, type *trun test* etc. (not *pyton test.py*).  For more
+directions on how to run the samples, see also *samples.txt* and
+*test.txt* in the *notes* directory.
 
 
-Revised Apr 2013
+Revised May 2013
 
 
 
