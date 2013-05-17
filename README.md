@@ -58,8 +58,11 @@ For more information, read the [notes](notes), browse the
 or try the [samples](samples).  There are README files in most of the
 directories.
 
+You can [INSTALL](INSTALL.txt) PyModel.
+
 PyModel is also available at
-[PyPI](http://pypi.python.org/pypi/PyModel).
+[PyPI](http://pypi.python.org/pypi/PyModel) and at the 
+author's [web page](http://staff.washington.edu/jon/pymodel/www/).
 
 PyModel requires Python 2.6 or higher (because it uses *itertools.product*)
 
@@ -73,6 +76,3 @@ Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
 
 Revised May 2013
-
-
-

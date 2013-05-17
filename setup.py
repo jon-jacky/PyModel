@@ -10,11 +10,23 @@ To upload distribution to PyPI:
  python setup.py sdist -v -f --formats=gztar,zip upload --show-response
 
 It is not necessary to install, you can just run out of the unpacked
-distribution. In that case, it is convenient to run PyModel/bin/pymodel_paths
-to set up your PATH and PYTHONPATH (run pymodel_paths.bat on Windows).
+distribution. In that case, it is convenient to run
+PyModel/bin/pymodel_paths to set up your PATH and PYTHONPATH (run
+pymodel_paths.bat on Windows).  That script assumes the distribution
+directory is in your HOME directory and is named PyModel (not
+PyModel-1.0, so you many need to rename it).
 
-The distribution contents are all specified in MANIFEST.in,
-not in setup.py.  Therefore python setup.py install has no effect.
+To optionally install the PyModel python modules and commands in
+system directories (for example in /Library/Python/2.7/site-packages
+and /usr/local/bin, respectively):
+
+ sudo python setup.py install.
+
+The distribution contents are all specified in MANIFEST.in, not in
+setup.py.  Most of the distribution is in the examples under
+PyModel/samples, and in the documentation under PyModel/notes, www,
+and talks, and in the README files in most directories.  Installation
+does not install these into any system directories
 """
 
 from distutils.core import setup

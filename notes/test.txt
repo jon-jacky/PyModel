@@ -1,5 +1,18 @@
 Notes on tests
 
+Introduction
+Prerequisites
+Running tests
+Command summary
+Commands and modules
+Test scripts
+Checking test script output
+Output files
+Using other unit testing frameworks
+
+
+Introduction
+
 These notes explain how to script and run tests on the PyModel
 software itself.  These notes are not about using PyModel to test
 other programs -- that is described elsewhere.
@@ -24,15 +37,6 @@ conventional unit test framework like unittest or nose) because:
 The last section (below) explains how to script tests similar to ours
 using the unittest module from the Python standard library.
 
-Prerequisites
-Running tests
-Command summary
-Commands and modules
-Test scripts
-Checking test script output
-Output files
-Using other unit testing frameworks
-
 
 Prerequisites
 
@@ -46,14 +50,24 @@ contents of its PyModel/bin directory are on your execution path, and
 your current directory is on your Python path.  You can achieve this
 by executing PyModel/bin/pymodel_paths, or the commands therein.
 Alternatively, you can install the contents of PyModel/pymodel and
-PyModel/bin into system directories (see INSTALL.txt) but then you may
-need to execute the command "source tpath" in each session (terminal
-window) before you execute any PyModel commands.
+PyModel/bin into system directories but then you may need to execute
+the command "source tpath" in each session (terminal window) before
+you execute any PyModel commands (or just "tpath" on Windows).
+For more details see PyModel/INSTALL.txt.
 
 
 Running tests
 
-In each subdirectory of samples, type:
+Confirm that PyModel works for you by running some of the test scripts
+in the samples directories.  For example, in
+PyModel/samples/PowerSwitch, type the command:
+
+ trun test 
+
+(not python test.py).  You should then see output from several runs of
+the pmt program as it executes the PowerSwitch model.
+
+To run regression tests that confirm tests generate the expected output, type:
 
  tdiff trun test
 
