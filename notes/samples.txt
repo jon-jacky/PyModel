@@ -14,12 +14,13 @@ To execute test.py (etc.), type the command
 
  trun test
 
-For this to work, the PyModel/pymodel directory must be on your Python
-path, the current directory must be on your Python path, and the
-PyModel/bin directory must be on your execution path.  To achieve all
-this, you can run the PyModel/pymodel/pymodel_paths command.
-Alternatively, if you have installed PyModel, these preliminaries may
-not be necessary. Just type: trun test
+(but not python test.py) For this to work, the PyModel/pymodel
+directory must be on your Python path, the current directory must be
+on your Python path, and the PyModel/bin directory must be on your
+execution path.  To achieve all this, you can run the
+PyModel/pymodel/pymodel_paths command.  Alternatively, if you have
+installed PyModel, these preliminaries may not be necessary.
+For more details see PyModel/INSTALL.txt
 
 Each test script contains commented command lines that demonstrate
 combinations of arguments and options.  Running each test script

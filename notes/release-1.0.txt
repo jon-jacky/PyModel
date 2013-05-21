@@ -50,7 +50,8 @@ Version 1.0 adds new functionality:
 
 - The revised setup.py now supports the install argument, to
   optionally install the PyModel python modules and commands in system
-  directories.
+  directories.  Now PyModel can be installed using distutils
+  (... setup.py install ...) or pip.
 
 Version 1.0 adds a new sample and revises all the others:
 

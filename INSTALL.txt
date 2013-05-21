@@ -14,13 +14,21 @@ or
 
  http://staff.washington.edu/jon/pymodel/www/
 
-Then unpack using a tar or zip utility.  Then you can run PyModel
-using the commands and modules in the unpacked distribution directory.
-Just put PyModel/bin on your execution PATH and PyModel/pymodel on
-your PYTHONPATH.  You can achieve this by executing the script
-PyModel/bin/pymodel_paths (or pymodel_paths.bat on Windows).  That
-script assumes the distribution directory is in your HOME directory
-and is named PyModel (not PyModel-1.0, so you many need to rename it).
+Then unpack it using a tar or zip utility.  
+
+Alternatively, if you have pip installed you can download
+PyModel-1.0.tar.gz from PyPI into the current directory, and then
+unpack it, with a single command:
+
+ pip install --no-install --build . PyModel
+
+Then you can run PyModel using the commands and modules in the
+unpacked distribution directory.  Just put PyModel/bin on your
+execution PATH and PyModel/pymodel on your PYTHONPATH.  You can
+achieve this by executing the script PyModel/bin/pymodel_paths (or
+pymodel_paths.bat on Windows).  That script assumes the distribution
+directory is in your HOME directory and is named PyModel (not
+PyModel-1.0, so you many need to rename it).
 
 Confirm that PyModel works for you by running some of the test scripts
 in the samples directories.  For example, in
@@ -32,15 +40,28 @@ The setup.py script included in the distribution now supports the
 install argument, so you can optionally install the PyModel python
 modules and commands in system directories (for example in
 /Library/Python/2.7/site-packages and /usr/local/bin, respectively).
-In the PyModel directory, type the command: sudo python setup.py
-install.    Then you should not need to execute pymodel_path, but 
-You still need to type the command: source tpath (in Windows, just tpath)
+In the PyModel directory, type the command: 
+
+ sudo python setup.py install
+
+Alternatively, if you have pip installed you can type the command:
+
+ sudo pip install --no-download --build . PyModel
+
+The pip utility maintains a registry of the packages it has installed,
+which makes it easy to review and uninstall packages.
+
+After installing you should not need to execute pymodel_path, but You
+still need to type the command: source tpath (in Windows, just tpath)
 in every session (terminal window).
 
-Most of the distribution is in the examples under PyModel/samples, and
-in the documentation under PyModel/notes, www, and talks, and in the
-README files in most directories.  Installation does not install these
-into any system directories; find them under the unpacked PyModel
-distribution directory.
+Most of the distribution contents is in the examples under
+PyModel/samples, and in the documentation under PyModel/notes, www,
+and talks, and in the README files in most directories.  Installation
+does not install these into any system directories; find them under
+the unpacked PyModel distribution directory.  This is why we
+recommend the pip --noinstall and --build switches.  The pip install
+command without these switches will not leave the unpacked
+distribution files available on your system.
 
 Revised May 2013

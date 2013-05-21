@@ -46,7 +46,7 @@ setup(
     maintainer_email = 'jon.p.jacky@gmail.com',
     url = 'https://github.com/jon-jacky/PyModel',
     description = 'Model-based testing in Python',
-    long_description = open('README.md').read(),
+    long_description = open('README.rst').read(),
     download_url = 'https://pypi.python.org/pypi/PyModel',
     license = 'BSD License',
 

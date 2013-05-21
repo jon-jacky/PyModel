@@ -6,17 +6,17 @@ from optparse import OptionParser
 
 usage = """pmt [options] models  
 
-models is a list of one or more module names (with no .py suffix).
-Each module named in models must contain a model, that is: a model
-program, an FSM, or a test suite.  In addition, a module named in
-models can contain additional configuration information for a model
-program.  Multiple models (model programs including configuration,
-FSMs, and test suites) are composed into a product.  The tester
-generates traces by executing the product, at random or guided by the
-strategy option.  To just view the traces, omit the implementation
-option.  To use pmt as an offline test generator, omit the
-implementation option and use the output option to save the traces in
-a test suite module.  To execute tests, provide the implementation
+PyModel Tester.  models is a list of one or more module names (with no
+.py suffix).  Each module named in models must contain a model, that
+is: a model program, an FSM, or a test suite.  In addition, a module
+named in models can contain additional configuration information for a
+model program.  Multiple models (model programs including
+configuration, FSMs, and test suites) are composed into a product.
+The tester generates traces by executing the product, at random or
+guided by the strategy option.  To just view the traces, omit the
+implementation option.  To use pmt as an offline test generator, omit
+the implementation option and use the output option to save the traces
+in a test suite module.  To execute tests, provide the implementation
 option.  To execute tests generated offline, provide that test suite
 module as the single command argument.  To generate and execute tests
 on-the-fly, provide one or more model programs and/or scenario FSMs as
