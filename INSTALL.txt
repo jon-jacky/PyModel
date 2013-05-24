@@ -22,13 +22,18 @@ unpack it, with a single command:
 
  pip install --no-install --build . PyModel
 
+Be sure to use the " --no-install -build . " options.
+
 Then you can run PyModel using the commands and modules in the
 unpacked distribution directory.  Just put PyModel/bin on your
 execution PATH and PyModel/pymodel on your PYTHONPATH.  You can
-achieve this by executing the script PyModel/bin/pymodel_paths (or
-pymodel_paths.bat on Windows).  That script assumes the distribution
-directory is in your HOME directory and is named PyModel (not
-PyModel-1.0, so you many need to rename it).
+achieve this by executing the script PyModel/bin/pymodel_paths.  That
+script assumes the distribution directory is in your HOME directory
+and is named PyModel (not PyModel-1.0, so you many need to rename it).
+On Windows, pymodel_paths_mydocs.bat assumes the unpacked PyModel
+directory is under your My Documents directory (as is common in
+Windows XP), while pymodel_paths.bat assumes it is under your home
+directory (which might be more common in Windows 7).
 
 Confirm that PyModel works for you by running some of the test scripts
 in the samples directories.  For example, in
@@ -38,8 +43,9 @@ program as it executes the PowerSwitch model.
 
 The setup.py script included in the distribution now supports the
 install argument, so you can optionally install the PyModel python
-modules and commands in system directories (for example in
-/Library/Python/2.7/site-packages and /usr/local/bin, respectively).
+modules and commands in system directories (for example, on Mac OS X:
+/Library/Python/2.7/site-packages and /usr/local/bin, respectively;
+on Windows: C:\Python27\Lib\site-packages and C:\Python27\Scripts).
 In the PyModel directory, type the command: 
 
  sudo python setup.py install
@@ -51,9 +57,10 @@ Alternatively, if you have pip installed you can type the command:
 The pip utility maintains a registry of the packages it has installed,
 which makes it easy to review and uninstall packages.
 
-After installing you should not need to execute pymodel_path, but You
-still need to type the command: source tpath (in Windows, just tpath)
-in every session (terminal window).
+After installing you should not need to execute pymodel_paths, but you
+may still need to type the command: source tpath in every session
+(terminal window).  After installing on Windows you may still need to
+set paths, pymodel_paths_installed.bat might be a useful example.
 
 Most of the distribution contents is in the examples under
 PyModel/samples, and in the documentation under PyModel/notes, www,

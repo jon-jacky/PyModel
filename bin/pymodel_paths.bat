@@ -1,6 +1,6 @@
-set PATH=%PATH%;%USERPROFILE%\My Documents\PyModel\bin
-set PATH=%PATH%;%USERPROFILE%\My Documents\PyModel\pymodel
-set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\My Documents\PyModel\pymodel
+set PATH=%PATH%;%USERPROFILE%\PyModel\bin
+set PATH=%PATH%;%USERPROFILE%\PyModel\pymodel
+set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\PyModel\pymodel
 set PYTHONPATH=.;%PYTHONPATH%
 set PATHEXT=%PATHEXT%;.PY
 

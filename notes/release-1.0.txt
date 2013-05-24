@@ -1,12 +1,20 @@
 
 PyModel v 1.0 release notes
 
-PyModel is a model-based testing framework for Python.  Earlier public
-releases were versions 0.80 in Jan 2010, 0.85 in Mar 2010, and 0.90 in
-July 2011.  Since July 2011 ongoing work has been available at GitHub:
-https://github.com/jon-jacky/PyModel/  PyModel can also be downloaded
-from PyPI http://pypi.python.org/pypi/PyModel or 
-http://staff.washington.edu/jon/pymodel/www/
+PyModel is a model-based testing framework for Python.  In model-based
+testing, you code a model that can generate as many test cases as
+needed; the model also checks the test outcomes.  In the samples
+included with PyModel, there are models and test scripts for network
+sockets, a communication protocol, embedded controllers, some data
+structures, a multithreaded application, and a web application.
+PyModel also includes an analyzer for validating models, visualizing
+their behavior, and checking their safety properties.
+
+Earlier public releases were versions 0.80 in Jan 2010, 0.85 in Mar
+2010, and 0.90 in July 2011.  Since July 2011 ongoing work has been
+available at GitHub: https://github.com/jon-jacky/PyModel/ PyModel can
+also be downloaded from PyPI http://pypi.python.org/pypi/PyModel or
+the author's web page at http://staff.washington.edu/jon/pymodel/www/
 
 This release is called version 1.0 because it includes all of the
 features considered in the original project plan.  (Development and
