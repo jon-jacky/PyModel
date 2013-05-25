@@ -5,9 +5,9 @@ Nov 2009  Version epsilon, posted for colleagues but not announced
 Jan 2010  Version 0.8  For Northwest Python Day 2010
 Mar 2010  Version 0.85 Add observable actions, improved graphics, etc.
 Jul 2011  Version 0.9  Add state-dependent domains, dotpdf, more samples, etc.
-Apr 2013  Version 1.0  Add pmv, support and document asynchronous steppers, etc.
+May 2013  Version 1.0  Support and document asynchronous steppers, add pmv, etc.
 
 For much more information, see release notes: release-0.85.txt etc.
 
 
-Revised March 2013
+Revised May 2013
