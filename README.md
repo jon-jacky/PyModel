@@ -56,7 +56,9 @@ its own for visualization and safety analysis.
 For more information, read the [notes](notes), browse the
 [code](pymodel), peruse the [talks](talks),
 or try the [samples](samples).  There are README files in most of the
-directories.
+directories.  The most thoroughly explained sample is [Socket](samples/Socket),
+which demonstrates several PyModel techniques for modeling and testing systems
+that exhibit nondeterminism, concurrency, and asynchrony.
 
 Here are the [slides](talks/pymodel-nwpd10.pdf) for
 talks on PyModel given at [NWPD10](http://www.seapig.org/NWPD10)

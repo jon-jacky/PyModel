@@ -3,7 +3,14 @@ PyModel samples
 ===============
 
 There is a directory for each sample, including a *README* with more
-information about that sample.  The samples are:
+information about that sample.  
+
+The most thoroughly explained sample is [Socket](Socket),
+which demonstrates several PyModel techniques for modeling and testing systems
+that exhibit nondeterminism, concurrency, and asynchrony.
+
+
+The samples are:
 
 
 - *abp*: models the *alternating bit protocol*, a simple network
