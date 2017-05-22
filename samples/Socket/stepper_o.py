@@ -57,4 +57,4 @@ def test_action(aname, args, modelResult):
     return None # pmt will check observation_queue
 
   else:
-    raise NotImplementedError, 'action not supported by stepper: %s' % aname
+    raise NotImplementedError('action not supported by stepper: %s' % aname)

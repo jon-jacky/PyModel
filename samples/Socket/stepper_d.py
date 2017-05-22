@@ -76,4 +76,4 @@ def test_action(aname, args, model_result):
       return 'recv returned %s (%s), expected %s (%s)' % (sdata, nd, smodel, nm)
 
   else:
-    raise NotImplementedError, 'action not supported by stepper: %s' % aname
+    raise NotImplementedError('action not supported by stepper: %s' % aname)

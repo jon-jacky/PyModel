@@ -80,7 +80,7 @@ from copy import copy
 program = (( 'listfiles', ),  # thread 0
            ( 'openfile', ))   # thread 1
 
-threads = range(len(program)) # one element of program for each thread
+threads = list(range(len(program))) # one element of program for each thread
 
 unsynchronized = False # False: use tracelock, True: ignore tracelock
 

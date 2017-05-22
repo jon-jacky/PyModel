@@ -2,7 +2,7 @@
 Interface to an FSM module (graph) used by ProductModelProgram
 """
 
-from model import Model
+from .model import Model
 
 class FSM(Model):
 

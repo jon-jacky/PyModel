@@ -26,7 +26,7 @@ def listen():
     # Listen, prepare for senders to connect
     listener.bind(('localhost', port))
     listener.listen(1) 
-    print '\nServer listens on localhost port %s with RCVBUF size %s' % (port, rcvbuf)
+    print('\nServer listens on localhost port %s with RCVBUF size %s' % (port, rcvbuf))
 
 
 # Define function for sender connect - also used in stepper reset()
@@ -35,11 +35,11 @@ def connect():
   sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   # get and print send buffer size, just FYI
   sndbuf = sender.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-  print 'Sender creates socket with SNDBUF size %s' % (sndbuf)
+  print('Sender creates socket with SNDBUF size %s' % (sndbuf))
   sender.connect(('localhost', port))
-  print 'Sender connects to localhost port %s' % port
+  print('Sender connects to localhost port %s' % port)
   receiver, addr = listener.accept()
-  print 'Server accepts connection from ', addr
+  print('Server accepts connection from ', addr)
   # State needed to remember _call args for __return
   msg = ''
   n = 0

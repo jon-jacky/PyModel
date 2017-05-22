@@ -41,8 +41,8 @@ def main():
     app_module = args[0]
     app = __import__(app_module)
     application = app.application
-    print "Running %s at http://localhost:%s/" \
-        % (app_module, options.port)
+    print("Running %s at http://localhost:%s/" \
+        % (app_module, options.port))
     httpd = simple_server.WSGIServer(('', options.port), 
                                      simple_server.WSGIRequestHandler)
     httpd.set_app(application)
