@@ -10,10 +10,10 @@ import pdb # can optionally run in debugger, see main
 import random
 import signal
 import traceback
-import TesterOptions
-import observation_queue as observation
+from . import TesterOptions
+from . import observation_queue as observation
 
-from ProductModelProgram import ProductModelProgram
+from .ProductModelProgram import ProductModelProgram
 
 class TimeoutException(Exception): 
   pass 
@@ -103,9 +103,9 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     modelResult = mp.DoAction(aname, args) # Execute in model, get result
     qResult = quote(modelResult)
     if modelResult != None:
-      print aname if options.quiet else '%s%s / %s' % (aname, args, qResult)
+      print(aname if options.quiet else '%s%s / %s' % (aname, args, qResult))
     else:
-      print aname if options.quiet else '%s%s' % (aname, args)
+      print(aname if options.quiet else '%s%s' % (aname, args))
     if options.output:
       if qResult != None:
         f.write('    (%s, %s, %s),\n' % (aname, args, qResult))
@@ -160,11 +160,11 @@ def RunTest(options, mp, stepper, strategy, f, krun):
   if stepper and not mp.Accepting() and not failMessage:
       failMessage = infoMessage # test run ends in non-accepting state: fail
   if failMessage:
-    print '%3d. Failure at step %s, %s' % (krun, isteps, failMessage)
+    print('%3d. Failure at step %s, %s' % (krun, isteps, failMessage))
   else:
-    print '%3d. %s at step %s%s' % (krun, 'Success' if stepper else 'Finished',
+    print('%3d. %s at step %s%s' % (krun, 'Success' if stepper else 'Finished',
                                    isteps, 
-                                   (', %s' % infoMessage) if infoMessage else '')
+                                   (', %s' % infoMessage) if infoMessage else ''))
   if options.output:
     f.write('  ],\n')
 
@@ -231,7 +231,7 @@ def main():
     RunTest(options, mp, stepper, strategy, f, k)
     k += 1     
   if k > 1:
-    print 'Test finished, completed %s runs' % k
+    print('Test finished, completed %s runs' % k)
 
   if options.output:
     f.write(']')

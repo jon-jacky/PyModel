@@ -70,7 +70,7 @@ def test_action(aname, args, modelResult):
     return None # pmt will call wait(), below
 
   else:
-    raise NotImplementedError, 'action not supported by stepper: %s' % aname
+    raise NotImplementedError('action not supported by stepper: %s' % aname)
 
 
 def wait(timeout):

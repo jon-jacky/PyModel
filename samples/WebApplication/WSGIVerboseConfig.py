@@ -12,7 +12,7 @@ logoutPage = 'logout.php'
 webAppUrl = site + path + webAppPage
 logoutUrl = site + path + logoutPage
 
-print 'webAppUrl %s' % webAppUrl # debug
+print('webAppUrl %s' % webAppUrl) # debug
 
 debuglevel = 1  # 1: print HTTP headers, 0: don't print
 # show_page = True 

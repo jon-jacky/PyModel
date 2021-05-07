@@ -9,7 +9,7 @@ def TestAction(aname, args, modelResult):
         (seconds,) = args
         time.sleep(seconds)
     else:
-        raise NotImplementedError, 'action not supported by stepper: %s' % aname
+        raise NotImplementedError('action not supported by stepper: %s' % aname)
 
 def Reset():
     pass

@@ -15,6 +15,6 @@ test = __import__(sys.argv[1])
 #  ... ]
 
 for (description, cmd) in test.cases: 
-  print description
+  print(description)
   os.system(cmd)
-  print
+  print()

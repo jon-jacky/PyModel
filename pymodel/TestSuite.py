@@ -3,7 +3,8 @@ Interface to a test suite module (one or more runs) used by ProductModelProgram
 """
 
 from operator import concat
-from model import Model
+from .model import Model
+from functools import reduce
 
 class TestSuite(Model):
 

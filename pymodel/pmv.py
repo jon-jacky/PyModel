@@ -5,7 +5,7 @@ Collect all the command line options and redistribute them to each program
 """
 
 import os
-import ViewerOptions
+from . import ViewerOptions
 
 # an option in a singleton tuple means there might be a list of such options
 # use tuples not lists here so they can be keys in dict
@@ -27,10 +27,10 @@ def make_opts(keys, options):
                                          else k[0]]])
 
 def command(cmd):
-    print cmd # DEBUG
+    print(cmd) # DEBUG
     status = os.system(cmd)
     if status:
-        print 'Failed: %s' % cmd  # status 0 means success
+        print('Failed: %s' % cmd)  # status 0 means success
 
 def main():
     (options, args) = ViewerOptions.parse_args()

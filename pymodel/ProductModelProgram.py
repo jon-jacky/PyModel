@@ -21,9 +21,10 @@ and translates aname string to action function a: a = getattr(module, aname)
 from operator import concat
 from collections import defaultdict
 
-from FSM import FSM
-from TestSuite import TestSuite
-from ModelProgram import ModelProgram
+from .FSM import FSM
+from .TestSuite import TestSuite
+from .ModelProgram import ModelProgram
+from functools import reduce
    
 class ProductModelProgram(object):
  
@@ -57,19 +58,19 @@ class ProductModelProgram(object):
     # Now that all modules have been imported and executed their __init__
     #  do a postprocessing pass over all model objects
     #  to process metadata that might be affected by configuration modules
-    for mp in self.mp.values():
+    for mp in list(self.mp.values()):
       mp.post_init()
 
     # set of all anames in all model programs - the vocabulary of the product
     self.anames = set().union(*[set([a.__name__ for a in mp.actions ])
-                                for mp in self.mp.values()])    
+                                for mp in list(self.mp.values())])    
     # print 'anames %s' % self.anames # DEBUG
 
     # set of anames of all observable actions in all model programs
     # observables obtain arg values from the environment, not parameter gen.
     self.observables = set().union(*[set([a.__name__ 
                                           for a in mp.module.observables])
-                                     for mp in self.mp.values()])
+                                     for mp in list(self.mp.values())])
                                      # FSM and TestSuite must have .observables
     # print 'observables %s' % self.observables # DEBUG
 
@@ -92,7 +93,7 @@ class ProductModelProgram(object):
                 # NOT! empty argument list in model matches any arguments
                 # NOT! or m.ActionEnabled(getattr(m.module, aname), ())
                 # handle zero-args/match-all inside m.ActionEnabled
-               for m in self.mp.values()
+               for m in list(self.mp.values())
                # aname might be an unshared action, not present in all mp
                if aname in [ a.__name__ for a in m.actions ]])
 
@@ -112,7 +113,7 @@ class ProductModelProgram(object):
      where there is just one value for each property for the whole product
     """
     # Call ParamGen here to allow for state-dependent parameter generation
-    for mp in self.mp.values():
+    for mp in list(self.mp.values()):
       if isinstance(mp, ModelProgram):
         mp.ParamGen()
     
@@ -127,13 +128,13 @@ class ProductModelProgram(object):
 
     # dict from action to sequence of argslists
     argslists = defaultdict(list)
-    for transitions in enabledScenarioActions.values():
+    for transitions in list(enabledScenarioActions.values()):
       for (action, args, result, next_state, properties) in transitions:
         argslists[action].append(args) # append not extend
 
     # If more than one scenario in product, there may be duplicates - use sets
     scenarioArgslists = dict([(action, set(args))
-                              for (action,args) in argslists.items()])
+                              for (action,args) in list(argslists.items())])
     # print 'scenarioArgslists %s' % scenarioArgslists
   
     # Pass scenarioArgslists to ModelProgram EnabledTransitions
@@ -152,7 +153,7 @@ class ProductModelProgram(object):
     # set (with no duplicates) of all (aname, args, result) in enabledActions
     transitions = set([(a.__name__, args, result) 
                         for (a,args,result,next,properties) in 
-                           reduce(concat,enabledActions.values())])
+                           reduce(concat,list(enabledActions.values()))])
     # print 'transitions %s' % transitions
 
     # dict from (aname, args, result) 
@@ -226,11 +227,11 @@ class ProductModelProgram(object):
     """
     return { 'accepting': 
              # all mp in the current state are in their accepting states
-             all([ m.Properties()['accepting'] for m in self.mp.values() ]),
+             all([ m.Properties()['accepting'] for m in list(self.mp.values()) ]),
              'statefilter': 
-             all([ m.Properties()['statefilter'] for m in self.mp.values() ]),
+             all([ m.Properties()['statefilter'] for m in list(self.mp.values()) ]),
              'stateinvariant': 
-             all([ m.Properties()['stateinvariant'] for m in self.mp.values() ])
+             all([ m.Properties()['stateinvariant'] for m in list(self.mp.values()) ])
              } 
   
   def NextProperties(self, next_properties):
@@ -252,7 +253,7 @@ class ProductModelProgram(object):
     return result from last mp arg
     """
     result = None
-    for m in self.mp.values():
+    for m in list(self.mp.values()):
       # aname might be an unshared action, not present in all mp
       if aname in [ a.__name__ for a in m.actions ]:
         result = m.DoAction(getattr(m.module, aname), args)
@@ -262,7 +263,7 @@ class ProductModelProgram(object):
     """
     Reset all the mp
     """
-    for m in self.mp.values():
+    for m in list(self.mp.values()):
       m.Reset()
 
   def Current(self):
