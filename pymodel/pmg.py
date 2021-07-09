@@ -3,8 +3,8 @@
 PyModel Graphics - generate graphics from pymodel FSM
 """
 
-from . import GraphicsOptions
-from .Dot import dotfile
+from pymodel import GraphicsOptions
+from pymodel.Dot import dotfile
 
 def main():
     (options, args) = GraphicsOptions.parse_args()

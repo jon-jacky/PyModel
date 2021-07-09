@@ -9,7 +9,7 @@ import sys
 import copy
 import inspect
 import itertools
-from .model import Model
+from pymodel.model import Model
 import collections
 
 class ModelProgram(Model):

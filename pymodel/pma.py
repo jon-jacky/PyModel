@@ -3,9 +3,9 @@
 PyModel Analyzer - generate FSM from product model program
 """
 
-from . import Analyzer
-from . import AnalyzerOptions
-from .ProductModelProgram import ProductModelProgram
+from pymodel import Analyzer
+from pymodel import AnalyzerOptions
+from pymodel.ProductModelProgram import ProductModelProgram
 
 def main():
     (options, args) = AnalyzerOptions.parse_args()

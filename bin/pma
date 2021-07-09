@@ -3,6 +3,6 @@
 This is pma command in bin directory, runs pma.py module in pymodel directory
 """
 
-import pma  # find pma.py anywhere on Python path
+import pymodel.pma  # find pma.py anywhere on Python path
 
-pma.main()
+pymodel.pma.main()
