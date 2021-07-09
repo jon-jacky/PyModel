@@ -3,6 +3,6 @@
 This is pmt command in bin directory, runs pmt.py module in pymodel directory
 """
 
-import pmt  # find pmt.py anywhere on Python path
+import pymodel.pmt  # find pmt.py anywhere on Python path
 
-pmt.main()
+pymodel.pmt.main()

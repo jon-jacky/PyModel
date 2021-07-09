@@ -5,7 +5,7 @@ Collect all the command line options and redistribute them to each program
 """
 
 import os
-from . import ViewerOptions
+from pymodel import ViewerOptions
 
 # an option in a singleton tuple means there might be a list of such options
 # use tuples not lists here so they can be keys in dict

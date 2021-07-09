@@ -5,15 +5,15 @@ PyModel Tester
 
 import os
 import sys
-import imp
+import types
 import pdb # can optionally run in debugger, see main
 import random
 import signal
 import traceback
-from . import TesterOptions
-from . import observation_queue as observation
+from pymodel import TesterOptions
+from pymodel import observation_queue as observation
 
-from .ProductModelProgram import ProductModelProgram
+from pymodel.ProductModelProgram import ProductModelProgram
 
 class TimeoutException(Exception): 
   pass 
@@ -196,7 +196,7 @@ def main():
     if hasattr(strategy, 'select_action'):
       strategy.SelectAction = strategy.select_action
   else:
-    strategy = imp.new_module('strategy') 
+    strategy = types.ModuleType('strategy') 
     strategy.SelectAction = SelectAction # handle default strategy in same way
 
   if options.seed:            # NB -s 0 has no effect, by definition!

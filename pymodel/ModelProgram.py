@@ -9,7 +9,8 @@ import sys
 import copy
 import inspect
 import itertools
-from .model import Model
+from pymodel.model import Model
+import collections
 
 class ModelProgram(Model):
 
@@ -71,7 +72,7 @@ class ModelProgram(Model):
     else:
       args = () # no arguments anywhere, args must have this value
     domains = [ self.module.domains[a][arg]() # evaluate state-dependent domain
-                if callable(self.module.domains[a][arg]) 
+                if isinstance(self.module.domains[a][arg], collections.Callable) 
                 else self.module.domains[a][arg] # look up static domain
                 for arg in args if a in self.module.domains ]
     combination = self.module.combinations.get(a, 'all')  # default is 'all'

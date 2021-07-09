@@ -21,9 +21,9 @@ and translates aname string to action function a: a = getattr(module, aname)
 from operator import concat
 from collections import defaultdict
 
-from .FSM import FSM
-from .TestSuite import TestSuite
-from .ModelProgram import ModelProgram
+from pymodel.FSM import FSM
+from pymodel.TestSuite import TestSuite
+from pymodel.ModelProgram import ModelProgram
 from functools import reduce
    
 class ProductModelProgram(object):
