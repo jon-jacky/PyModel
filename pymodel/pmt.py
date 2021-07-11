@@ -6,6 +6,7 @@ PyModel Tester
 import os
 import sys
 import types
+import importlib
 import pdb # can optionally run in debugger, see main
 import random
 import signal
@@ -179,7 +180,7 @@ def main():
   else:
     mp = ProductModelProgram(options, args)
 
-  stepper = __import__(options.iut) if options.iut else None
+  stepper = importlib.import_module(options.iut) if options.iut else None
   if stepper:
     # recognize PEP-8 style names (all lowercase) if present
     if hasattr(stepper, 'testaction'):
@@ -190,7 +191,7 @@ def main():
       stepper.Reset = stepper.reset
 
   if options.strategy:
-    strategy = __import__(options.strategy)
+    strategy = importlib.import_module( '.'.join(('pymodel', options.strategy)) )
     if hasattr(strategy, 'selectaction'):
       strategy.SelectAction = strategy.selectaction
     if hasattr(strategy, 'select_action'):

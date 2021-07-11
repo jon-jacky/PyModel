@@ -52,7 +52,7 @@ def application(environ, start_response):
         wd = environ['wsgi.input']
         method = environ['REQUEST_METHOD']
         length = int(environ['CONTENT_LENGTH'])
-        request_body = wd.read(length)
+        request_body = wd.read(length).decode()
         vars = urllib.parse.parse_qs(request_body)
         user = vars['username'][0] # vars[x] are lists, get first item
         passwd = vars['password'][0]
@@ -110,7 +110,7 @@ def application(environ, start_response):
     response_headers += [('Content-Type', 'text/html'),
                          ('Content-Length', str(len(response_body)))]
     start_response(status, response_headers)
-    return [response_body]
+    return [response_body.encode()]
 
 
 environ_template = """environ is 

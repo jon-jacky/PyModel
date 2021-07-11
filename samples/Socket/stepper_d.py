@@ -53,7 +53,7 @@ def test_action(aname, args, model_result):
 
   elif aname == 'send_return':
     (n,) = args 
-    nchars = connection.sender.send(msg)
+    nchars = connection.sender.send(msg.encode())
     if n != nchars:
       return 'send returned %s, expected %s ' % (nchars, n)
 
@@ -62,7 +62,7 @@ def test_action(aname, args, model_result):
 
   elif aname == 'recv_return':
     (msg,) = args 
-    data = connection.receiver.recv(bufsize)
+    data = connection.receiver.recv(bufsize).decode()
     if data != msg: # now msg is like old modelresult
       # wrapped failMessage should fit on two 80 char lines, 
       # failMessage prefix from pmt is 20 char, fixed text here is > 32 char

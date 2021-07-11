@@ -59,11 +59,11 @@ session = dict() # each user's Session
 
 # like in NModel WebApplication WebTestHelper
 def loginFailed(page):
-  return (page.find('Incorrect login') > -1)
+  return (page.decode().find('Incorrect login') > -1)
 
 # not in NModel WebApplication, it has no positive check for login success
 def loginSuccess(page):
-  return (page.find('DoStuff') > -1)
+  return (page.decode().find('DoStuff') > -1)
 
 # similar to NModel WebApplication WebTestHelper
 intPattern = re.compile(r'Number: (\d+)')
@@ -98,7 +98,7 @@ def TestAction(aname, args, modelResult):
     if show_page:
       print(page)
     # POST username, password
-    page = session[user].opener.open(webAppUrl, postArgs).read()
+    page = session[user].opener.open(webAppUrl, postArgs.encode()).read()
     if show_page:
       print(page)
     # Check conformance, reproduce NModel WebApplication Stepper logic:
@@ -119,13 +119,13 @@ def TestAction(aname, args, modelResult):
   elif aname == 'UpdateInt':
     user = users[args[0]]
     numArg = urllib.parse.urlencode({'num':args[1]})
-    page = session[user].opener.open("%s?%s" % (webAppUrl,numArg)).read()
+    page = session[user].opener.open("%s?%s" % (webAppUrl,numArg.encode())).read().decode()
     if show_page:
       print(page)
 
   elif aname == 'ReadInt':
     user = users[args[0]]
-    page = session[user].opener.open(webAppUrl).read()
+    page = session[user].opener.open(webAppUrl).read().decode()
     if show_page:
       print(page)
     numInPage = intContents(page)    

@@ -34,7 +34,7 @@ import stepper_util as connection
 # But we can import these items in this way, they do work after reset -- why?
 from stepper_util import reset
 
-import observation_queue as observation
+import pymodel.observation_queue as observation
 
 observation.asynch = True # make pmt wait for asynch observable actions
 
@@ -52,7 +52,7 @@ def test_action(aname, args, modelResult):
   if aname == 'send_call':
     def wait_for_return():
         (msg,) = args # extract msg from args tuple, like msg = args[0]
-        nchars = connection.sender.send(msg)
+        nchars = connection.sender.send(msg.encode())
         observation.queue.append(('send_return', (nchars,)))
         event.set() # notify pmt that data has been added to queue
     t = threading.Thread(target=wait_for_return)
@@ -62,7 +62,7 @@ def test_action(aname, args, modelResult):
   elif aname == 'recv_call':
     def wait_for_return():
         (bufsize,) = args
-        data = connection.receiver.recv(bufsize)
+        data = connection.receiver.recv(bufsize).decode()
         observation.queue.append(('recv_return', (data,)))
         event.set() # notify pmt that data has been added to queue
     t = threading.Thread(target=wait_for_return)
