@@ -83,12 +83,6 @@ PyModel is covered by the
 Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
 
-Revised May 2013
-
-
----------------------------------------------------------------------------------
-
-
 Updates
 =======
 
@@ -96,4 +90,6 @@ Python 3.x support, and additional updates and fixes:
 - @philscrace2
 - @zlorb
 
+
+Revised Jul 2021
 
