@@ -1,6 +1,6 @@
 This version of PyModel is no longer being maintained.  
 
-(July 2021: <https://github.com/zlorb/PyModel> is being actively developed.
+The fork at <https://github.com/zlorb/PyModel> is being actively developed.
 It adds Python 3.x support.  
 
 PyModel: Model-based testing in Python
