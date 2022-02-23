@@ -87,6 +87,7 @@ Updates
 =======
 
 Python 3.x support, and additional updates and fixes:
+- @jproudlo
 - @philscrace2
 - @zlorb
 
