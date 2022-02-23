@@ -1,11 +1,12 @@
+This version of PyModel is no longer being maintained.  
+
+(July 2021: <https://github.com/zlorb/PyModel> is being actively developed.
+It adds Python 3.x support.  
 
 PyModel: Model-based testing in Python
 ======================================
 
 **PyModel** is an open-source model-based testing framework in Python.
-
-(July 2021: The fork at <https://github.com/zlorb/PyModel> adds Python 3.x
-support.  They have submitted a pull request but I have not yet merged it.)
 
 In model-based testing, you code a *model* that can generate as many
 test cases as needed.  The model also checks the test outcomes.
@@ -85,5 +86,5 @@ PyModel is covered by the
 
 Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
+Revised May 2013 (notes about zlorb fork added Jul 2021, Feb 2022)
 
-Revised May 2013 (note about pull request added Jul 2021)
