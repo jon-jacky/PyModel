@@ -37,7 +37,7 @@ import stepper_util as connection
 # But we can import these items in this way, they do work after reset -- why?
 from stepper_util import reset
 
-import observation_queue as observation
+import pymodel.observation_queue as observation
 
 observation.asynch = True # make pmt wait for asynch observable actions
 
@@ -70,7 +70,7 @@ def test_action(aname, args, modelResult):
     return None # pmt will call wait(), below
 
   else:
-    raise NotImplementedError, 'action not supported by stepper: %s' % aname
+    raise NotImplementedError('action not supported by stepper: %s' % aname)
 
 
 def wait(timeout):
@@ -96,13 +96,13 @@ def call_select(timeout):
                                                        [],timeout)
     if inputready and inbuf_size:
         # print 'inputready %s, inbuf_size %s' % (inputready, inbuf_size) # DEBUG
-        recv_msg = connection.receiver.recv(inbuf_size)
+        recv_msg = connection.receiver.recv(inbuf_size).decode()
         observation.queue.append(('recv_return', (recv_msg,)))
         inbuf_size = 0 
 
     if outputready and send_msg:
         # print 'outputready %s, send_msg %s' % (outputready, send_msg) # DEBUG
-        n = connection.sender.send(send_msg)
+        n = connection.sender.send(send_msg.encode())
         observation.queue.append(('send_return', (n,)))
         send_msg = ''
         # RECALL n might be less then len(send_msg): "It is your

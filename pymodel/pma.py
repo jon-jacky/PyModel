@@ -3,9 +3,9 @@
 PyModel Analyzer - generate FSM from product model program
 """
 
-import Analyzer
-import AnalyzerOptions
-from ProductModelProgram import ProductModelProgram
+from pymodel import Analyzer
+from pymodel import AnalyzerOptions
+from pymodel.ProductModelProgram import ProductModelProgram
 
 def main():
     (options, args) = AnalyzerOptions.parse_args()
@@ -15,8 +15,8 @@ def main():
     else:
         mp = ProductModelProgram(options, args)
         Analyzer.explore(mp, options.maxTransitions)
-        print '%s states, %s transitions, %s accepting states, %s unsafe states' % \
-            (len(Analyzer.states),len(Analyzer.graph),len(Analyzer.accepting),len(Analyzer.unsafe))
+        print('%s states, %s transitions, %s accepting states, %s unsafe states' % \
+            (len(Analyzer.states),len(Analyzer.graph),len(Analyzer.accepting),len(Analyzer.unsafe)))
         mname = options.output if options.output else '%sFSM' % args[0]
         Analyzer.save(mname)
 

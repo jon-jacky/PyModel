@@ -15,7 +15,7 @@ or
 """
 
 import pprint
-import urlparse
+import urllib.parse
 
 # page templates appear at the end of this file
 
@@ -52,8 +52,8 @@ def application(environ, start_response):
         wd = environ['wsgi.input']
         method = environ['REQUEST_METHOD']
         length = int(environ['CONTENT_LENGTH'])
-        request_body = wd.read(length)
-        vars = urlparse.parse_qs(request_body)
+        request_body = wd.read(length).decode()
+        vars = urllib.parse.parse_qs(request_body)
         user = vars['username'][0] # vars[x] are lists, get first item
         passwd = vars['password'][0]
         if user in password and password[user] == passwd:
@@ -80,7 +80,7 @@ def application(environ, start_response):
           and environ['REQUEST_METHOD'] == 'GET' 
           and cookie in sessions):
         user = sessions[cookie]
-        vars = urlparse.parse_qs(environ['QUERY_STRING'])
+        vars = urllib.parse.parse_qs(environ['QUERY_STRING'])
         if 'num' in vars:
             integers[user] = str(vars['num'][0]) # vars[x] are lists, 1st item
         if 'str' in vars:
@@ -110,7 +110,7 @@ def application(environ, start_response):
     response_headers += [('Content-Type', 'text/html'),
                          ('Content-Length', str(len(response_body)))]
     start_response(status, response_headers)
-    return [response_body]
+    return [response_body.encode()]
 
 
 environ_template = """environ is 

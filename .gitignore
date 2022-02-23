@@ -1,0 +1,26 @@
+# Virtualenv files
+bin/
+lib/
+Lib/
+Scripts/
+include/
+Include/
+pip-selfcheck.json
+selenium/
+share/
+.env
+.python-version
+
+# Python Files
+*.Python
+__pycache__/
+*.pyd
+*.pyc
+.functional.backup
+.ipynb_checkpoints
+environment.pickle
+
+# IDE Files
+.idea
+.cache
+.vscode

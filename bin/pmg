@@ -3,6 +3,6 @@
 This is pmg command in bin directory, runs pmg.py module in pymodel directory
 """
 
-import pmg  # find pmg.py anywhere on Python path
+import pymodel.pmg  # find pmg.py anywhere on Python path
 
-pmg.main()
+pymodel.pmg.main()

@@ -32,7 +32,7 @@ import stepper_util as connection
 # But we can import these items in this way, they do work after reset -- why?
 from stepper_util import reset
 
-import observation_queue as observation
+import pymodel.observation_queue as observation
 
 def test_action(aname, args, modelResult):
   """
@@ -46,15 +46,15 @@ def test_action(aname, args, modelResult):
 
   if aname == 'send_call':
     (msg,) = args # extract msg from args tuple, like msg = args[0]
-    n = connection.sender.send(msg)
+    n = connection.sender.send(msg.encode())
     observation.queue.append(('send_return', (n,)))
     return None # pmt will check observation_queue
   
   elif aname == 'recv_call':
     (bufsize,) = args
-    msg = connection.receiver.recv(bufsize)
+    msg = connection.receiver.recv(bufsize).decode()
     observation.queue.append(('recv_return', (msg,)))
     return None # pmt will check observation_queue
 
   else:
-    raise NotImplementedError, 'action not supported by stepper: %s' % aname
+    raise NotImplementedError('action not supported by stepper: %s' % aname)

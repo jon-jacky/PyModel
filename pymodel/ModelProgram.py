@@ -9,11 +9,17 @@ import sys
 import copy
 import inspect
 import itertools
-from model import Model
+from pymodel.model import Model
+import collections
+import pprint
+
+DEBUG = False
 
 class ModelProgram(Model):
 
   def __init__(self, module, exclude, include):
+    if DEBUG:
+      self.pp = pprint.PrettyPrinter(width=120)
     Model.__init__(self, module, exclude, include)
 
   def post_init(self):
@@ -71,14 +77,17 @@ class ModelProgram(Model):
     else:
       args = () # no arguments anywhere, args must have this value
     domains = [ self.module.domains[a][arg]() # evaluate state-dependent domain
-                if callable(self.module.domains[a][arg]) 
+                if isinstance(self.module.domains[a][arg], collections.Callable) 
                 else self.module.domains[a][arg] # look up static domain
                 for arg in args if a in self.module.domains ]
     combination = self.module.combinations.get(a, 'all')  # default is 'all'
     if combination == 'cases': # as many args as items in smallest domain
-      argslists = zip(*domains)
+      argslists = list(zip(*domains))
     elif combination == 'all':   # Cartesian product
       argslists = itertools.product(*domains)
+    if DEBUG:
+      print('list(itertools.product(*domains)):')
+      self.pp.pprint(list(itertools.product(*domains)))
     # might be nice to support 'pairwise' also
     # return tuple not list, hashable so it can be key in dictionary 
     # also handle special case (None,) indicates empty argslist in domains
@@ -104,7 +113,7 @@ class ModelProgram(Model):
     try:
       self.module.Reset()
     except AttributeError: # Reset is optional, but there is no default
-      print 'No Reset function for model program %s' % self.module.__name__
+      print('No Reset function for model program %s' % self.module.__name__)
       sys.exit()       
 
   def ActionEnabled(self, a, args):
@@ -120,8 +129,8 @@ class ModelProgram(Model):
       nargs = len(args)
       # nparams == 0 means match any args
       if nparams > 0 and nparams != nargs:
-        print 'Error: %s needs %s arguments, got %s.  Check parameter generator.' %\
-            (a_enabled.__name__, nparams, nargs)
+        print('Error: %s needs %s arguments, got %s.  Check parameter generator.' %\
+            (a_enabled.__name__, nparams, nargs))
         sys.exit(1) # Don't return, just exit with error status
       else:
         if nparams > 0:

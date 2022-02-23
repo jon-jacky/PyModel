@@ -5,15 +5,16 @@ PyModel Tester
 
 import os
 import sys
-import imp
+import types
+import importlib
 import pdb # can optionally run in debugger, see main
 import random
 import signal
 import traceback
-import TesterOptions
-import observation_queue as observation
+from pymodel import TesterOptions
+from pymodel import observation_queue as observation
 
-from ProductModelProgram import ProductModelProgram
+from pymodel.ProductModelProgram import ProductModelProgram
 
 class TimeoutException(Exception): 
   pass 
@@ -103,9 +104,9 @@ def RunTest(options, mp, stepper, strategy, f, krun):
     modelResult = mp.DoAction(aname, args) # Execute in model, get result
     qResult = quote(modelResult)
     if modelResult != None:
-      print aname if options.quiet else '%s%s / %s' % (aname, args, qResult)
+      print(aname if options.quiet else '%s%s / %s' % (aname, args, qResult))
     else:
-      print aname if options.quiet else '%s%s' % (aname, args)
+      print(aname if options.quiet else '%s%s' % (aname, args))
     if options.output:
       if qResult != None:
         f.write('    (%s, %s, %s),\n' % (aname, args, qResult))
@@ -160,11 +161,11 @@ def RunTest(options, mp, stepper, strategy, f, krun):
   if stepper and not mp.Accepting() and not failMessage:
       failMessage = infoMessage # test run ends in non-accepting state: fail
   if failMessage:
-    print '%3d. Failure at step %s, %s' % (krun, isteps, failMessage)
+    print('%3d. Failure at step %s, %s' % (krun, isteps, failMessage))
   else:
-    print '%3d. %s at step %s%s' % (krun, 'Success' if stepper else 'Finished',
+    print('%3d. %s at step %s%s' % (krun, 'Success' if stepper else 'Finished',
                                    isteps, 
-                                   (', %s' % infoMessage) if infoMessage else '')
+                                   (', %s' % infoMessage) if infoMessage else ''))
   if options.output:
     f.write('  ],\n')
 
@@ -179,7 +180,7 @@ def main():
   else:
     mp = ProductModelProgram(options, args)
 
-  stepper = __import__(options.iut) if options.iut else None
+  stepper = importlib.import_module(options.iut) if options.iut else None
   if stepper:
     # recognize PEP-8 style names (all lowercase) if present
     if hasattr(stepper, 'testaction'):
@@ -190,13 +191,13 @@ def main():
       stepper.Reset = stepper.reset
 
   if options.strategy:
-    strategy = __import__(options.strategy)
+    strategy = importlib.import_module( '.'.join(('pymodel', options.strategy)) )
     if hasattr(strategy, 'selectaction'):
       strategy.SelectAction = strategy.selectaction
     if hasattr(strategy, 'select_action'):
       strategy.SelectAction = strategy.select_action
   else:
-    strategy = imp.new_module('strategy') 
+    strategy = types.ModuleType('strategy') 
     strategy.SelectAction = SelectAction # handle default strategy in same way
 
   if options.seed:            # NB -s 0 has no effect, by definition!
@@ -231,7 +232,7 @@ def main():
     RunTest(options, mp, stepper, strategy, f, k)
     k += 1     
   if k > 1:
-    print 'Test finished, completed %s runs' % k
+    print('Test finished, completed %s runs' % k)
 
   if options.output:
     f.write(']')

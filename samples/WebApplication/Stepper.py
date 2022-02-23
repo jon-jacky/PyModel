@@ -3,9 +3,9 @@ WebApplication stepper (test harness)
 """
 
 import re
-import urllib
-import urllib2
-import cookielib
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import http.cookiejar
 
 # Default stepper configuration for 
 # webapp.py running on localhost at port 8080
@@ -34,12 +34,12 @@ try:
 except ImportError:
   pass 
 
-print 'webAppUrl: %s' % webAppUrl # show which config file (if any) 
+print('webAppUrl: %s' % webAppUrl) # show which config file (if any) 
 
 # handlers that are the same for all users
 
-redirect_handler= urllib2.HTTPRedirectHandler()
-debug_handler = urllib2.HTTPHandler(debuglevel=debuglevel)
+redirect_handler= urllib.request.HTTPRedirectHandler()
+debug_handler = urllib.request.HTTPHandler(debuglevel=debuglevel)
 
 # handlers that are different for each user are part of the session state
 
@@ -48,9 +48,9 @@ class Session(object):
   One user's session state: cookies and handlers
   """
   def __init__(self):
-    self.cookies = cookielib.CookieJar()
-    self.cookie_handler = urllib2.HTTPCookieProcessor(self.cookies)
-    self.opener = urllib2.build_opener(self.cookie_handler,
+    self.cookies = http.cookiejar.CookieJar()
+    self.cookie_handler = urllib.request.HTTPCookieProcessor(self.cookies)
+    self.opener = urllib.request.build_opener(self.cookie_handler,
                                        redirect_handler,debug_handler)
 
 session = dict() # each user's Session
@@ -59,11 +59,11 @@ session = dict() # each user's Session
 
 # like in NModel WebApplication WebTestHelper
 def loginFailed(page):
-  return (page.find('Incorrect login') > -1)
+  return (page.decode().find('Incorrect login') > -1)
 
 # not in NModel WebApplication, it has no positive check for login success
 def loginSuccess(page):
-  return (page.find('DoStuff') > -1)
+  return (page.decode().find('DoStuff') > -1)
 
 # similar to NModel WebApplication WebTestHelper
 intPattern = re.compile(r'Number: (\d+)')
@@ -92,15 +92,15 @@ def TestAction(aname, args, modelResult):
     if user not in session:
       session[user] = Session()
     password = passwords[user] if args[1] == 'Correct' else wrongPassword
-    postArgs = urllib.urlencode({'username':user, 'password':password})
+    postArgs = urllib.parse.urlencode({'username':user, 'password':password})
     # GET login page
     page = session[user].opener.open(webAppUrl).read()
     if show_page:
-      print page
+      print(page)
     # POST username, password
-    page = session[user].opener.open(webAppUrl, postArgs).read()
+    page = session[user].opener.open(webAppUrl, postArgs.encode()).read()
     if show_page:
-      print page
+      print(page)
     # Check conformance, reproduce NModel WebApplication Stepper logic:
     # check for login failed message, no check for positive indication of login
     result = 'Success'
@@ -114,27 +114,27 @@ def TestAction(aname, args, modelResult):
     page = session[user].opener.open(logoutUrl).read()
     del session[user] # clear out cookie/session ID
     if show_page:
-      print page
+      print(page)
 
   elif aname == 'UpdateInt':
     user = users[args[0]]
-    numArg = urllib.urlencode({'num':args[1]})
-    page = session[user].opener.open("%s?%s" % (webAppUrl,numArg)).read()
+    numArg = urllib.parse.urlencode({'num':args[1]})
+    page = session[user].opener.open("%s?%s" % (webAppUrl,numArg.encode())).read().decode()
     if show_page:
-      print page
+      print(page)
 
   elif aname == 'ReadInt':
     user = users[args[0]]
-    page = session[user].opener.open(webAppUrl).read()
+    page = session[user].opener.open(webAppUrl).read().decode()
     if show_page:
-      print page
+      print(page)
     numInPage = intContents(page)    
     if numInPage != modelResult:  # check conformance
       return 'found %s in page, expected %s' % (numInPage, modelResult)
     else:
       return None
   else:
-    raise NotImplementedError, 'action %s not handled by stepper' % aname
+    raise NotImplementedError('action %s not handled by stepper' % aname)
 
 
 def Reset():

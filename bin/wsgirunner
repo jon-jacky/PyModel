@@ -3,6 +3,6 @@
 This is wsgirunner command in bin directory, runs wsgirunner.py module in pymodel directory
 """
 
-import wsgirunner  # find wsgirunner.py anywhere on Python path
+import pymodel.wsgirunner  # find wsgirunner.py anywhere on Python path
 
-wsgirunner.main()
+pymodel.wsgirunner.main()
