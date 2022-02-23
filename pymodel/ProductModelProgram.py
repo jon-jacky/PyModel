@@ -18,6 +18,7 @@ This module translates action function a to string aname: aname = a.__name__
 and translates aname string to action function a: a = getattr(module, aname)
 """
 
+import pprint
 from operator import concat
 from collections import defaultdict
 
@@ -25,6 +26,8 @@ from pymodel.FSM import FSM
 from pymodel.TestSuite import TestSuite
 from pymodel.ModelProgram import ModelProgram
 from functools import reduce
+
+DEBUG = False
    
 class ProductModelProgram(object):
  
@@ -32,6 +35,9 @@ class ProductModelProgram(object):
     self.TestSuite = False # used by pmt nruns logic
     self.module = dict()  # dict of modules keyed by name
     self.mp = dict()      # dict of model programs keyed by same module name
+
+    if DEBUG:
+        self.pp = pprint.PrettyPrinter(width=120)
 
     # Populate self.module and self.mp from modules named in command line args
     # Models that users write are just modules, not classes (types)
@@ -124,7 +130,9 @@ class ProductModelProgram(object):
     enabledScenarioActions = \
         dict([(m, self.mp[m].EnabledTransitions(cleanup))
               for m in self.mp if (not isinstance(self.mp[m], ModelProgram))])
-    # print 'enabledScenarioActions %s' % enabledScenarioActions # DEBUG
+
+    if DEBUG:
+        print('enabledScenarioActions %s' % enabledScenarioActions)
 
     # dict from action to sequence of argslists
     argslists = defaultdict(list)
@@ -135,26 +143,37 @@ class ProductModelProgram(object):
     # If more than one scenario in product, there may be duplicates - use sets
     scenarioArgslists = dict([(action, set(args))
                               for (action,args) in list(argslists.items())])
-    # print 'scenarioArgslists %s' % scenarioArgslists
+    if DEBUG:
+        print('scenarioArgslists %s' % scenarioArgslists)
   
     # Pass scenarioArgslists to ModelProgram EnabledTransitions
     # so any observable actions can use these argslists
     enabledModelActions = \
          dict([(m, self.mp[m].EnabledTransitions(scenarioArgslists, cleanup))
                for m in self.mp if isinstance(self.mp[m], ModelProgram)])
-    # print 'enabledModelActions %s' % enabledModelActions # DEBUG
+    if DEBUG:
+        print('enabledModelActions:')
+        self.pp.pprint(enabledModelActions)
     
     # Combine enabled actions dictionaries (they have distinct keys)
     enabledActions = dict()
     enabledActions.update(enabledScenarioActions) # FSM and TestSuite
     enabledActions.update(enabledModelActions)    # ModelProgam
-    # print 'enabledActions %s' % enabledActions # DEBUG
+    if DEBUG:
+        print('enabledActions:')
+        self.pp.pprint(enabledActions)
 
-    # set (with no duplicates) of all (aname, args, result) in enabledActions
-    transitions = set([(a.__name__, args, result) 
-                        for (a,args,result,next,properties) in 
-                           reduce(concat,list(enabledActions.values()))])
-    # print 'transitions %s' % transitions
+    # list (with no duplicates) of all (aname, args, result) in enabledActions
+    # transitions should ideally be an ordered set. Unfortunately the built in
+    # set type is not guaranteed to be ordered (this appears to have changed in
+    # Python 3.7+), so we use fromkeys and list here as a workaround. (Could
+    # instead have used ordered-set from PyPi)
+    transitions = list(dict.fromkeys([(a.__name__, args, result)
+                        for (a,args,result,next,properties) in
+                           reduce(concat,list(enabledActions.values()))]))
+    if DEBUG:
+        print('transitions:')
+        self.pp.pprint(transitions)
 
     # dict from (aname, args, result) 
     # to set of all m where (aname, args, result) is enabled
@@ -166,7 +185,10 @@ class ProductModelProgram(object):
                      [(a.__name__, argsx, resultx) # argsx,resultx is inner loop
                       for (a,argsx,resultx,next,properties) in enabledActions[m]]]))
               for (aname, args, result) in transitions ])
-    # print 'invocations %s' % invocations # DEBUG
+
+    if DEBUG:
+        print('invocations:')
+        self.pp.pprint(invocations)
 
     # list of all (aname, args, result) that are enabled in the product
     # (aname,args,result) enabled in product if (aname,args,result) is enabled
@@ -179,6 +201,10 @@ class ProductModelProgram(object):
          if invocations[aname,args,result] | invocations.get((aname,(),None),
                                                              set())
          == self.vocabularies[aname]]
+
+    if DEBUG:
+        print('enabledAnameArgs:')
+        self.pp.pprint(enabledAnameArgs)
 
     # Now we have all enabled (action,args,result), now rearrange the data
 
@@ -200,7 +226,9 @@ class ProductModelProgram(object):
                 for m in self.mp ]))
          for (aname, args, result) in enabledAnameArgs ]
   
-    # print 'enabledTs %s' % enabledTs # DEBUG
+    if DEBUG:
+        print('enabledTs:')
+        self.pp.pprint(enabledTs)
 
     # combine result and properties from all the mp
     # list, all enabled [(aname,args,result,{m1:next1,m2:next2},properties),...]

@@ -11,10 +11,15 @@ import inspect
 import itertools
 from pymodel.model import Model
 import collections
+import pprint
+
+DEBUG = False
 
 class ModelProgram(Model):
 
   def __init__(self, module, exclude, include):
+    if DEBUG:
+      self.pp = pprint.PrettyPrinter(width=120)
     Model.__init__(self, module, exclude, include)
 
   def post_init(self):
@@ -80,6 +85,9 @@ class ModelProgram(Model):
       argslists = list(zip(*domains))
     elif combination == 'all':   # Cartesian product
       argslists = itertools.product(*domains)
+    if DEBUG:
+      print('list(itertools.product(*domains)):')
+      self.pp.pprint(list(itertools.product(*domains)))
     # might be nice to support 'pairwise' also
     # return tuple not list, hashable so it can be key in dictionary 
     # also handle special case (None,) indicates empty argslist in domains
