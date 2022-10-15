@@ -78,7 +78,7 @@ author's [web page](http://staff.washington.edu/jon/pymodel/www/).
 
 PyModel requires Python 2.6 or higher (because it uses *itertools.product*)
 
-PyModel is influenced by [NModel](http://www.codeplex.com/NModel), but
+PyModel is influenced by [NModel](http://jon-jacky.github.io/NModel), but
 is not a translation or re-implementation.
 
 PyModel is covered by the 
