@@ -85,7 +85,7 @@ PyModel is covered by the
 
 Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
-This repository contains a 
+The gh-pages branch of this repository contains a 
 [web site](https://jon-jacky.github.io/PyModel/www/)
 of HTML pages about PyModel.
 
