@@ -65,16 +65,15 @@ which demonstrates several PyModel techniques for modeling and testing systems
 that exhibit nondeterminism, concurrency, and asynchrony.
 
 Here are the [slides](talks/pymodel-nwpd10.pdf) for
-talks on PyModel given at [NWPD10](http://www.seapig.org/NWPD10)
-and [SciPy 2011](http://conference.scipy.org/scipy2011/schedule.php).
-Here is the [paper](talks/pymodel-scipy2011.pdf) from the 
+talks on PyModel given at NWPD10
+and SciPy 2011.
+Here is the [paper](talks/pymodel-scipy2011.pdf) written for the 
 SciPy 2011 Proceedings.
 
 You can [INSTALL](INSTALL.txt) PyModel.
 
 PyModel is also available at
-[PyPI](http://pypi.python.org/pypi/PyModel) and at the 
-author's [web page](http://staff.washington.edu/jon/pymodel/www/).
+[PyPI](http://pypi.python.org/pypi/PyModel).
 
 PyModel requires Python 2.6 or higher (because it uses *itertools.product*)
 
@@ -87,8 +86,7 @@ PyModel is covered by the
 Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
 This repository contains a 
-<a href="https://jon-jacky.github.io/PyModel/www">web site</a> 
+[web site](https://jon-jacky.github.io/PyModel/www/)
 of HTML pages about PyModel.
 
-Revised May 2013 (notes about zlorb fork added Jul 2021, Feb 2022)
-
+Revised May 2013 (notes about zlorb fork added Jul 2021, Feb 2022), Oct 2022
