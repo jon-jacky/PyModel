@@ -86,5 +86,9 @@ PyModel is covered by the
 
 Code and documents are copyright (C) 2009-2013, Jonathan Jacky.
 
+This repository contains a 
+<a href="https://jon-jacky.github.io/PyModel/www">web site</a> 
+of HTML pages about PyModel.
+
 Revised May 2013 (notes about zlorb fork added Jul 2021, Feb 2022)
 
